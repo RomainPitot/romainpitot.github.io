@@ -4,7 +4,7 @@ Static portfolio site for Romain Pitot (gameplay programmer, Unity/C#).
 Plain HTML/CSS/JS, no build tools required to run it — GitHub Actions deploys
 this repo straight to GitHub Pages on every push to `main`.
 
-Live at: `https://romainpitot.github.io/portfolio/` (enable Pages once, see below).
+Live at: **https://romainpitot.github.io/**
 
 ## Structure
 
