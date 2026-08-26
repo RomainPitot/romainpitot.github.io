@@ -1,0 +1,132 @@
+// Pitot Engine portfolio — shared behaviour
+(function () {
+  "use strict";
+
+  /* Mobile nav toggle -------------------------------------------------- */
+  var navToggle = document.querySelector(".nav-toggle");
+  var mainNav = document.querySelector(".main-nav");
+  if (navToggle && mainNav) {
+    navToggle.addEventListener("click", function () {
+      mainNav.classList.toggle("mobile-open");
+    });
+  }
+
+  /* Reveal-on-scroll ----------------------------------------------------- */
+  var revealEls = document.querySelectorAll(".reveal");
+  if ("IntersectionObserver" in window && revealEls.length) {
+    var io = new IntersectionObserver(
+      function (entries) {
+        entries.forEach(function (entry) {
+          if (entry.isIntersecting) {
+            entry.target.classList.add("in-view");
+            io.unobserve(entry.target);
+          }
+        });
+      },
+      { threshold: 0.12 }
+    );
+    revealEls.forEach(function (el) { io.observe(el); });
+  } else {
+    revealEls.forEach(function (el) { el.classList.add("in-view"); });
+  }
+
+  /* i18n ------------------------------------------------------------------ */
+  var LANG_KEY = "pitot-lang";
+  function getLang() {
+    try { return localStorage.getItem(LANG_KEY) || "en"; } catch (e) { return "en"; }
+  }
+  function setLang(lang) {
+    try { localStorage.setItem(LANG_KEY, lang); } catch (e) {}
+  }
+  function applyLang(lang) {
+    if (!window.PITOT_I18N) return;
+    var dict = window.PITOT_I18N[lang] || window.PITOT_I18N.en;
+    document.documentElement.setAttribute("lang", lang);
+    document.querySelectorAll("[data-i18n]").forEach(function (el) {
+      var key = el.getAttribute("data-i18n");
+      var value = key.split(".").reduce(function (acc, k) { return acc && acc[k]; }, dict);
+      if (typeof value === "string") el.textContent = value;
+    });
+    document.querySelectorAll("[data-i18n-placeholder]").forEach(function (el) {
+      var key = el.getAttribute("data-i18n-placeholder");
+      var value = key.split(".").reduce(function (acc, k) { return acc && acc[k]; }, dict);
+      if (typeof value === "string") el.setAttribute("placeholder", value);
+    });
+    var toggle = document.querySelector(".lang-toggle");
+    if (toggle) toggle.textContent = lang === "en" ? "FR" : "EN";
+  }
+  var langToggle = document.querySelector(".lang-toggle");
+  var currentLang = getLang();
+  applyLang(currentLang);
+  if (langToggle) {
+    langToggle.addEventListener("click", function () {
+      currentLang = currentLang === "en" ? "fr" : "en";
+      setLang(currentLang);
+      applyLang(currentLang);
+    });
+  }
+
+  /* Projects filter / sort (projects listing page) ------------------------ */
+  var filterBar = document.querySelector("[data-filter-bar]");
+  if (filterBar) {
+    var cards = Array.prototype.slice.call(document.querySelectorAll("[data-project-card]"));
+    var filterBtns = Array.prototype.slice.call(document.querySelectorAll("[data-filter]"));
+    var sortBtns = Array.prototype.slice.call(document.querySelectorAll("[data-sort]"));
+    var activeFilter = "All";
+    var activeSort = "latest";
+
+    function render() {
+      var visible = cards.filter(function (card) {
+        if (activeFilter === "All") return true;
+        return (card.getAttribute("data-tags") || "").split("|").indexOf(activeFilter) !== -1;
+      });
+      visible.sort(function (a, b) {
+        if (activeSort === "alpha") {
+          return a.getAttribute("data-title").localeCompare(b.getAttribute("data-title"));
+        }
+        return Number(b.getAttribute("data-year")) - Number(a.getAttribute("data-year"));
+      });
+      var grid = document.querySelector("[data-project-grid]");
+      cards.forEach(function (c) { c.style.display = "none"; });
+      visible.forEach(function (c) {
+        c.style.display = "";
+        grid.appendChild(c);
+      });
+    }
+
+    filterBtns.forEach(function (btn) {
+      btn.addEventListener("click", function () {
+        activeFilter = btn.getAttribute("data-filter");
+        filterBtns.forEach(function (b) { b.classList.remove("active"); });
+        btn.classList.add("active");
+        render();
+      });
+    });
+    sortBtns.forEach(function (btn) {
+      btn.addEventListener("click", function () {
+        activeSort = btn.getAttribute("data-sort");
+        sortBtns.forEach(function (b) { b.classList.remove("active"); });
+        btn.classList.add("active");
+        render();
+      });
+    });
+    render();
+  }
+
+  /* Contact form -> mailto fallback (static site, no backend) ------------- */
+  var contactForm = document.querySelector("[data-contact-form]");
+  if (contactForm) {
+    contactForm.addEventListener("submit", function (e) {
+      e.preventDefault();
+      var name = contactForm.querySelector("[name=name]").value.trim();
+      var email = contactForm.querySelector("[name=email]").value.trim();
+      var subject = contactForm.querySelector("[name=subject]").value.trim() || "Portfolio contact";
+      var message = contactForm.querySelector("[name=message]").value.trim();
+      var body = "From: " + name + " (" + email + ")\n\n" + message;
+      var mailto = "mailto:romain.pitot@email.com" +
+        "?subject=" + encodeURIComponent(subject) +
+        "&body=" + encodeURIComponent(body);
+      window.location.href = mailto;
+    });
+  }
+})();

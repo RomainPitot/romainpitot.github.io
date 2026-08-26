@@ -1,0 +1,251 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Systems — Romain Pitot</title>
+  <meta name="description" content="Architecture deep-dives into inventory, save systems, procedural generation, AI, abilities and netcode.">
+  <link rel="icon" href="assets/img/favicon.svg" type="image/svg+xml">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;500;700;800&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="assets/css/style.css">
+</head>
+<body>
+  <header class="site-header">
+    <div class="nav-inner">
+      <a class="brand" href="index.html">
+        <span class="brand-icon"><svg class="icon" viewBox="0 0 24 24"><polyline points="16 18 22 12 16 6"/><polyline points="8 6 2 12 8 18"/></svg></span>
+        romain<span class="dot">.</span>pitot
+      </a>
+      <nav class="main-nav"><a href="index.html" data-i18n="nav.home">Home</a><a href="projects.html" data-i18n="nav.projects">Projects</a><a href="systems.html" aria-current="page" data-i18n="nav.systems">Systems</a><a href="about.html" data-i18n="nav.about">About</a><a href="contact.html" data-i18n="nav.contact">Contact</a></nav>
+      <div class="nav-right">
+        <button class="lang-toggle" type="button" aria-label="Switch language">FR</button>
+        <button class="nav-toggle" type="button" aria-label="Toggle menu"><svg class="icon" viewBox="0 0 24 24"><line x1="3" y1="12" x2="21" y2="12"/><line x1="3" y1="6" x2="21" y2="6"/><line x1="3" y1="18" x2="21" y2="18"/></svg></button>
+      </div>
+    </div>
+  </header>
+
+  <section class="page-hero container">
+    <span class="eyebrow" data-i18n-skip>Engineering</span>
+    <h1 data-i18n="systems.title">Systems</h1>
+    <p data-i18n="systems.subtitle">Technical deep-dives into gameplay engineering</p>
+  </section>
+  <section class="section-tight container">
+    <div class="grid grid-3"><div class="card system-card reveal">
+    <div class="system-head">
+      <span class="system-icon" style="background:hsl(var(--accent) / .15);color:hsl(var(--accent))"><svg class="icon" viewBox="0 0 24 24"><path d="M21 16V8a2 2 0 0 0-1-1.73l-7-4a2 2 0 0 0-2 0l-7 4A2 2 0 0 0 3 8v8a2 2 0 0 0 1 1.73l7 4a2 2 0 0 0 2 0l7-4A2 2 0 0 0 21 16z"/><polyline points="3.27 6.96 12 12.01 20.73 6.96"/><line x1="12" y1="22.08" x2="12" y2="12"/></svg></span>
+      <div>
+        <div class="system-title-row"><h3>Modular Inventory System</h3><span class="tag">Tools</span></div>
+        <p class="system-subtitle">Data-driven item management framework</p>
+      </div>
+    </div>
+    <div class="system-visual"><div class="viz-grid"><div class="viz-slot" style="background:hsl(var(--primary) / .5)"></div><div class="viz-slot" style="background:hsl(var(--accent) / .6)"></div><div class="viz-slot" style="background:hsl(var(--violet) / .5)"></div><div class="viz-slot" style="background:"></div><div class="viz-slot" style="background:hsl(var(--primary) / .5)"></div><div class="viz-slot" style="background:"></div><div class="viz-slot" style="background:"></div><div class="viz-slot" style="background:"></div></div><span class="visual-caption">MVC · ScriptableObjects</span></div>
+    <p class="system-desc">A production-ready inventory system designed with clean architecture principles. Uses ScriptableObject-based item definitions, a grid-based slot manager, and a full serialization pipeline for save/load.</p>
+    <div class="tag-row"><span class="tag">C#</span><span class="tag">Unity</span><span class="tag">ScriptableObjects</span><span class="tag">UGUI</span><span class="tag">JSON</span><span class="tag">Events</span></div>
+    <details class="system-detail">
+      <summary><svg class="icon" viewBox="0 0 24 24"><line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/></svg> <span data-i18n="systems.read_more">Architecture deep-dive</span></summary>
+      <div class="system-detail-body">
+        <div class="system-detail-block">
+          <h4 data-i18n="systems.architecture">Architecture</h4>
+          <p>The system follows a Model-View-Controller pattern. The ItemRegistry holds all item definitions as ScriptableObjects. The InventoryModel manages slot state and emits events. The InventoryView listens to events and updates the UI. A SerializationLayer converts the model to/from JSON for persistence.</p>
+        </div>
+        <div class="system-detail-block">
+          <h4 data-i18n="systems.challenges">Challenges</h4>
+          <ul><li>Implementing grid-based drag-and-drop with precise collision detection</li><li>Designing a generic item property system without per-type code</li><li>Ensuring save/load integrity with item versioning</li></ul>
+        </div>
+        <div class="system-detail-block">
+          <h4 data-i18n="systems.solutions">Solutions Implemented</h4>
+          <ul><li>Custom RectTransform overlap detection with slot snapping</li><li>Property bags using ScriptableObject composition</li><li>Schema versioning with migration callbacks</li></ul>
+        </div>
+        <div class="system-detail-block">
+          <h4 data-i18n="systems.stats">Stats</h4>
+          <div class="stat-chip-row"><span class="stat-chip">Lines: ~1,200</span><span class="stat-chip">Tests: 18 unit tests</span><span class="stat-chip">Reusability: Drop-in package</span></div>
+        </div>
+      </div>
+    </details>
+  </div>
+<div class="card system-card reveal">
+    <div class="system-head">
+      <span class="system-icon" style="background:hsl(var(--violet) / .15);color:hsl(var(--violet))"><svg class="icon" viewBox="0 0 24 24"><polygon points="1 6 1 22 8 18 16 22 23 18 23 2 16 6 8 2 1 6"/><line x1="8" y1="2" x2="8" y2="18"/><line x1="16" y1="6" x2="16" y2="22"/></svg></span>
+      <div>
+        <div class="system-title-row"><h3>BSP Dungeon Generator</h3><span class="tag">Procedural</span></div>
+        <p class="system-subtitle">Binary Space Partitioning dungeon layout algorithm</p>
+      </div>
+    </div>
+    <div class="system-visual"><div class="viz-bsp"><div class="viz-room" style="height:34px"></div><div class="viz-room" style="height:44px"></div><div class="viz-room" style="height:26px"></div><div class="viz-room" style="height:38px"></div></div><span class="visual-caption">BSP · Graph traversal</span></div>
+    <p class="system-desc">A runtime dungeon generation system using Binary Space Partitioning. Produces varied, traversable dungeons with configurable density, guaranteed connectivity, and room-type weighting for boss/treasure rooms.</p>
+    <div class="tag-row"><span class="tag">C#</span><span class="tag">Unity</span><span class="tag">Tilemap API</span><span class="tag">Procedural Generation</span><span class="tag">Graph Theory</span></div>
+    <details class="system-detail">
+      <summary><svg class="icon" viewBox="0 0 24 24"><line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/></svg> <span data-i18n="systems.read_more">Architecture deep-dive</span></summary>
+      <div class="system-detail-body">
+        <div class="system-detail-block">
+          <h4 data-i18n="systems.architecture">Architecture</h4>
+          <p>BSP tree recursively splits space into leaf nodes representing rooms. A corridor-carving pass connects sibling nodes. Room metadata is then assigned probabilistically based on tree depth. The generator outputs a TileMap-compatible grid that Unity's Tilemap API populates.</p>
+        </div>
+        <div class="system-detail-block">
+          <h4 data-i18n="systems.challenges">Challenges</h4>
+          <ul><li>Guaranteeing all rooms are reachable without backtracking</li><li>Balancing randomness vs. playable level design</li><li>Integrating enemy spawning with room context</li></ul>
+        </div>
+        <div class="system-detail-block">
+          <h4 data-i18n="systems.solutions">Solutions Implemented</h4>
+          <ul><li>Minimum spanning tree pass over room graph ensures connectivity</li><li>Configurable depth and split-ratio constraints keep layouts playable</li><li>Room type tagging drives spawn tables at level load time</li></ul>
+        </div>
+        <div class="system-detail-block">
+          <h4 data-i18n="systems.stats">Stats</h4>
+          <div class="stat-chip-row"><span class="stat-chip">Lines: ~800</span><span class="stat-chip">Performance: <2ms per gen</span><span class="stat-chip">Maps: ∞ unique layouts</span></div>
+        </div>
+      </div>
+    </details>
+  </div>
+<div class="card system-card reveal">
+    <div class="system-head">
+      <span class="system-icon" style="background:hsl(var(--indigo) / .15);color:hsl(var(--indigo))"><svg class="icon" viewBox="0 0 24 24"><path d="M19 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11l5 5v11a2 2 0 0 1-2 2z"/><polyline points="17 21 17 13 7 13 7 21"/><polyline points="7 3 7 8 15 8"/></svg></span>
+      <div>
+        <div class="system-title-row"><h3>Universal Save System</h3><span class="tag">Tools</span></div>
+        <p class="system-subtitle">Flexible, type-safe game state serialization</p>
+      </div>
+    </div>
+    <div class="system-visual"><div style="display:flex;flex-direction:column;gap:6px;align-items:flex-start"><span class="font-mono" style="font-size:.68rem;color:hsl(var(--green))">SLOT 1 &mdash; Active</span><span class="font-mono" style="font-size:.68rem;color:hsl(var(--muted-foreground))">SLOT 2 &mdash; Empty</span><span class="font-mono" style="font-size:.68rem;color:hsl(var(--muted-foreground))">SLOT 3 &mdash; Empty</span></div><div class="viz-json">{ "v": 2, "enc": true }</div><span class="visual-caption">AES · JSON.NET</span></div>
+    <p class="system-desc">A flexible save system supporting multiple save slots, auto-save, and type-safe serialization. Components register themselves as saveable via an interface, decoupling persistence logic from gameplay code.</p>
+    <div class="tag-row"><span class="tag">C#</span><span class="tag">Unity</span><span class="tag">JSON.NET</span><span class="tag">AES Encryption</span><span class="tag">Interfaces</span></div>
+    <details class="system-detail">
+      <summary><svg class="icon" viewBox="0 0 24 24"><line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/></svg> <span data-i18n="systems.read_more">Architecture deep-dive</span></summary>
+      <div class="system-detail-body">
+        <div class="system-detail-block">
+          <h4 data-i18n="systems.architecture">Architecture</h4>
+          <p>SaveableObjects implement ISaveable and register with the SaveManager on Awake. On save, the manager collects JSON blobs from all registered objects and writes them to an encrypted file per slot. On load, each object receives its own data blob and deserializes independently.</p>
+        </div>
+        <div class="system-detail-block">
+          <h4 data-i18n="systems.challenges">Challenges</h4>
+          <ul><li>Avoiding tight coupling between save logic and game objects</li><li>Handling save data migration between game versions</li><li>Performance on large scene counts</li></ul>
+        </div>
+        <div class="system-detail-block">
+          <h4 data-i18n="systems.solutions">Solutions Implemented</h4>
+          <ul><li>ISaveable interface + SceneContext dependency injection</li><li>Version field + migration strategy pattern</li><li>Async write pipeline with background thread offload</li></ul>
+        </div>
+        <div class="system-detail-block">
+          <h4 data-i18n="systems.stats">Stats</h4>
+          <div class="stat-chip-row"><span class="stat-chip">Lines: ~600</span><span class="stat-chip">Slots: Unlimited</span><span class="stat-chip">Overhead: <0.5ms</span></div>
+        </div>
+      </div>
+    </details>
+  </div>
+<div class="card system-card reveal">
+    <div class="system-head">
+      <span class="system-icon" style="background:hsl(var(--violet) / .15);color:hsl(var(--violet))"><svg class="icon" viewBox="0 0 24 24"><rect x="4" y="4" width="16" height="16" rx="2" ry="2"/><rect x="9" y="9" width="6" height="6"/><line x1="9" y1="1" x2="9" y2="4"/><line x1="15" y1="1" x2="15" y2="4"/><line x1="9" y1="20" x2="9" y2="23"/><line x1="15" y1="20" x2="15" y2="23"/><line x1="20" y1="9" x2="23" y2="9"/><line x1="20" y1="14" x2="23" y2="14"/><line x1="1" y1="9" x2="4" y2="9"/><line x1="1" y1="14" x2="4" y2="14"/></svg></span>
+      <div>
+        <div class="system-title-row"><h3>Hierarchical Enemy AI</h3><span class="tag">AI</span></div>
+        <p class="system-subtitle">Layered behavior tree with utility scoring</p>
+      </div>
+    </div>
+    <div class="system-visual"><div class="viz-bt"><span class="viz-node viz-node-root">Selector</span><div class="viz-bt-row"><span class="viz-node">Patrol</span><span class="viz-node">Combat</span><span class="viz-node">Retreat</span><span class="viz-node">Attack</span><span class="viz-node">Flank</span></div></div><span class="visual-caption">BT · NavMesh · Utility</span></div>
+    <p class="system-desc">A hierarchical AI system combining behavior trees for decision logic with utility scoring for target prioritization. Enemies exhibit patrol, detection, combat, flanking, and retreat behaviors that adapt based on health and squad context.</p>
+    <div class="tag-row"><span class="tag">C#</span><span class="tag">Unity</span><span class="tag">NavMesh</span><span class="tag">Behavior Trees</span><span class="tag">Utility AI</span></div>
+    <details class="system-detail">
+      <summary><svg class="icon" viewBox="0 0 24 24"><line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/></svg> <span data-i18n="systems.read_more">Architecture deep-dive</span></summary>
+      <div class="system-detail-body">
+        <div class="system-detail-block">
+          <h4 data-i18n="systems.architecture">Architecture</h4>
+          <p>A lightweight behavior tree evaluates each tick: Selector/Sequence/Leaf nodes compose complex behavior. A utility layer weights candidate actions (attack, flank, retreat, call-for-help) using normalized sensor inputs. A steering layer handles movement using Unity's NavMesh with obstacle avoidance layering.</p>
+        </div>
+        <div class="system-detail-block">
+          <h4 data-i18n="systems.challenges">Challenges</h4>
+          <ul><li>Preventing repetitive predictable enemy patterns</li><li>Coordinating group behavior without expensive global queries</li><li>Tuning utility weights without hand-tweaking every enemy type</li></ul>
+        </div>
+        <div class="system-detail-block">
+          <h4 data-i18n="systems.solutions">Solutions Implemented</h4>
+          <ul><li>Noise-injected utility scores add controlled unpredictability</li><li>Squad blackboard shared via object reference, no global lookup</li><li>Parameterized utility curves on ScriptableObject profiles</li></ul>
+        </div>
+        <div class="system-detail-block">
+          <h4 data-i18n="systems.stats">Stats</h4>
+          <div class="stat-chip-row"><span class="stat-chip">Lines: ~2,000</span><span class="stat-chip">Enemies: 50+ simultaneous</span><span class="stat-chip">Cost: <0.8ms at 30 enemies</span></div>
+        </div>
+      </div>
+    </details>
+  </div>
+<div class="card system-card reveal">
+    <div class="system-head">
+      <span class="system-icon" style="background:hsl(var(--primary) / .15);color:hsl(var(--primary))"><svg class="icon" viewBox="0 0 24 24"><polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2"/></svg></span>
+      <div>
+        <div class="system-title-row"><h3>Modular Ability System</h3><span class="tag">Gameplay</span></div>
+        <p class="system-subtitle">Runtime-composable gameplay ability framework</p>
+      </div>
+    </div>
+    <div class="system-visual"><div class="viz-icons"><span class="viz-icon-chip"><svg class="icon" viewBox="0 0 24 24"><polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2"/></svg></span><span class="viz-icon-chip">DMG</span><span class="viz-icon-chip">AOE</span><span class="viz-icon-chip">SFX</span><span class="viz-icon-chip">VFX</span><span class="viz-icon-chip">CD</span></div><span class="visual-caption">Composition · ScriptableObj</span></div>
+    <p class="system-desc">A data-driven ability system where abilities are composed from atomic Effect modules at runtime. Supports cooldowns, resource costs, targeting modes, visual feedback hooks, and runtime upgrades without code changes.</p>
+    <div class="tag-row"><span class="tag">C#</span><span class="tag">Unity</span><span class="tag">ScriptableObjects</span><span class="tag">Composition Pattern</span><span class="tag">VFX Graph</span></div>
+    <details class="system-detail">
+      <summary><svg class="icon" viewBox="0 0 24 24"><line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/></svg> <span data-i18n="systems.read_more">Architecture deep-dive</span></summary>
+      <div class="system-detail-body">
+        <div class="system-detail-block">
+          <h4 data-i18n="systems.architecture">Architecture</h4>
+          <p>AbilityDefinition ScriptableObjects hold arrays of AbilityEffect assets. At cast time, a composite executor chains effects in sequence/parallel. Targeting modes (projectile, AOE, raycast, melee) are swappable strategy objects. A visual feedback system subscribes to ability lifecycle events to drive VFX and audio.</p>
+        </div>
+        <div class="system-detail-block">
+          <h4 data-i18n="systems.challenges">Challenges</h4>
+          <ul><li>Designing effects general enough to compose meaningfully</li><li>Handling targeting across different camera perspectives</li><li>Keeping ability logic testable without a running game</li></ul>
+        </div>
+        <div class="system-detail-block">
+          <h4 data-i18n="systems.solutions">Solutions Implemented</h4>
+          <ul><li>Atomic effects: Damage, Move, Spawn, Apply Status, Trigger Event</li><li>Camera-agnostic targeting resolvers injected at runtime</li><li>Effect units are pure C# classes, tested independently from MonoBehaviour</li></ul>
+        </div>
+        <div class="system-detail-block">
+          <h4 data-i18n="systems.stats">Stats</h4>
+          <div class="stat-chip-row"><span class="stat-chip">Lines: ~1,500</span><span class="stat-chip">Abilities: Infinite by composition</span><span class="stat-chip">Effects: 12 atomic types</span></div>
+        </div>
+      </div>
+    </details>
+  </div>
+<div class="card system-card reveal">
+    <div class="system-head">
+      <span class="system-icon" style="background:hsl(var(--green) / .15);color:hsl(var(--green))"><svg class="icon" viewBox="0 0 24 24"><path d="M5 12.55a11 11 0 0 1 14.08 0"/><path d="M1.42 9a16 16 0 0 1 21.16 0"/><path d="M8.53 16.11a6 6 0 0 1 6.95 0"/><line x1="12" y1="20" x2="12.01" y2="20"/></svg></span>
+      <div>
+        <div class="system-title-row"><h3>Netcode Prediction Layer</h3><span class="tag">Multiplayer</span></div>
+        <p class="system-subtitle">Client-side prediction with server reconciliation</p>
+      </div>
+    </div>
+    <div class="system-visual"><div class="viz-net"><div class="viz-net-box">CLIENT<br>Input[]</div><span class="viz-arrow">&#8644;</span><div class="viz-net-box">SERVER<br>State</div></div><span class="visual-caption">Ring Buffer &mdash; 16 frames</span><span class="visual-caption">Prediction · Rollback · NGO</span></div>
+    <p class="system-desc">A netcode abstraction layer implementing client-side prediction, authoritative server state, and rollback/reconciliation. Designed as a wrapper around Unity Netcode for GameObjects to simplify deterministic gameplay code.</p>
+    <div class="tag-row"><span class="tag">C#</span><span class="tag">Unity</span><span class="tag">NGO</span><span class="tag">Multiplayer</span><span class="tag">Ring Buffer</span><span class="tag">Rollback</span></div>
+    <details class="system-detail">
+      <summary><svg class="icon" viewBox="0 0 24 24"><line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/></svg> <span data-i18n="systems.read_more">Architecture deep-dive</span></summary>
+      <div class="system-detail-body">
+        <div class="system-detail-block">
+          <h4 data-i18n="systems.architecture">Architecture</h4>
+          <p>Each frame, the client records input into a circular buffer and simulates locally. The server processes inputs authoritatively and broadcasts state snapshots. The client compares its predicted state against server snapshots and rolls back + re-simulates if divergence exceeds a threshold.</p>
+        </div>
+        <div class="system-detail-block">
+          <h4 data-i18n="systems.challenges">Challenges</h4>
+          <ul><li>Achieving visual smoothness during reconciliation corrections</li><li>Keeping the rollback buffer memory-bounded</li><li>Handling physics interactions deterministically</li></ul>
+        </div>
+        <div class="system-detail-block">
+          <h4 data-i18n="systems.solutions">Solutions Implemented</h4>
+          <ul><li>Visual interpolation layer decoupled from simulation layer</li><li>Fixed-size ring buffer with configurable history depth</li><li>Physics inputs serialized and replayed, not physics state</li></ul>
+        </div>
+        <div class="system-detail-block">
+          <h4 data-i18n="systems.stats">Stats</h4>
+          <div class="stat-chip-row"><span class="stat-chip">Lines: ~1,800</span><span class="stat-chip">Latency masked: Up to 150ms</span><span class="stat-chip">Players tested: 2-8</span></div>
+        </div>
+      </div>
+    </details>
+  </div>
+</div>
+  </section>
+
+  <footer class="site-footer">
+    <div class="container footer-inner">
+      <div class="footer-brand"><svg class="icon" viewBox="0 0 24 24"><polyline points="16 18 22 12 16 6"/><polyline points="8 6 2 12 8 18"/></svg> romain.pitot &mdash; <span data-i18n="footer.role">gameplay programmer</span></div>
+      <div class="footer-social">
+        <a href="mailto:romain.pitot@email.com" aria-label="Email"><svg class="icon" viewBox="0 0 24 24"><path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"/><polyline points="22 6 12 13 2 6"/></svg></a>
+        <a href="https://linkedin.com/in/romain-pitot" target="_blank" rel="noreferrer" aria-label="LinkedIn"><svg class="icon" viewBox="0 0 24 24"><path d="M16 8a6 6 0 0 1 6 6v7h-4v-7a2 2 0 0 0-2-2 2 2 0 0 0-2 2v7h-4v-7a6 6 0 0 1 6-6z"/><rect x="2" y="9" width="4" height="12"/><circle cx="4" cy="4" r="2"/></svg></a>
+        <a href="https://github.com/romainpitot" target="_blank" rel="noreferrer" aria-label="GitHub"><svg class="icon" viewBox="0 0 24 24"><path d="M9 19c-5 1.5-5-2.5-7-3m14 6v-3.87a3.37 3.37 0 0 0-.94-2.61c3.14-.35 6.44-1.54 6.44-7A5.44 5.44 0 0 0 20 4.77 5.07 5.07 0 0 0 19.91 1S18.73.65 16 2.48a13.38 13.38 0 0 0-7 0C6.27.65 5.09 1 5.09 1A5.07 5.07 0 0 0 5 4.77a5.44 5.44 0 0 0-1.5 3.78c0 5.42 3.3 6.61 6.44 7A3.37 3.37 0 0 0 9 18.13V22"/></svg></a>
+      </div>
+      <div class="footer-copy">&copy; 2026 Romain Pitot</div>
+    </div>
+  </footer>
+
+  <script src="assets/js/i18n.js"></script>
+  <script src="assets/js/main.js"></script>
+</body>
+</html>
