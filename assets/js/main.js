@@ -6,8 +6,19 @@
   var navToggle = document.querySelector(".nav-toggle");
   var mainNav = document.querySelector(".main-nav");
   if (navToggle && mainNav) {
+    var iconMenu = navToggle.querySelector(".icon-menu");
+    var iconClose = navToggle.querySelector(".icon-close");
+    function setNavOpen(open) {
+      mainNav.classList.toggle("mobile-open", open);
+      navToggle.setAttribute("aria-expanded", open ? "true" : "false");
+      if (iconMenu) iconMenu.hidden = open;
+      if (iconClose) iconClose.hidden = !open;
+    }
     navToggle.addEventListener("click", function () {
-      mainNav.classList.toggle("mobile-open");
+      setNavOpen(!mainNav.classList.contains("mobile-open"));
+    });
+    mainNav.querySelectorAll("a").forEach(function (link) {
+      link.addEventListener("click", function () { setNavOpen(false); });
     });
   }
 

@@ -287,17 +287,31 @@ def project_by_id(pid):
 # Reusable blocks
 # --------------------------------------------------------------------------
 
-def html_head(title, description, depth):
+SITE_URL = "https://romainpitot.github.io"
+
+
+def html_head(title, description, depth, canonical_path=""):
+    canonical = SITE_URL + "/" + canonical_path
     return """<meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>%(title)s</title>
   <meta name="description" content="%(description)s">
+  <link rel="canonical" href="%(canonical)s">
+  <meta name="theme-color" content="#13161f">
+  <meta property="og:type" content="website">
+  <meta property="og:site_name" content="romain.pitot">
+  <meta property="og:title" content="%(title)s">
+  <meta property="og:description" content="%(description)s">
+  <meta property="og:url" content="%(canonical)s">
+  <meta name="twitter:card" content="summary">
+  <meta name="twitter:title" content="%(title)s">
+  <meta name="twitter:description" content="%(description)s">
   <link rel="icon" href="%(depth)sassets/img/favicon.svg" type="image/svg+xml">
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;500;700;800&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500;700&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="%(depth)sassets/css/style.css">
-""" % {"title": title, "description": description, "depth": depth}
+""" % {"title": title, "description": description, "depth": depth, "canonical": canonical}
 
 
 def header_html(active, depth):
@@ -318,10 +332,13 @@ def header_html(active, depth):
         <span class="brand-icon">%(code_icon)s</span>
         romain<span class="dot">.</span>pitot
       </a>
-      <nav class="main-nav">%(links)s</nav>
+      <nav class="main-nav" id="main-nav">%(links)s</nav>
       <div class="nav-right">
         <button class="lang-toggle" type="button" aria-label="Switch language">FR</button>
-        <button class="nav-toggle" type="button" aria-label="Toggle menu">%(menu_icon)s</button>
+        <button class="nav-toggle" type="button" aria-label="Toggle menu" aria-expanded="false" aria-controls="main-nav">
+          <span class="icon-menu">%(menu_icon)s</span>
+          <span class="icon-close" hidden>%(close_icon)s</span>
+        </button>
       </div>
     </div>
   </header>
@@ -330,6 +347,7 @@ def header_html(active, depth):
         "code_icon": icon("code"),
         "links": "".join(links),
         "menu_icon": icon("menu"),
+        "close_icon": icon("x"),
     }
 
 
@@ -357,7 +375,7 @@ def footer_html(depth):
     }
 
 
-def page(title, description, active, depth, body):
+def page(title, description, active, depth, body, canonical_path=""):
     return """<!DOCTYPE html>
 <html lang="en">
 <head>
@@ -371,7 +389,7 @@ def page(title, description, active, depth, body):
 </body>
 </html>
 """ % {
-        "head": html_head(title, description, depth),
+        "head": html_head(title, description, depth, canonical_path),
         "header": header_html(active, depth),
         "body": body,
         "footer": footer_html(depth),
@@ -655,7 +673,7 @@ def build_home():
     write("index.html", page(
         "%s — Gameplay Programmer" % AUTHOR,
         "Romain Pitot, junior gameplay programmer specialised in Unity & C# — gameplay systems, AI, procedural generation and multiplayer networking.",
-        "home", depth, body,
+        "home", depth, body, "",
     ))
 
 
@@ -696,7 +714,7 @@ def build_projects_listing():
     write("projects.html", page(
         "Projects — %s" % AUTHOR,
         "All gameplay projects, tools, and game jams by Romain Pitot: procedural generation, AI, netcode and more.",
-        "projects", depth, body,
+        "projects", depth, body, "projects.html",
     ))
 
 
@@ -777,7 +795,7 @@ def build_project_detail(p):
     write("projects/%s.html" % p["id"], page(
         "%s — %s" % (p["title"], AUTHOR),
         p["shortDesc"],
-        "projects", depth, body,
+        "projects", depth, body, "projects/%s.html" % p["id"],
     ))
 
 
@@ -800,7 +818,7 @@ def build_systems():
     write("systems.html", page(
         "Systems — %s" % AUTHOR,
         "Architecture deep-dives into inventory, save systems, procedural generation, AI, abilities and netcode.",
-        "systems", depth, body,
+        "systems", depth, body, "systems.html",
     ))
 
 
@@ -869,7 +887,7 @@ def build_about():
     write("about.html", page(
         "About — %s" % AUTHOR,
         "About Romain Pitot: junior gameplay programmer, MSc Game Development, Unity/C# specialist.",
-        "about", depth, body,
+        "about", depth, body, "about.html",
     ))
 
 
@@ -938,13 +956,43 @@ def build_contact():
     write("contact.html", page(
         "Contact — %s" % AUTHOR,
         "Get in touch with Romain Pitot for internships, junior gameplay programming roles, or collaborations.",
-        "contact", depth, body,
+        "contact", depth, body, "contact.html",
     ))
 
 
 # --------------------------------------------------------------------------
 # Entry point
 # --------------------------------------------------------------------------
+
+def build_robots_and_sitemap():
+    write("robots.txt", "User-agent: *\nAllow: /\nSitemap: %s/sitemap.xml\n" % SITE_URL)
+
+    paths = ["", "projects.html", "systems.html", "about.html", "contact.html"]
+    paths += ["projects/%s.html" % p["id"] for p in PROJECTS]
+    urls = "".join(
+        "  <url><loc>%s/%s</loc></url>\n" % (SITE_URL, p) for p in paths
+    )
+    sitemap = ('<?xml version="1.0" encoding="UTF-8"?>\n'
+               '<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">\n'
+               + urls + "</urlset>\n")
+    write("sitemap.xml", sitemap)
+
+
+def build_404():
+    depth = ""
+    body = """<section class="page-hero container" style="text-align:center;padding:120px 24px">
+    <span class="eyebrow" data-i18n-skip>404</span>
+    <h1>Page not found</h1>
+    <p style="margin:0 auto 28px">This page doesn't exist &mdash; it may have moved, or the link is out of date.</p>
+    <a class="btn btn-primary" href="index.html">%(arrow)s Back to home</a>
+  </section>
+""" % {"arrow": icon("arrow-right")}
+    write("404.html", page(
+        "Page not found — %s" % AUTHOR,
+        "This page doesn't exist.",
+        "", depth, body,
+    ))
+
 
 def main():
     build_home()
@@ -954,6 +1002,8 @@ def main():
     build_systems()
     build_about()
     build_contact()
+    build_404()
+    build_robots_and_sitemap()
 
 
 if __name__ == "__main__":
