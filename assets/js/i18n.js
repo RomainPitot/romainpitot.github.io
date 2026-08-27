@@ -50,6 +50,9 @@ window.PITOT_I18N = {
       subtitle: "Open to opportunities, collaborations, and interesting projects",
       availability: "Currently available for internships & junior positions",
       send: "Send Message",
+      sending: "Sending…",
+      sent: "Thanks! Your message has been sent — I'll get back to you soon.",
+      error: "Something went wrong. Please try again or email me directly.",
       connect: "Connect",
       resume: "Resume",
       form_title: "Send a message"
@@ -106,6 +109,9 @@ window.PITOT_I18N = {
       subtitle: "Ouvert aux opportunités, collaborations et projets intéressants",
       availability: "Disponible pour stages & postes juniors",
       send: "Envoyer le message",
+      sending: "Envoi en cours…",
+      sent: "Merci ! Votre message a bien été envoyé — je vous répondrai rapidement.",
+      error: "Une erreur est survenue. Réessayez ou écrivez-moi directement par email.",
       connect: "Contact",
       resume: "CV",
       form_title: "Envoyer un message"

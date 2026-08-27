@@ -52,14 +52,16 @@
     <div class="contact-grid">
       <div class="form-card reveal">
         <h3 data-i18n="contact.form_title">Send a message</h3>
-        <form data-contact-form>
+        <form data-contact-form action="https://formspree.io/f/mkjnwagj" method="POST">
           <div class="form-row">
             <div class="field"><label data-i18n-skip>Name</label><input type="text" name="name" required></div>
             <div class="field"><label data-i18n-skip>Email</label><input type="email" name="email" required></div>
           </div>
           <div class="field"><label data-i18n-skip>Subject</label><input type="text" name="subject"></div>
           <div class="field"><label data-i18n-skip>Message</label><textarea name="message" required></textarea></div>
+          <input type="text" name="_gotcha" style="display:none" tabindex="-1" autocomplete="off">
           <button class="btn btn-primary" type="submit"><svg class="icon" viewBox="0 0 24 24"><line x1="22" y1="2" x2="11" y2="13"/><polygon points="22 2 15 22 11 13 2 9 22 2"/></svg> <span data-i18n="contact.send">Send Message</span></button>
+          <p data-form-status class="font-mono" style="font-size:.82rem;margin-top:12px" hidden></p>
         </form>
       </div>
 

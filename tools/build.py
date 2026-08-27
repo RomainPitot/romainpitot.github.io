@@ -21,6 +21,7 @@ YEAR = "2026"
 REAL_GITHUB = "https://github.com/romainpitot"
 REAL_LINKEDIN = "https://linkedin.com/in/romain-pitot"
 PLACEHOLDER_EMAIL = "romain.pitot@email.com"
+FORMSPREE_ENDPOINT = "https://formspree.io/f/mkjnwagj"
 
 # --------------------------------------------------------------------------
 # Icons (Feather Icons, MIT licensed — inline so the site has zero runtime
@@ -910,14 +911,16 @@ def build_contact():
     <div class="contact-grid">
       <div class="form-card reveal">
         <h3 data-i18n="contact.form_title">Send a message</h3>
-        <form data-contact-form>
+        <form data-contact-form action="%(formspree)s" method="POST">
           <div class="form-row">
             <div class="field"><label data-i18n-skip>Name</label><input type="text" name="name" required></div>
             <div class="field"><label data-i18n-skip>Email</label><input type="email" name="email" required></div>
           </div>
           <div class="field"><label data-i18n-skip>Subject</label><input type="text" name="subject"></div>
           <div class="field"><label data-i18n-skip>Message</label><textarea name="message" required></textarea></div>
+          <input type="text" name="_gotcha" style="display:none" tabindex="-1" autocomplete="off">
           <button class="btn btn-primary" type="submit">%(send_icon)s <span data-i18n="contact.send">Send Message</span></button>
+          <p data-form-status class="font-mono" style="font-size:.82rem;margin-top:12px" hidden></p>
         </form>
       </div>
 
@@ -951,6 +954,7 @@ def build_contact():
 """ % {
         "send_icon": icon("send"), "mail_icon": icon("mail"), "li_icon": icon("linkedin"), "gh_icon": icon("github"),
         "dl_icon": icon("download"), "email": PLACEHOLDER_EMAIL, "linkedin": REAL_LINKEDIN, "github": REAL_GITHUB,
+        "formspree": FORMSPREE_ENDPOINT,
     }
 
     write("contact.html", page(

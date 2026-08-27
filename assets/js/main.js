@@ -124,20 +124,47 @@
     render();
   }
 
-  /* Contact form -> mailto fallback (static site, no backend) ------------- */
+  /* Contact form -> Formspree (AJAX, stays on page) ------------------------ */
   var contactForm = document.querySelector("[data-contact-form]");
   if (contactForm) {
+    var statusEl = contactForm.querySelector("[data-form-status]");
+    var submitBtn = contactForm.querySelector("button[type=submit]");
+
+    function t(key) {
+      var dict = (window.PITOT_I18N && window.PITOT_I18N[currentLang]) || {};
+      return key.split(".").reduce(function (acc, k) { return acc && acc[k]; }, dict) || key;
+    }
+    function showStatus(text, isError) {
+      if (!statusEl) return;
+      statusEl.textContent = text;
+      statusEl.hidden = false;
+      statusEl.style.color = isError ? "hsl(0 84% 65%)" : "hsl(var(--green))";
+    }
+
     contactForm.addEventListener("submit", function (e) {
       e.preventDefault();
-      var name = contactForm.querySelector("[name=name]").value.trim();
-      var email = contactForm.querySelector("[name=email]").value.trim();
-      var subject = contactForm.querySelector("[name=subject]").value.trim() || "Portfolio contact";
-      var message = contactForm.querySelector("[name=message]").value.trim();
-      var body = "From: " + name + " (" + email + ")\n\n" + message;
-      var mailto = "mailto:romain.pitot@email.com" +
-        "?subject=" + encodeURIComponent(subject) +
-        "&body=" + encodeURIComponent(body);
-      window.location.href = mailto;
+      if (submitBtn) submitBtn.disabled = true;
+      showStatus(t("contact.sending"), false);
+
+      fetch(contactForm.action, {
+        method: "POST",
+        body: new FormData(contactForm),
+        headers: { Accept: "application/json" },
+      })
+        .then(function (response) {
+          if (response.ok) {
+            showStatus(t("contact.sent"), false);
+            contactForm.reset();
+          } else {
+            showStatus(t("contact.error"), true);
+          }
+        })
+        .catch(function () {
+          showStatus(t("contact.error"), true);
+        })
+        .finally(function () {
+          if (submitBtn) submitBtn.disabled = false;
+        });
     });
   }
 })();
