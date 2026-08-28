@@ -376,14 +376,32 @@ def footer_html(depth):
     }
 
 
+def person_jsonld():
+    return """<script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "Person",
+    "name": "%(author)s",
+    "jobTitle": "Gameplay Programmer",
+    "url": "%(site)s/",
+    "sameAs": ["%(github)s", "%(linkedin)s"],
+    "knowsAbout": ["Unity", "C#", "Gameplay Programming", "Procedural Generation", "Game AI", "Multiplayer Netcode"]
+  }
+  </script>
+""" % {"author": AUTHOR, "site": SITE_URL, "github": REAL_GITHUB, "linkedin": REAL_LINKEDIN}
+
+
 def page(title, description, active, depth, body, canonical_path=""):
     return """<!DOCTYPE html>
 <html lang="en">
 <head>
-  %(head)s</head>
+  %(head)s%(jsonld)s</head>
 <body>
+  <a class="skip-link" href="#main">Skip to content</a>
   %(header)s
+  <main id="main">
   %(body)s
+  </main>
   %(footer)s
   <script src="%(depth)sassets/js/i18n.js"></script>
   <script src="%(depth)sassets/js/main.js"></script>
@@ -391,6 +409,7 @@ def page(title, description, active, depth, body, canonical_path=""):
 </html>
 """ % {
         "head": html_head(title, description, depth, canonical_path),
+        "jsonld": person_jsonld(),
         "header": header_html(active, depth),
         "body": body,
         "footer": footer_html(depth),
