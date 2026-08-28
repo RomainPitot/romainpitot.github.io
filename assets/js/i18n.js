@@ -48,7 +48,7 @@ window.PITOT_I18N = {
     contact: {
       title: "Get In Touch",
       subtitle: "Open to opportunities, collaborations, and interesting projects",
-      availability: "Currently available for internships & junior positions",
+      availability: "Actively looking for junior gameplay programmer opportunities",
       send: "Send Message",
       sending: "Sending…",
       sent: "Thanks! Your message has been sent — I'll get back to you soon.",
@@ -107,7 +107,7 @@ window.PITOT_I18N = {
     contact: {
       title: "Me Contacter",
       subtitle: "Ouvert aux opportunités, collaborations et projets intéressants",
-      availability: "Disponible pour stages & postes juniors",
+      availability: "À la recherche d'un poste de programmeur gameplay junior",
       send: "Envoyer le message",
       sending: "Envoi en cours…",
       sent: "Merci ! Votre message a bien été envoyé — je vous répondrai rapidement.",

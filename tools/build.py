@@ -216,8 +216,8 @@ SKILLS = [
 ]
 
 EDUCATION = [
-    ("MSc Game Development (in progress)", "ISART Digital / [Your School]", "2023 – 2025"),
-    ("BSc Computer Science", "[Your University]", "2020 – 2023"),
+    ("Master Video Game Developer & Rendering Systems", "Gaming Campus, Lyon — alternance at Masseka Games Studio, Toulouse", "Oct 2022 – Oct 2024"),
+    ("Bachelor's, Game Design & Video Games (Creative Coding)", "E-Artsup, Toulouse", "Sep 2019 – Sep 2022"),
 ]
 
 
@@ -658,14 +658,14 @@ def build_home():
           <div class="avatar-box">%(user_icon)s</div>
           <div>
             <p style="font-size:1.05rem;font-weight:600;margin-bottom:10px">I'm a junior gameplay programmer passionate about building the systems that make games fun, responsive, and technically robust.</p>
-            <p style="color:hsl(var(--muted-foreground));font-size:.92rem">Currently pursuing a Master's degree in Game Development, I specialize in Unity and C# with a focus on gameplay systems, AI, procedural generation, and multiplayer networking.</p>
+            <p style="color:hsl(var(--muted-foreground));font-size:.92rem">Recently graduated with a Master's degree in Game Development, I specialize in Unity and C# with a focus on gameplay systems, AI, procedural generation, and multiplayer networking.</p>
           </div>
         </div>
         <div class="cv-card reveal">
           <div class="cv-icon">%(dl)s</div>
           <div>
             <strong>Curriculum Vit&aelig;</strong>
-            <p style="color:hsl(var(--muted-foreground));font-size:.85rem;margin-top:4px">Gameplay Programmer &mdash; Unity / C#<br>PDF &middot; Last updated 2025</p>
+            <p style="color:hsl(var(--muted-foreground));font-size:.85rem;margin-top:4px">Gameplay Programmer &mdash; Unity / C#<br>PDF &middot; Updated 2026</p>
           </div>
           <a class="btn btn-primary btn-block" href="cv.pdf" download>%(dl)s <span data-i18n="hero.cta_cv">Download CV</span></a>
         </div>
@@ -868,7 +868,7 @@ def build_about():
     <div class="two-col">
       <div class="reveal">
         <p style="font-size:1.1rem;font-weight:600;margin-bottom:18px">I am a junior gameplay programmer passionate about building the systems that make games fun, responsive, and technically robust.</p>
-        <p style="color:hsl(var(--muted-foreground));margin-bottom:14px">Currently pursuing a Master's degree in Game Development, I specialize in Unity and C# with a focus on gameplay systems, AI, procedural generation, and multiplayer networking.</p>
+        <p style="color:hsl(var(--muted-foreground));margin-bottom:14px">Recently graduated with a Master's degree in Game Development, I specialize in Unity and C# with a focus on gameplay systems, AI, procedural generation, and multiplayer networking.</p>
         <p style="color:hsl(var(--muted-foreground));margin-bottom:14px">I believe great gameplay comes from well-architected systems. I enjoy working at the intersection of design and engineering &mdash; translating game design intent into clean, scalable code.</p>
         <p style="color:hsl(var(--muted-foreground));margin-bottom:24px">Outside of coding, I am an avid gamer and game systems analyst &mdash; breaking down what makes mechanics feel satisfying is both a hobby and a professional methodology.</p>
         <p class="font-mono" style="font-size:.85rem;color:hsl(var(--accent))" data-i18n="about.based">Based in France &mdash; Open to remote &amp; relocation</p>
@@ -881,11 +881,11 @@ def build_about():
         <div class="cv-icon">%(dl)s</div>
         <div>
           <strong>Curriculum Vit&aelig;</strong>
-          <p style="color:hsl(var(--muted-foreground));font-size:.85rem;margin-top:4px">Gameplay Programmer &mdash; Unity / C#<br>PDF &middot; Updated 2024</p>
+          <p style="color:hsl(var(--muted-foreground));font-size:.85rem;margin-top:4px">Gameplay Programmer &mdash; Unity / C#<br>PDF &middot; Updated 2026</p>
         </div>
         <a class="btn btn-primary btn-block" href="cv.pdf" download>%(dl)s <span data-i18n="hero.cta_cv">Download CV</span></a>
         <div style="border-top:1px solid hsl(var(--border));margin-top:6px;padding-top:16px">
-          <span class="availability"><span class="dot"></span> <span data-i18n="contact.availability">Currently available for internships &amp; junior positions</span></span>
+          <span class="availability"><span class="dot"></span> <span data-i18n="contact.availability">Actively looking for junior gameplay programmer opportunities</span></span>
         </div>
       </div>
     </div>
@@ -924,7 +924,7 @@ def build_contact():
     <h1 data-i18n="contact.title">Get In Touch</h1>
     <p data-i18n="contact.subtitle">Open to opportunities, collaborations, and interesting projects</p>
     <div style="margin-top:18px">
-      <span class="availability"><span class="dot"></span> <span data-i18n="contact.availability">Currently available for internships &amp; junior positions</span></span>
+      <span class="availability"><span class="dot"></span> <span data-i18n="contact.availability">Actively looking for junior gameplay programmer opportunities</span></span>
     </div>
   </section>
 
@@ -966,7 +966,7 @@ def build_contact():
 
         <div class="connect-card">
           <h3 data-i18n="contact.resume">Resume</h3>
-          <p style="color:hsl(var(--muted-foreground));font-size:.85rem;margin-bottom:14px">PDF &mdash; Updated 2024</p>
+          <p style="color:hsl(var(--muted-foreground));font-size:.85rem;margin-bottom:14px">PDF &mdash; Updated 2026</p>
           <a class="btn btn-primary btn-block" href="cv.pdf" download>%(dl_icon)s <span data-i18n="hero.cta_cv">Download CV</span></a>
         </div>
 
@@ -982,7 +982,7 @@ def build_contact():
 
     write("contact.html", page(
         "Contact — %s" % AUTHOR,
-        "Get in touch with Romain Pitot for internships, junior gameplay programming roles, or collaborations.",
+        "Get in touch with Romain Pitot for junior gameplay programming roles, freelance work, or collaborations.",
         "contact", depth, body, "contact.html",
     ))
 

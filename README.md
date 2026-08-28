@@ -45,11 +45,19 @@ runs the generator.
 This content was reconstructed from an earlier Base44 draft that still had
 template placeholders in it. Before treating the site as final, replace:
 
-- `cv.pdf` — currently a generated placeholder PDF, swap in the real résumé.
 - Per-project GitHub / itch.io / demo links in `tools/build.py` (`PROJECTS[*]["links"]`)
-  — currently point at bare `github.com` / `itch.io` / `demo.io`.
-- Education entries in `tools/build.py` (`EDUCATION`) — `[Your School]` /
-  `[Your University]` still need real names.
+  — currently point at bare `github.com` / `itch.io` / `demo.io`. Blocked on the
+  real itch.io page being published.
+- The `PROJECTS` list itself is still the fictional Base44 sample content
+  (Echoes of the Rift, Nexus Tower Defense, ...) — swap in the real shipped
+  projects (Kissoro, La légende de Mulu, MiniCup, ...) once screenshots/links
+  are ready.
+- Project cover art is CSS-only placeholders — swap in real screenshots/GIFs
+  when available.
+
+`cv.pdf` is now the real résumé (replace the same path whenever it's updated —
+no code changes needed). Education in `tools/build.py` (`EDUCATION`) reflects
+the real degrees.
 
 GitHub and LinkedIn links in the footer/contact page already point at the
 real profiles (`github.com/romainpitot`, `linkedin.com/in/romain-pitot`).
