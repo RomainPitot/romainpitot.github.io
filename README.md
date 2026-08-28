@@ -46,8 +46,6 @@ This content was reconstructed from an earlier Base44 draft that still had
 template placeholders in it. Before treating the site as final, replace:
 
 - `cv.pdf` — currently a generated placeholder PDF, swap in the real résumé.
-- Contact email (`romain.pitot@email.com`) in `contact.html`, `assets/js/main.js`,
-  and `tools/build.py` (`PLACEHOLDER_EMAIL`) — replace with a real inbox.
 - Per-project GitHub / itch.io / demo links in `tools/build.py` (`PROJECTS[*]["links"]`)
   — currently point at bare `github.com` / `itch.io` / `demo.io`.
 - Education entries in `tools/build.py` (`EDUCATION`) — `[Your School]` /

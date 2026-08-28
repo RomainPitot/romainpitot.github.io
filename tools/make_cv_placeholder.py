@@ -13,7 +13,7 @@ lines = [
     "This CV is a placeholder. The real resume PDF will replace this file",
     "at the same path (cv.pdf) once it is ready.",
     "",
-    "Contact: romain.pitot@email.com",
+    "Contact: romainpitot.dev@gmail.com",
     "LinkedIn: linkedin.com/in/romain-pitot",
     "GitHub: github.com/romainpitot",
 ]

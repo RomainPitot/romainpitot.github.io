@@ -12,7 +12,7 @@ endobj
 << /Type /Font /Subtype /Type1 /BaseFont /Helvetica >>
 endobj
 5 0 obj
-<< /Length 379 >>
+<< /Length 382 >>
 stream
 BT /F1 18 Tf 60 760 Td 22 TL
 (Romain Pitot) Tj T*
@@ -22,7 +22,7 @@ BT /F1 18 Tf 60 760 Td 22 TL
 (This CV is a placeholder. The real resume PDF will replace this file) Tj T*
 (at the same path \(cv.pdf\) once it is ready.) Tj T*
 () Tj T*
-(Contact: romain.pitot@email.com) Tj T*
+(Contact: romainpitot.dev@gmail.com) Tj T*
 (LinkedIn: linkedin.com/in/romain-pitot) Tj T*
 (GitHub: github.com/romainpitot) Tj T*
 ET
@@ -39,5 +39,5 @@ xref
 trailer
 << /Size 6 /Root 1 0 R >>
 startxref
-741
+744
 %%EOF

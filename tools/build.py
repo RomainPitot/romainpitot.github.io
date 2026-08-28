@@ -20,7 +20,7 @@ YEAR = "2026"
 
 REAL_GITHUB = "https://github.com/romainpitot"
 REAL_LINKEDIN = "https://linkedin.com/in/romain-pitot"
-PLACEHOLDER_EMAIL = "romain.pitot@email.com"
+CONTACT_EMAIL = "romainpitot.dev@gmail.com"
 FORMSPREE_ENDPOINT = "https://formspree.io/f/mkjnwagj"
 
 # --------------------------------------------------------------------------
@@ -366,7 +366,7 @@ def footer_html(depth):
   </footer>
 """ % {
         "code_icon": icon("code"),
-        "email": PLACEHOLDER_EMAIL,
+        "email": CONTACT_EMAIL,
         "linkedin": REAL_LINKEDIN,
         "github": REAL_GITHUB,
         "mail_icon": icon("mail"),
@@ -954,7 +954,7 @@ def build_contact():
   </section>
 """ % {
         "send_icon": icon("send"), "mail_icon": icon("mail"), "li_icon": icon("linkedin"), "gh_icon": icon("github"),
-        "dl_icon": icon("download"), "email": PLACEHOLDER_EMAIL, "linkedin": REAL_LINKEDIN, "github": REAL_GITHUB,
+        "dl_icon": icon("download"), "email": CONTACT_EMAIL, "linkedin": REAL_LINKEDIN, "github": REAL_GITHUB,
         "formspree": FORMSPREE_ENDPOINT,
     }
 
