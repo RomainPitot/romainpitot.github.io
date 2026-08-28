@@ -763,6 +763,7 @@ def build_project_detail(p):
     <h1 style="font-size:clamp(1.8rem,4vw,2.6rem);margin-bottom:28px">%(title)s</h1>
 
     <div class="detail-cover %(coverclass)s">
+      <span class="cover-category">%(category)s</span>
       <span class="cover-icon">%(icon)s</span>
     </div>
 
@@ -802,6 +803,7 @@ def build_project_detail(p):
         "title": p["title"],
         "badges": corner_badges(p["status"], p["tags"]),
         "coverclass": cover_class(p["category"]),
+        "category": p["category"],
         "icon": icon("folder", "icon cover-icon"),
         "meta": meta_html,
         "description": p["description"],

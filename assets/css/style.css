@@ -897,7 +897,34 @@ button { font-family: inherit; cursor: pointer; }
   overflow: hidden;
 }
 
-.detail-cover .cover-icon { font-size: 4rem; opacity: 0.3; }
+.detail-cover::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background-image:
+    linear-gradient(hsl(var(--primary) / 0.08) 1px, transparent 1px),
+    linear-gradient(90deg, hsl(var(--primary) / 0.08) 1px, transparent 1px);
+  background-size: 32px 32px;
+  mask-image: radial-gradient(ellipse at center, black 40%, transparent 85%);
+}
+
+.detail-cover .cover-category {
+  position: absolute;
+  inset: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-family: var(--font-mono);
+  font-weight: 800;
+  font-size: clamp(2.5rem, 9vw, 5.5rem);
+  letter-spacing: 0.05em;
+  text-transform: uppercase;
+  color: hsl(var(--foreground) / 0.05);
+  white-space: nowrap;
+  pointer-events: none;
+}
+
+.detail-cover .cover-icon { font-size: 4rem; opacity: 0.4; position: relative; z-index: 1; }
 
 .detail-meta-grid {
   display: grid;
