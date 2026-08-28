@@ -918,6 +918,7 @@ def build_contact():
           </div>
           <div class="field"><label data-i18n-skip>Subject</label><input type="text" name="subject"></div>
           <div class="field"><label data-i18n-skip>Message</label><textarea name="message" required></textarea></div>
+          <input type="hidden" name="_subject" value="New message from romainpitot.github.io">
           <input type="text" name="_gotcha" style="display:none" tabindex="-1" autocomplete="off">
           <button class="btn btn-primary" type="submit">%(send_icon)s <span data-i18n="contact.send">Send Message</span></button>
           <p data-form-status class="font-mono" style="font-size:.82rem;margin-top:12px" hidden></p>

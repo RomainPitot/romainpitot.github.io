@@ -146,6 +146,17 @@
       if (submitBtn) submitBtn.disabled = true;
       showStatus(t("contact.sending"), false);
 
+      var subjectField = contactForm.querySelector("[name=subject]");
+      var nameField = contactForm.querySelector("[name=name]");
+      var hiddenSubject = contactForm.querySelector("[name=_subject]");
+      if (hiddenSubject) {
+        var userSubject = subjectField && subjectField.value.trim();
+        var senderName = nameField && nameField.value.trim();
+        hiddenSubject.value = userSubject
+          ? "Portfolio contact: " + userSubject
+          : "New message from " + (senderName || "your portfolio") + " (romainpitot.github.io)";
+      }
+
       fetch(contactForm.action, {
         method: "POST",
         body: new FormData(contactForm),
