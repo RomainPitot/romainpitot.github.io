@@ -207,8 +207,8 @@ SYSTEMS = [
 ]
 
 SKILLS = [
-    ("Engine", ["Unity", "WebGL", "Unity DOTS (learning)"]),
-    ("Languages", ["C#", "HLSL / Shader Lab", "Python (tools)"]),
+    ("Engine", ["Unity", "WebGL", "Unity DOTS (learning)", "Unreal Engine (secondary)"]),
+    ("Languages", ["C#", "HLSL / Shader Lab", "Python (tools)", "C++ (secondary)"]),
     ("Systems", ["Gameplay Systems", "AI / Behavior Trees", "Procedural Generation"]),
     ("Networking", ["Netcode for GameObjects", "Client Prediction", "State Sync"]),
     ("Tools & Workflow", ["Git / GitHub", "ScriptableObjects", "Custom Editor Tools"]),
@@ -658,7 +658,7 @@ def build_home():
           <div class="avatar-box">%(user_icon)s</div>
           <div>
             <p style="font-size:1.05rem;font-weight:600;margin-bottom:10px">I'm a junior gameplay programmer passionate about building the systems that make games fun, responsive, and technically robust.</p>
-            <p style="color:hsl(var(--muted-foreground));font-size:.92rem">Recently graduated with a Master's degree in Game Development, I specialize in Unity and C# with a focus on gameplay systems, AI, procedural generation, and multiplayer networking.</p>
+            <p style="color:hsl(var(--muted-foreground));font-size:.92rem">I hold a Master's degree in Game Development and specialize in Unity and C# with a focus on gameplay systems, AI, procedural generation, and multiplayer networking.</p>
           </div>
         </div>
         <div class="cv-card reveal">
@@ -856,7 +856,8 @@ def build_about():
         for e in EDUCATION
     )
     tech_skill_tags = ["Unity", "C#", "Gameplay Systems", "AI / Behavior Trees", "Procedural Generation",
-                        "Netcode / Multiplayer", "ShaderLab / HLSL", "ScriptableObjects", "Design Patterns", "Git"]
+                        "Netcode / Multiplayer", "ShaderLab / HLSL", "ScriptableObjects", "Design Patterns", "Git",
+                        "Unreal Engine", "C++"]
 
     body = """<section class="page-hero container">
     <span class="eyebrow" data-i18n-skip>About</span>
@@ -868,7 +869,7 @@ def build_about():
     <div class="two-col">
       <div class="reveal">
         <p style="font-size:1.1rem;font-weight:600;margin-bottom:18px">I am a junior gameplay programmer passionate about building the systems that make games fun, responsive, and technically robust.</p>
-        <p style="color:hsl(var(--muted-foreground));margin-bottom:14px">Recently graduated with a Master's degree in Game Development, I specialize in Unity and C# with a focus on gameplay systems, AI, procedural generation, and multiplayer networking.</p>
+        <p style="color:hsl(var(--muted-foreground));margin-bottom:14px">I hold a Master's degree in Game Development and specialize in Unity and C# with a focus on gameplay systems, AI, procedural generation, and multiplayer networking.</p>
         <p style="color:hsl(var(--muted-foreground));margin-bottom:14px">I believe great gameplay comes from well-architected systems. I enjoy working at the intersection of design and engineering &mdash; translating game design intent into clean, scalable code.</p>
         <p style="color:hsl(var(--muted-foreground));margin-bottom:24px">Outside of coding, I am an avid gamer and game systems analyst &mdash; breaking down what makes mechanics feel satisfying is both a hobby and a professional methodology.</p>
         <p class="font-mono" style="font-size:.85rem;color:hsl(var(--accent))" data-i18n="about.based">Based in France &mdash; Open to remote &amp; relocation</p>
@@ -885,7 +886,7 @@ def build_about():
         </div>
         <a class="btn btn-primary btn-block" href="cv.pdf" download>%(dl)s <span data-i18n="hero.cta_cv">Download CV</span></a>
         <div style="border-top:1px solid hsl(var(--border));margin-top:6px;padding-top:16px">
-          <span class="availability"><span class="dot"></span> <span data-i18n="contact.availability">Actively looking for junior gameplay programmer opportunities</span></span>
+          <span class="availability"><span class="dot"></span> <span data-i18n="contact.availability">Open to new opportunities</span></span>
         </div>
       </div>
     </div>
@@ -924,7 +925,7 @@ def build_contact():
     <h1 data-i18n="contact.title">Get In Touch</h1>
     <p data-i18n="contact.subtitle">Open to opportunities, collaborations, and interesting projects</p>
     <div style="margin-top:18px">
-      <span class="availability"><span class="dot"></span> <span data-i18n="contact.availability">Actively looking for junior gameplay programmer opportunities</span></span>
+      <span class="availability"><span class="dot"></span> <span data-i18n="contact.availability">Open to new opportunities</span></span>
     </div>
   </section>
 
