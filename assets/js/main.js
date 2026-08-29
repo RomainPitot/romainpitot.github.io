@@ -2,6 +2,44 @@
 (function () {
   "use strict";
 
+  /* Hero: mouse-reactive glow + subtle parallax ---------------------------- */
+  var heroSection = document.querySelector(".hero");
+  var prefersReducedMotion = window.matchMedia && window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+  if (heroSection && !prefersReducedMotion) {
+    var heroBg = heroSection.querySelector(".hero-bg");
+    var glow = heroSection.querySelector(".cursor-glow");
+    var pendingX = 0.5, pendingY = 0.35, rafScheduled = false;
+
+    function renderPointer() {
+      rafScheduled = false;
+      if (glow) {
+        glow.style.setProperty("--mx", (pendingX * 100) + "%");
+        glow.style.setProperty("--my", (pendingY * 100) + "%");
+      }
+      if (heroBg) {
+        var dx = (pendingX - 0.5) * 20;
+        var dy = (pendingY - 0.5) * 20;
+        heroBg.style.transform = "translate(" + (-dx) + "px, " + (-dy) + "px)";
+      }
+    }
+
+    heroSection.addEventListener("mousemove", function (e) {
+      var rect = heroSection.getBoundingClientRect();
+      pendingX = (e.clientX - rect.left) / rect.width;
+      pendingY = (e.clientY - rect.top) / rect.height;
+      heroSection.classList.add("mouse-active");
+      if (!rafScheduled) {
+        rafScheduled = true;
+        requestAnimationFrame(renderPointer);
+      }
+    });
+
+    heroSection.addEventListener("mouseleave", function () {
+      heroSection.classList.remove("mouse-active");
+      if (heroBg) heroBg.style.transform = "";
+    });
+  }
+
   /* Mobile nav toggle -------------------------------------------------- */
   var navToggle = document.querySelector(".nav-toggle");
   var mainNav = document.querySelector(".main-nav");

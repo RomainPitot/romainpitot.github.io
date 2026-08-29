@@ -571,6 +571,7 @@ def build_home():
       <div class="orb orb-accent"></div>
       <div class="orb orb-violet"></div>
     </div>
+    <div class="cursor-glow" aria-hidden="true"></div>
     <div class="container">
       <span class="hero-role" data-i18n="hero.title">Gameplay Programmer</span>
       <h1 class="text-glow">Romain <span class="accent">Pitot</span></h1>
