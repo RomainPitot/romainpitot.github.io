@@ -302,7 +302,7 @@ button { font-family: inherit; cursor: pointer; }
   z-index: 0;
   overflow: hidden;
   pointer-events: none;
-  transition: transform 0.6s ease-out;
+  transition: transform 0.15s ease-out;
 }
 
 .hero-bg .grid-layer {
@@ -377,6 +377,38 @@ button { font-family: inherit; cursor: pointer; }
 }
 
 .hero.mouse-active .cursor-glow { opacity: 1; }
+
+.cursor-dot {
+  position: absolute;
+  top: var(--my, 35%);
+  left: var(--mx, 50%);
+  width: 8px;
+  height: 8px;
+  margin: -4px 0 0 -4px;
+  border-radius: 50%;
+  z-index: 0;
+  pointer-events: none;
+  background: hsl(var(--accent));
+  box-shadow: 0 0 18px 4px hsl(var(--accent) / 0.55);
+  opacity: 0;
+  transition: opacity 0.3s ease;
+}
+
+.hero.mouse-active .cursor-dot { opacity: 0.9; }
+
+.cursor-dot::after {
+  content: '';
+  position: absolute;
+  inset: -8px;
+  border-radius: 50%;
+  border: 1px solid hsl(var(--accent) / 0.55);
+  animation: dot-pulse 1.8s ease-out infinite;
+}
+
+@keyframes dot-pulse {
+  0% { transform: scale(0.5); opacity: 0.85; }
+  100% { transform: scale(2.6); opacity: 0; }
+}
 
 .hero h1 {
   font-family: var(--font-mono);

@@ -7,15 +7,12 @@
   var prefersReducedMotion = window.matchMedia && window.matchMedia("(prefers-reduced-motion: reduce)").matches;
   if (heroSection && !prefersReducedMotion) {
     var heroBg = heroSection.querySelector(".hero-bg");
-    var glow = heroSection.querySelector(".cursor-glow");
     var pendingX = 0.5, pendingY = 0.35, rafScheduled = false;
 
     function renderPointer() {
       rafScheduled = false;
-      if (glow) {
-        glow.style.setProperty("--mx", (pendingX * 100) + "%");
-        glow.style.setProperty("--my", (pendingY * 100) + "%");
-      }
+      heroSection.style.setProperty("--mx", (pendingX * 100) + "%");
+      heroSection.style.setProperty("--my", (pendingY * 100) + "%");
       if (heroBg) {
         var dx = (pendingX - 0.5) * 20;
         var dy = (pendingY - 0.5) * 20;
