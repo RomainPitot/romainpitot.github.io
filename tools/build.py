@@ -564,21 +564,29 @@ def build_home():
     featured = [p for p in PROJECTS if p["featured"]]
     depth = ""
 
-    hero = """<section class="hero grid-bg container">
-    <span class="hero-role" data-i18n="hero.title">Gameplay Programmer</span>
-    <h1 class="text-glow">Romain <span class="accent">Pitot</span></h1>
-    <div class="badge-row">
-      <span class="pill pill-primary">Unity</span>
-      <span class="pill pill-accent">C#</span>
-      <span class="pill">Gameplay Systems</span>
-      <span class="pill">AI / Netcode</span>
+    hero = """<section class="hero">
+    <div class="hero-bg" aria-hidden="true">
+      <div class="grid-layer"></div>
+      <div class="orb orb-primary"></div>
+      <div class="orb orb-accent"></div>
+      <div class="orb orb-violet"></div>
     </div>
-    <p class="hero-tagline" data-i18n="hero.tagline">Building interactive systems and gameplay experiences</p>
-    <div class="hero-ctas">
-      <a class="btn btn-primary" href="projects.html"><span data-i18n="hero.cta_projects">View Projects</span> %(arrow)s</a>
-      <a class="btn btn-outline" href="cv.pdf" download>%(dl)s <span data-i18n="hero.cta_cv">Download CV</span></a>
+    <div class="container">
+      <span class="hero-role" data-i18n="hero.title">Gameplay Programmer</span>
+      <h1 class="text-glow">Romain <span class="accent">Pitot</span></h1>
+      <div class="badge-row">
+        <span class="pill pill-primary">Unity</span>
+        <span class="pill pill-accent">C#</span>
+        <span class="pill">Gameplay Systems</span>
+        <span class="pill">AI / Netcode</span>
+      </div>
+      <p class="hero-tagline" data-i18n="hero.tagline">Building interactive systems and gameplay experiences</p>
+      <div class="hero-ctas">
+        <a class="btn btn-primary" href="projects.html"><span data-i18n="hero.cta_projects">View Projects</span> %(arrow)s</a>
+        <a class="btn btn-outline" href="cv.pdf" download>%(dl)s <span data-i18n="hero.cta_cv">Download CV</span></a>
+      </div>
+      <div class="scroll-hint" data-i18n="hero.scroll">Scroll to explore</div>
     </div>
-    <div class="scroll-hint" data-i18n="hero.scroll">Scroll to explore</div>
   </section>
 
   <section class="stats-bar">
