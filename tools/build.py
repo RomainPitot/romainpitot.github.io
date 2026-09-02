@@ -397,6 +397,7 @@ def page(title, description, active, depth, body, canonical_path=""):
 <head>
   %(head)s%(jsonld)s</head>
 <body>
+  <div class="noise-overlay" aria-hidden="true"></div>
   <a class="skip-link" href="#main">Skip to content</a>
   %(header)s
   <main id="main">
@@ -575,7 +576,7 @@ def build_home():
     <div class="cursor-dot" aria-hidden="true"></div>
     <div class="container">
       <span class="hero-role" data-i18n="hero.title">Gameplay Programmer</span>
-      <h1 class="text-glow">Romain <span class="accent">Pitot</span></h1>
+      <h1 class="text-glow" data-decrypt><span class="decrypt-seg">Romain</span> <span class="accent decrypt-seg">Pitot</span></h1>
       <div class="badge-row">
         <span class="pill pill-primary">Unity</span>
         <span class="pill pill-accent">C#</span>
@@ -593,9 +594,9 @@ def build_home():
 
   <section class="stats-bar">
     <div class="container stats-grid">
-      <div class="stat"><div class="stat-num">6+</div><div class="stat-label">Projects Shipped</div></div>
-      <div class="stat"><div class="stat-num">3+</div><div class="stat-label">Game Jams</div></div>
-      <div class="stat"><div class="stat-num">2+</div><div class="stat-label">Years Unity</div></div>
+      <div class="stat"><div class="stat-num"><span data-count-to="6">0</span>+</div><div class="stat-label">Projects Shipped</div></div>
+      <div class="stat"><div class="stat-num"><span data-count-to="3">0</span>+</div><div class="stat-label">Game Jams</div></div>
+      <div class="stat"><div class="stat-num"><span data-count-to="2">0</span>+</div><div class="stat-label">Years Unity</div></div>
       <div class="stat"><div class="stat-num">&#8734;</div><div class="stat-label">Systems Built</div></div>
     </div>
   </section>

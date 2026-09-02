@@ -1255,3 +1255,65 @@ textarea:focus-visible,
     transition-duration: 0.01ms !important;
   }
 }
+
+/* ---------------------------------------------------------------------- */
+/* Film grain overlay — breaks up flat gradients, reads less "AI-generic"  */
+/* ---------------------------------------------------------------------- */
+
+.noise-overlay {
+  position: fixed;
+  inset: 0;
+  z-index: 200;
+  pointer-events: none;
+  opacity: 0.035;
+  mix-blend-mode: overlay;
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='2' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
+  background-size: 160px 160px;
+}
+
+/* ---------------------------------------------------------------------- */
+/* Click-spark micro-interaction                                           */
+/* ---------------------------------------------------------------------- */
+
+.click-spark {
+  position: fixed;
+  width: 4px;
+  height: 4px;
+  margin: -2px 0 0 -2px;
+  border-radius: 50%;
+  background: hsl(var(--primary));
+  pointer-events: none;
+  z-index: 300;
+  animation: spark-fly 0.55s ease-out forwards;
+}
+
+@keyframes spark-fly {
+  from { transform: translate(0, 0) scale(1); opacity: 1; }
+  to { transform: translate(var(--dx), var(--dy)) scale(0); opacity: 0; }
+}
+
+/* ---------------------------------------------------------------------- */
+/* Glare hover for interactive cards                                       */
+/* ---------------------------------------------------------------------- */
+
+.project-card, .system-card {
+  position: relative;
+}
+
+.project-card::after, .system-card::after {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: -60%;
+  width: 40%;
+  height: 100%;
+  background: linear-gradient(120deg, transparent, hsl(var(--foreground) / 0.07), transparent);
+  transform: skewX(-20deg);
+  transition: left 0.75s ease;
+  pointer-events: none;
+  z-index: 2;
+}
+
+.project-card:hover::after, .system-card:hover::after {
+  left: 120%;
+}

@@ -76,6 +76,93 @@
     revealEls.forEach(function (el) { el.classList.add("in-view"); });
   }
 
+  /* Stat counters: count up when scrolled into view ------------------------ */
+  var countEls = document.querySelectorAll("[data-count-to]");
+  if (countEls.length) {
+    var animateCount = function (el) {
+      var target = parseFloat(el.getAttribute("data-count-to"));
+      if (prefersReducedMotion || isNaN(target)) {
+        el.textContent = target;
+        return;
+      }
+      var steps = 22;
+      var stepMs = 1100 / steps;
+      var step = 0;
+      var timer = setInterval(function () {
+        step++;
+        var p = Math.min(step / steps, 1);
+        var eased = 1 - Math.pow(1 - p, 3);
+        el.textContent = Math.round(target * eased);
+        if (p >= 1) clearInterval(timer);
+      }, stepMs);
+    };
+    if ("IntersectionObserver" in window) {
+      var countIo = new IntersectionObserver(
+        function (entries) {
+          entries.forEach(function (entry) {
+            if (entry.isIntersecting) {
+              animateCount(entry.target);
+              countIo.unobserve(entry.target);
+            }
+          });
+        },
+        { threshold: 0.6 }
+      );
+      countEls.forEach(function (el) { countIo.observe(el); });
+    } else {
+      countEls.forEach(animateCount);
+    }
+  }
+
+  /* Click-spark: tiny particle burst on button clicks ----------------------- */
+  if (!prefersReducedMotion) {
+    document.querySelectorAll(".btn").forEach(function (btn) {
+      btn.addEventListener("click", function (e) {
+        var count = 6;
+        for (var i = 0; i < count; i++) {
+          var angle = (Math.PI * 2 * i) / count + (Math.random() - 0.5) * 0.4;
+          var distance = 22 + Math.random() * 18;
+          var spark = document.createElement("span");
+          spark.className = "click-spark";
+          spark.style.left = e.clientX + "px";
+          spark.style.top = e.clientY + "px";
+          spark.style.setProperty("--dx", Math.cos(angle) * distance + "px");
+          spark.style.setProperty("--dy", Math.sin(angle) * distance + "px");
+          document.body.appendChild(spark);
+          (function (node) {
+            setTimeout(function () { node.remove(); }, 600);
+          })(spark);
+        }
+      });
+    });
+  }
+
+  /* Decrypt-text: hero name scrambles into place on load -------------------- */
+  var decryptSegs = document.querySelectorAll("[data-decrypt] .decrypt-seg");
+  if (decryptSegs.length && !prefersReducedMotion) {
+    var SCRAMBLE_CHARS = "ABCDEFGHIJKLMNOPQRSTUVWXYZ01#$%";
+    decryptSegs.forEach(function (seg) {
+      var original = seg.textContent;
+      var len = original.length;
+      var revealed = 0;
+      var frame = 0;
+      var timer = setInterval(function () {
+        frame++;
+        if (frame % 2 === 0 && revealed < len) revealed++;
+        var out = "";
+        for (var i = 0; i < len; i++) {
+          if (original[i] === " ") { out += " "; continue; }
+          out += i < revealed ? original[i] : SCRAMBLE_CHARS[Math.floor(Math.random() * SCRAMBLE_CHARS.length)];
+        }
+        seg.textContent = out;
+        if (revealed >= len) {
+          seg.textContent = original;
+          clearInterval(timer);
+        }
+      }, 40);
+    });
+  }
+
   /* i18n ------------------------------------------------------------------ */
   var LANG_KEY = "pitot-lang";
   function getLang() {
