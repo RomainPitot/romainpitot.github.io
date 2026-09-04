@@ -333,7 +333,7 @@ def header_html(active, depth):
         <span class="brand-icon">%(code_icon)s</span>
         romain<span class="dot">.</span>pitot
       </a>
-      <nav class="main-nav" id="main-nav">%(links)s</nav>
+      <nav class="main-nav" id="main-nav"><span class="nav-indicator" aria-hidden="true"></span>%(links)s</nav>
       <div class="nav-right">
         <button class="lang-toggle" type="button" aria-label="Switch language">FR</button>
         <button class="nav-toggle" type="button" aria-label="Toggle menu" aria-expanded="false" aria-controls="main-nav">
@@ -398,6 +398,7 @@ def page(title, description, active, depth, body, canonical_path=""):
   %(head)s%(jsonld)s</head>
 <body>
   <div class="noise-overlay" aria-hidden="true"></div>
+  <div class="scroll-progress" aria-hidden="true"></div>
   <a class="skip-link" href="#main">Skip to content</a>
   %(header)s
   <main id="main">

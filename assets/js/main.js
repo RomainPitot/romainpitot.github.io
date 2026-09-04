@@ -37,6 +37,68 @@
     });
   }
 
+  /* Scroll progress bar ---------------------------------------------------- */
+  var progressBar = document.querySelector(".scroll-progress");
+  if (progressBar) {
+    var updateProgress = function () {
+      var doc = document.documentElement;
+      var scrollable = doc.scrollHeight - doc.clientHeight;
+      var pct = scrollable > 0 ? (doc.scrollTop / scrollable) * 100 : 0;
+      progressBar.style.width = pct + "%";
+    };
+    window.addEventListener("scroll", updateProgress, { passive: true });
+    window.addEventListener("resize", updateProgress);
+    updateProgress();
+  }
+
+  /* Nav hover indicator: sliding pill follows the hovered link ------------- */
+  var navIndicator = document.querySelector(".nav-indicator");
+  var navList = document.querySelector(".main-nav");
+  if (navIndicator && navList) {
+    var navLinks = Array.prototype.slice.call(navList.querySelectorAll("a"));
+    var moveIndicatorTo = function (link) {
+      navIndicator.style.left = link.offsetLeft + "px";
+      navIndicator.style.width = link.offsetWidth + "px";
+      navIndicator.style.opacity = "1";
+    };
+    navLinks.forEach(function (link) {
+      link.addEventListener("mouseenter", function () { moveIndicatorTo(link); });
+    });
+    navList.addEventListener("mouseleave", function () {
+      navIndicator.style.opacity = "0";
+    });
+  }
+
+  /* Magnetic buttons -------------------------------------------------------- */
+  if (!prefersReducedMotion) {
+    document.querySelectorAll(".btn").forEach(function (btn) {
+      btn.addEventListener("mousemove", function (e) {
+        var r = btn.getBoundingClientRect();
+        var dx = (e.clientX - r.left - r.width / 2) * 0.25;
+        var dy = (e.clientY - r.top - r.height / 2) * 0.25;
+        btn.style.transform = "translate(" + dx + "px, " + dy + "px)";
+      });
+      btn.addEventListener("mouseleave", function () {
+        btn.style.transform = "";
+      });
+    });
+  }
+
+  /* Card tilt on hover ------------------------------------------------------ */
+  if (!prefersReducedMotion) {
+    document.querySelectorAll(".project-card, .system-card").forEach(function (card) {
+      card.addEventListener("mousemove", function (e) {
+        var r = card.getBoundingClientRect();
+        var px = (e.clientX - r.left) / r.width - 0.5;
+        var py = (e.clientY - r.top) / r.height - 0.5;
+        card.style.transform = "perspective(700px) rotateX(" + (-py * 6) + "deg) rotateY(" + (px * 6) + "deg)";
+      });
+      card.addEventListener("mouseleave", function () {
+        card.style.transform = "";
+      });
+    });
+  }
+
   /* Mobile nav toggle -------------------------------------------------- */
   var navToggle = document.querySelector(".nav-toggle");
   var mainNav = document.querySelector(".main-nav");
