@@ -91,7 +91,7 @@
         var r = card.getBoundingClientRect();
         var px = (e.clientX - r.left) / r.width - 0.5;
         var py = (e.clientY - r.top) / r.height - 0.5;
-        card.style.transform = "perspective(700px) rotateX(" + (-py * 6) + "deg) rotateY(" + (px * 6) + "deg)";
+        card.style.transform = "perspective(500px) scale(1.025) rotateX(" + (-py * 16) + "deg) rotateY(" + (px * 16) + "deg)";
       });
       card.addEventListener("mouseleave", function () {
         card.style.transform = "";
