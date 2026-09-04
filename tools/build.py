@@ -9,10 +9,27 @@ requires Python or Node — GitHub Actions just uploads the generated files as-i
 Re-run this script after editing PROJECTS / SYSTEMS / SKILLS below, then commit
 the regenerated HTML.
 """
+import hashlib
 import os
 import re
 
 ROOT = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
+
+
+def _compute_asset_version():
+    """Hash of the CSS/JS assets, used as a ?v= cache-busting query string
+    so browsers pick up changes immediately instead of serving a stale
+    cached copy after a redeploy."""
+    h = hashlib.sha256()
+    for rel in ("assets/css/style.css", "assets/js/main.js", "assets/js/i18n.js"):
+        path = os.path.join(ROOT, rel)
+        if os.path.exists(path):
+            with open(path, "rb") as f:
+                h.update(f.read())
+    return h.hexdigest()[:10]
+
+
+ASSET_VERSION = _compute_asset_version()
 
 SITE_NAME = "Pitot Engine"
 AUTHOR = "Romain Pitot"
@@ -311,8 +328,8 @@ def html_head(title, description, depth, canonical_path=""):
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500;700&display=swap" rel="stylesheet">
-  <link rel="stylesheet" href="%(depth)sassets/css/style.css">
-""" % {"title": title, "description": description, "depth": depth, "canonical": canonical}
+  <link rel="stylesheet" href="%(depth)sassets/css/style.css?v=%(v)s">
+""" % {"title": title, "description": description, "depth": depth, "canonical": canonical, "v": ASSET_VERSION}
 
 
 def header_html(active, depth):
@@ -405,8 +422,8 @@ def page(title, description, active, depth, body, canonical_path=""):
   %(body)s
   </main>
   %(footer)s
-  <script src="%(depth)sassets/js/i18n.js"></script>
-  <script src="%(depth)sassets/js/main.js"></script>
+  <script src="%(depth)sassets/js/i18n.js?v=%(v)s"></script>
+  <script src="%(depth)sassets/js/main.js?v=%(v)s"></script>
 </body>
 </html>
 """ % {
@@ -416,6 +433,7 @@ def page(title, description, active, depth, body, canonical_path=""):
         "body": body,
         "footer": footer_html(depth),
         "depth": depth,
+        "v": ASSET_VERSION,
     }
 
 
