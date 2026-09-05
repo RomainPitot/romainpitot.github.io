@@ -4,14 +4,14 @@ window.PITOT_I18N = {
     nav: { home: "Home", projects: "Projects", systems: "Systems", about: "About", contact: "Contact" },
     hero: {
       title: "Gameplay Programmer",
-      tagline: "Building interactive systems and gameplay experiences",
+      tagline: "I build the systems games run on — AI, netcode, procedural generation and the tools around them.",
       cta_projects: "View Projects",
       cta_cv: "Download CV",
       scroll: "Scroll to explore"
     },
     home: {
       featured_title: "Featured Projects",
-      featured_subtitle: "A selection of gameplay systems and game jams",
+      featured_subtitle: "Studio work, a Bachelor capstone and a 48-hour jam",
       view_all: "View all",
       systems_title: "Technical Systems",
       systems_subtitle: "Architecture deep-dives & production-ready frameworks",
@@ -22,7 +22,7 @@ window.PITOT_I18N = {
     },
     projects: {
       title: "Projects",
-      subtitle: "All gameplay projects, tools, and game jams",
+      subtitle: "Everything I've shipped — studio work, school projects, jams and one long-running solo build.",
       filter_all: "All",
       sort_latest: "Latest",
       sort_alpha: "A–Z",
@@ -63,14 +63,14 @@ window.PITOT_I18N = {
     nav: { home: "Accueil", projects: "Projets", systems: "Systèmes", about: "À propos", contact: "Contact" },
     hero: {
       title: "Programmeur Gameplay",
-      tagline: "Construire des systèmes interactifs et des expériences de jeu",
+      tagline: "Je construis les systèmes qui font tourner les jeux — IA, netcode, génération procédurale et les outils autour.",
       cta_projects: "Voir les projets",
       cta_cv: "Télécharger le CV",
       scroll: "Défiler pour explorer"
     },
     home: {
       featured_title: "Projets Sélectionnés",
-      featured_subtitle: "Une sélection de systèmes gameplay et de game jams",
+      featured_subtitle: "Du studio, un projet de fin de Bachelor et une jam de 48 h",
       view_all: "Voir tout",
       systems_title: "Systèmes Techniques",
       systems_subtitle: "Approfondissements techniques & frameworks prêts pour la production",
@@ -81,7 +81,7 @@ window.PITOT_I18N = {
     },
     projects: {
       title: "Projets",
-      subtitle: "Tous les projets gameplay, outils et game jams",
+      subtitle: "Tout ce que j'ai livré — projets studio, projets d'école, jams et un gros projet solo en cours.",
       filter_all: "Tout",
       sort_latest: "Récent",
       sort_alpha: "A–Z",

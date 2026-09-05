@@ -85,19 +85,37 @@
   }
 
   /* Card tilt on hover ------------------------------------------------------ */
-  if (!prefersReducedMotion) {
-    document.querySelectorAll(".project-card, .system-card").forEach(function (card) {
-      card.addEventListener("mousemove", function (e) {
-        var r = card.getBoundingClientRect();
-        var px = (e.clientX - r.left) / r.width - 0.5;
-        var py = (e.clientY - r.top) / r.height - 0.5;
-        card.style.transform = "perspective(600px) scale(1.015) rotateX(" + (-py * 6) + "deg) rotateY(" + (px * 6) + "deg)";
-      });
-      card.addEventListener("mouseleave", function () {
-        card.style.transform = "";
-      });
+  document.querySelectorAll(".project-card, .system-card").forEach(function (card) {
+    card.addEventListener("mousemove", function (e) {
+      var r = card.getBoundingClientRect();
+      // Spotlight follows the cursor even when motion is reduced (no movement, just light)
+      card.style.setProperty("--sx", (e.clientX - r.left) + "px");
+      card.style.setProperty("--sy", (e.clientY - r.top) + "px");
+      if (prefersReducedMotion) return;
+      var px = (e.clientX - r.left) / r.width - 0.5;
+      var py = (e.clientY - r.top) / r.height - 0.5;
+      card.style.transform = "perspective(600px) scale(1.015) rotateX(" + (-py * 6) + "deg) rotateY(" + (px * 6) + "deg)";
     });
-  }
+    card.addEventListener("mouseleave", function () {
+      card.style.transform = "";
+    });
+  });
+
+  /* Word-by-word scroll reveal ---------------------------------------------- */
+  document.querySelectorAll(".reveal-words").forEach(function (el) {
+    if (el.dataset.split === "done") return;
+    var words = el.textContent.trim().split(/\s+/);
+    el.textContent = "";
+    words.forEach(function (w, i) {
+      var span = document.createElement("span");
+      span.className = "word";
+      span.textContent = w;
+      span.style.transitionDelay = Math.min(i * 28, 700) + "ms";
+      el.appendChild(span);
+      if (i < words.length - 1) el.appendChild(document.createTextNode(" "));
+    });
+    el.dataset.split = "done";
+  });
 
   /* Mobile nav toggle -------------------------------------------------- */
   var navToggle = document.querySelector(".nav-toggle");
@@ -120,7 +138,7 @@
   }
 
   /* Reveal-on-scroll ----------------------------------------------------- */
-  var revealEls = document.querySelectorAll(".reveal");
+  var revealEls = document.querySelectorAll(".reveal, .reveal-words");
   if ("IntersectionObserver" in window && revealEls.length) {
     var io = new IntersectionObserver(
       function (entries) {

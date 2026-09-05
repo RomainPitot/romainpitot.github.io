@@ -588,8 +588,8 @@ def system_visual(sid):
 # Card renderers
 # --------------------------------------------------------------------------
 
-def render_project_card(p, depth, show_view_overlay=True):
-    return """<a class="card project-card reveal" data-project-card data-title="%(title)s" data-year="%(year)s"
+def render_project_card(p, depth, show_view_overlay=True, lead=False):
+    return """<a class="card project-card reveal%(leadcls)s" data-project-card data-title="%(title)s" data-year="%(year)s"
      data-tags="%(tagpipe)s" href="%(depth)sprojects/%(id)s.html">
     <div class="project-cover %(coverclass)s">
       <div class="cover-tags">%(badges)s</div>
@@ -609,6 +609,7 @@ def render_project_card(p, depth, show_view_overlay=True):
   </a>
 """ % {
         "title": p["title"], "year": p["year"], "id": p["id"], "depth": depth,
+        "leadcls": " is-lead" if lead else "",
         "tagpipe": "|".join([p["category"]] + p["tags"]),
         "coverclass": cover_class(p["category"]),
         "badges": corner_badges(p["status"], p["tags"]),
@@ -678,6 +679,32 @@ def render_system_card(s):
 # Home page
 # --------------------------------------------------------------------------
 
+def section_head(num, label, title_html, sub_html="", link_html=""):
+    """Editorial section header: 01 —— LABEL / Title / subtitle."""
+    return """<div class="section-head">
+        <div>
+          <div class="section-index">
+            <span class="num">%(num)s</span>
+            <span class="rule"></span>
+            <span class="label">%(label)s</span>
+          </div>
+          %(title)s
+          %(sub)s
+        </div>
+        %(link)s
+      </div>""" % {
+        "num": num, "label": label, "title": title_html,
+        "sub": sub_html, "link": link_html,
+    }
+
+
+MARQUEE_ITEMS = [
+    "Unity", "C#", "Netcode for GameObjects", "Behaviour Trees", "ScriptableObjects",
+    "Procedural Generation", "Shader Lab", "Unreal Engine", "C++", "Git",
+    "Agile / Scrum", "The Sandbox", "VFX Graph", "Mobile (Android / iOS)",
+]
+
+
 def build_home():
     featured = [p for p in PROJECTS if p["featured"]]
     depth = ""
@@ -700,58 +727,77 @@ def build_home():
         <span class="pill">Gameplay Systems</span>
         <span class="pill">AI / Netcode</span>
       </div>
-      <p class="hero-tagline" data-i18n="hero.tagline">Building interactive systems and gameplay experiences</p>
+      <p class="hero-tagline" data-i18n="hero.tagline">I build the systems games run on &mdash; AI, netcode, procedural generation and the tools around them.</p>
       <div class="hero-ctas">
         <a class="btn btn-primary" href="projects.html"><span data-i18n="hero.cta_projects">View Projects</span> %(arrow)s</a>
         <a class="btn btn-outline" href="cv.pdf" download>%(dl)s <span data-i18n="hero.cta_cv">Download CV</span></a>
       </div>
+      <div class="hero-status font-mono" aria-hidden="true">Toulouse, FR &nbsp;&middot;&nbsp; 2 titles live on Google Play &nbsp;&middot;&nbsp; currently building a co-op FPS, solo</div>
       <div class="scroll-hint" data-i18n="hero.scroll">Scroll to explore</div>
     </div>
   </section>
 
   <section class="stats-bar">
     <div class="container stats-grid">
-      <div class="stat"><div class="stat-num"><span data-count-to="12">0</span>+</div><div class="stat-label">Projects Shipped</div></div>
-      <div class="stat"><div class="stat-num"><span data-count-to="4">0</span>+</div><div class="stat-label">Game Jams</div></div>
-      <div class="stat"><div class="stat-num"><span data-count-to="7">0</span>+</div><div class="stat-label">Years Unity</div></div>
-      <div class="stat"><div class="stat-num">&#8734;</div><div class="stat-label">Systems Built</div></div>
+      <div class="stat"><div class="stat-num"><span data-count-to="12">0</span></div><div class="stat-label">Projects Shipped</div></div>
+      <div class="stat"><div class="stat-num"><span data-count-to="4">0</span></div><div class="stat-label">Game Jams</div></div>
+      <div class="stat"><div class="stat-num"><span data-count-to="7">0</span>+</div><div class="stat-label">Years On Unity</div></div>
+      <div class="stat"><div class="stat-num"><span data-count-to="2">0</span></div><div class="stat-label">Live On Google Play</div></div>
     </div>
   </section>
-""" % {"arrow": icon("arrow-right"), "dl": icon("download")}
+
+  <div class="marquee" aria-hidden="true">
+    <div class="marquee-track">%(marquee)s%(marquee)s</div>
+  </div>
+""" % {
+        "arrow": icon("arrow-right"),
+        "dl": icon("download"),
+        "marquee": "".join(
+            '<span class="marquee-item"><span class="dot-sep"></span>%s</span>' % m
+            for m in MARQUEE_ITEMS
+        ),
+    }
+
+    lead_card = render_project_card(featured[0], depth, lead=True) if featured else ""
+    rest_cards = "".join(render_project_card(p, depth) for p in featured[1:])
 
     featured_html = """<section class="section">
     <div class="container">
-      <div class="section-head">
-        <div>
-          <span class="eyebrow" data-i18n-skip>Selected Work</span>
-          <h2 class="section-title" data-i18n="home.featured_title">Featured Projects</h2>
-          <p class="section-sub" data-i18n="home.featured_subtitle">A selection of gameplay systems and game jams</p>
-        </div>
-        <a class="section-link" href="projects.html"><span data-i18n="home.view_all">View all</span> %(arrow)s</a>
-      </div>
-      <div class="grid grid-3" data-project-grid>
-        %(cards)s
+      %(head)s
+      <div class="bento" data-project-grid>
+        %(lead)s
+        %(rest)s
       </div>
     </div>
   </section>
-""" % {"arrow": icon("arrow-right"), "cards": "".join(render_project_card(p, depth) for p in featured)}
+""" % {
+        "head": section_head(
+            "01", "Selected work",
+            '<h2 class="section-title shiny" data-i18n="home.featured_title">Featured Projects</h2>',
+            '<p class="section-sub" data-i18n="home.featured_subtitle">Studio work, a Bachelor capstone and a 48-hour jam</p>',
+            '<a class="section-link" href="projects.html"><span data-i18n="home.view_all">View all</span> %s</a>' % icon("arrow-right"),
+        ),
+        "lead": lead_card,
+        "rest": rest_cards,
+    }
 
     systems_html = """<section class="section" style="background:hsl(var(--background-deep) / .4)">
     <div class="container">
-      <div class="section-head">
-        <div>
-          <span class="eyebrow" data-i18n-skip>Engineering</span>
-          <h2 class="section-title" data-i18n="home.systems_title">Technical Systems</h2>
-          <p class="section-sub" data-i18n="home.systems_subtitle">Architecture deep-dives &amp; production-ready frameworks</p>
-        </div>
-        <a class="section-link" href="systems.html"><span data-i18n="home.all_systems">All systems</span> %(arrow)s</a>
-      </div>
+      %(head)s
       <div class="grid grid-3">
         %(cards)s
       </div>
     </div>
   </section>
-""" % {"arrow": icon("arrow-right"), "cards": "".join(render_system_card(s) for s in SYSTEMS)}
+""" % {
+        "head": section_head(
+            "02", "Engineering",
+            '<h2 class="section-title" data-i18n="home.systems_title">Technical Systems</h2>',
+            '<p class="section-sub" data-i18n="home.systems_subtitle">Architecture deep-dives &amp; production-ready frameworks</p>',
+            '<a class="section-link" href="systems.html"><span data-i18n="home.all_systems">All systems</span> %s</a>' % icon("arrow-right"),
+        ),
+        "cards": "".join(render_system_card(s) for s in SYSTEMS),
+    }
 
     skills_cols = "".join(
         '<div class="skill-col"><h4>%s</h4><ul>%s</ul></div>' % (
@@ -761,32 +807,28 @@ def build_home():
     )
     skills_html = """<section class="section">
     <div class="container">
-      <div class="section-head">
-        <div>
-          <span class="eyebrow" data-i18n-skip>Expertise</span>
-          <h2 class="section-title" data-i18n="home.skills_title">Core Skills</h2>
-        </div>
-      </div>
+      %(head)s
       <div class="skills-grid">%(cols)s</div>
     </div>
   </section>
-""" % {"cols": skills_cols}
+""" % {
+        "head": section_head(
+            "03", "Toolbox",
+            '<h2 class="section-title" data-i18n="home.skills_title">Core Skills</h2>',
+        ),
+        "cols": skills_cols,
+    }
 
     about_html = """<section class="section" style="background:hsl(var(--background-deep) / .4)">
     <div class="container">
-      <div class="section-head">
-        <div>
-          <span class="eyebrow" data-i18n-skip>About</span>
-          <h2 class="section-title" data-i18n="home.about_title">About Me</h2>
-        </div>
-        <a class="section-link" href="about.html"><span data-i18n="home.full_profile">Full profile</span> %(arrow)s</a>
-      </div>
+      %(head)s
+      <p class="lead-in reveal-words" style="margin-bottom:36px">I'm a gameplay programmer out of Toulouse. Two years of work-study at Masseka Games Studio, a Master's in game development, four game jams &mdash; and a co-op FPS I'm currently building solo, from scratch.</p>
       <div class="two-col">
         <div class="avatar-row reveal">
           <div class="avatar-box">%(user_icon)s</div>
           <div>
-            <p style="font-size:1.05rem;font-weight:600;margin-bottom:10px">I'm a junior gameplay programmer passionate about building the systems that make games fun, responsive, and technically robust.</p>
-            <p style="color:hsl(var(--muted-foreground));font-size:.92rem">I hold a Master's degree in Game Development and specialize in Unity and C# with a focus on gameplay systems, AI, procedural generation, and multiplayer networking.</p>
+            <p style="font-size:1.02rem;font-weight:600;margin-bottom:10px">Game jams are where I explore ideas fast; studio work is where I learned to ship them properly.</p>
+            <p style="color:hsl(var(--muted-foreground));font-size:.92rem">I specialise in Unity and C# &mdash; gameplay systems, AI, procedural generation and multiplayer networking &mdash; with some Unreal and C++ on the side.</p>
           </div>
         </div>
         <div class="cv-card reveal">
@@ -800,18 +842,28 @@ def build_home():
       </div>
     </div>
   </section>
-""" % {"arrow": icon("arrow-right"), "user_icon": icon("user"), "dl": icon("download")}
+""" % {
+        "head": section_head(
+            "04", "About",
+            '<h2 class="section-title" data-i18n="home.about_title">About Me</h2>',
+            "",
+            '<a class="section-link" href="about.html"><span data-i18n="home.full_profile">Full profile</span> %s</a>' % icon("arrow-right"),
+        ),
+        "user_icon": icon("user"),
+        "dl": icon("download"),
+    }
 
     cta_html = """<section class="section">
     <div class="container">
       <div class="cta-panel reveal">
-        <h2>Let's build something<br><span class="accent">remarkable.</span></h2>
-        <p>Looking for a junior gameplay programmer with a passion for clean architecture and interactive systems.</p>
+        <h2>Got a gameplay system<br>that needs <span class="accent">building?</span></h2>
+        <p>Systems work is where I'm at my best &mdash; AI, netcode, procedural generation, tools. Happy to talk about any of it.</p>
         <div class="cta-buttons">
           <a class="btn btn-primary" href="contact.html">%(mail)s Get In Touch %(arrow)s</a>
           <a class="btn btn-outline" href="cv.pdf" download>%(dl)s Download CV</a>
         </div>
       </div>
+      <div class="signature-line" style="margin-top:56px">built from scratch &mdash; no page builder</div>
     </div>
   </section>
 """ % {"mail": icon("mail"), "arrow": icon("arrow-right"), "dl": icon("download")}
@@ -819,7 +871,7 @@ def build_home():
     body = hero + featured_html + systems_html + skills_html + about_html + cta_html
     write("index.html", page(
         "%s — Gameplay Programmer" % AUTHOR,
-        "Romain Pitot, junior gameplay programmer specialised in Unity & C# — gameplay systems, AI, procedural generation and multiplayer networking.",
+        "Romain Pitot, gameplay programmer in Toulouse. Unity & C# — gameplay systems, AI, procedural generation and multiplayer netcode. Two titles live on Google Play.",
         "home", depth, body, "",
     ))
 
@@ -847,7 +899,8 @@ def build_projects_listing():
     body = """<section class="page-hero container">
     <span class="eyebrow" data-i18n-skip>Portfolio</span>
     <h1 data-i18n="projects.title">Projects</h1>
-    <p data-i18n="projects.subtitle">All gameplay projects, tools, and game jams</p>
+    <p data-i18n="projects.subtitle">Everything I've shipped &mdash; studio work, school projects, jams and one long-running solo build.</p>
+    <div class="page-meta font-mono">12 projects &nbsp;&middot;&nbsp; 2020 &rarr; 2025 &nbsp;&middot;&nbsp; Unity &middot; C# &middot; The Sandbox</div>
   </section>
   <section class="section-tight container" data-filter-bar>
     <div class="filter-bar">
@@ -966,6 +1019,7 @@ def build_systems():
     <span class="eyebrow" data-i18n-skip>Engineering</span>
     <h1 data-i18n="systems.title">Systems</h1>
     <p data-i18n="systems.subtitle">Technical deep-dives into gameplay engineering</p>
+    <div class="page-meta font-mono">architecture &middot; trade-offs &middot; what broke and how it got fixed</div>
   </section>
   <section class="section-tight container">
     <div class="grid grid-3">%(cards)s</div>
@@ -998,6 +1052,7 @@ def build_about():
     <span class="eyebrow" data-i18n-skip>About</span>
     <h1 data-i18n="about.title">About Me</h1>
     <p data-i18n="about.subtitle">Gameplay Programmer &mdash; Unity / C#</p>
+    <div class="page-meta font-mono">Toulouse, FR &nbsp;&middot;&nbsp; MSc Game Development &nbsp;&middot;&nbsp; 2 years at Masseka Games Studio</div>
   </section>
 
   <section class="section-tight container">

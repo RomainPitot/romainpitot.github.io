@@ -1002,7 +1002,7 @@ button { font-family: inherit; cursor: pointer; }
 /* ---------------------------------------------------------------------- */
 
 .page-hero {
-  padding: 64px 0 20px;
+  padding: 64px 24px 20px;
   text-align: left;
 }
 
@@ -1416,4 +1416,273 @@ textarea:focus-visible,
 .project-card, .system-card {
   transform-style: preserve-3d;
   will-change: transform;
+}
+
+/* ======================================================================== */
+/* EDITORIAL PASS — numbered sections, bento grid, marquee, spotlight       */
+/* ======================================================================== */
+
+/* --- Numbered section headers (editorial signature) --------------------- */
+
+.section-index {
+  display: flex;
+  align-items: baseline;
+  gap: 14px;
+  margin-bottom: 6px;
+}
+
+.section-index .num {
+  font-family: var(--font-mono);
+  font-size: 0.72rem;
+  font-weight: 700;
+  color: hsl(var(--primary));
+  letter-spacing: 0.1em;
+}
+
+.section-index .rule {
+  flex: 1;
+  height: 1px;
+  background: linear-gradient(90deg, hsl(var(--primary) / 0.35), transparent);
+  max-width: 120px;
+}
+
+.section-index .label {
+  font-family: var(--font-mono);
+  font-size: 0.72rem;
+  letter-spacing: 0.22em;
+  text-transform: uppercase;
+  color: hsl(var(--muted-foreground));
+}
+
+.section-title {
+  letter-spacing: -0.02em;
+}
+
+/* --- Shiny sweep on section titles -------------------------------------- */
+
+.shiny {
+  background: linear-gradient(
+    100deg,
+    hsl(var(--foreground)) 30%,
+    hsl(var(--primary) / 0.9) 45%,
+    hsl(var(--foreground)) 60%
+  );
+  background-size: 250% 100%;
+  -webkit-background-clip: text;
+  background-clip: text;
+  color: transparent;
+  animation: shine-sweep 6s ease-in-out infinite;
+}
+
+@keyframes shine-sweep {
+  0%, 100% { background-position: 160% 0; }
+  50% { background-position: -20% 0; }
+}
+
+/* --- Tech marquee (logo loop) ------------------------------------------- */
+
+.marquee {
+  position: relative;
+  overflow: hidden;
+  padding: 18px 0;
+  border-top: 1px solid hsl(var(--border) / 0.6);
+  border-bottom: 1px solid hsl(var(--border) / 0.6);
+  background: hsl(var(--background-deep) / 0.35);
+  mask-image: linear-gradient(90deg, transparent, black 12%, black 88%, transparent);
+}
+
+.marquee-track {
+  display: flex;
+  width: max-content;
+  gap: 44px;
+  animation: marquee-scroll 38s linear infinite;
+}
+
+.marquee:hover .marquee-track { animation-play-state: paused; }
+
+.marquee-item {
+  display: inline-flex;
+  align-items: center;
+  gap: 9px;
+  font-family: var(--font-mono);
+  font-size: 0.82rem;
+  letter-spacing: 0.06em;
+  color: hsl(var(--muted-foreground));
+  white-space: nowrap;
+  transition: color 0.25s ease;
+}
+
+.marquee-item:hover { color: hsl(var(--primary)); }
+
+.marquee-item .dot-sep {
+  width: 4px;
+  height: 4px;
+  border-radius: 50%;
+  background: hsl(var(--primary) / 0.5);
+}
+
+@keyframes marquee-scroll {
+  from { transform: translateX(0); }
+  to { transform: translateX(-50%); }
+}
+
+/* --- Bento grid for featured work --------------------------------------- */
+
+.bento {
+  display: grid;
+  grid-template-columns: 1.55fr 1fr;
+  grid-template-rows: auto auto;
+  gap: 20px;
+}
+
+.bento > *:first-child {
+  grid-row: span 2;
+}
+
+@media (max-width: 900px) {
+  .bento { grid-template-columns: 1fr; }
+  .bento > *:first-child { grid-row: auto; }
+}
+
+/* The lead card gets a taller cover and larger type */
+.project-card.is-lead .project-cover { aspect-ratio: 16 / 11; }
+.project-card.is-lead .project-title-row h3 { font-size: 1.45rem; }
+.project-card.is-lead .project-desc { font-size: 0.98rem; }
+.project-card.is-lead .project-body { padding: 24px; gap: 14px; }
+
+/* --- Animated gradient border for the lead card -------------------------- */
+
+.project-card.is-lead {
+  position: relative;
+  background:
+    linear-gradient(hsl(var(--card)), hsl(var(--card))) padding-box,
+    linear-gradient(130deg, hsl(var(--primary) / 0.55), transparent 35%, transparent 65%, hsl(var(--accent) / 0.5)) border-box;
+  border: 1px solid transparent;
+  background-size: 100% 100%, 200% 200%;
+  animation: border-drift 12s ease-in-out infinite alternate;
+}
+
+@keyframes border-drift {
+  from { background-position: 0 0, 0% 50%; }
+  to { background-position: 0 0, 100% 50%; }
+}
+
+/* --- Spotlight that follows the cursor inside cards ---------------------- */
+
+.card {
+  --sx: 50%;
+  --sy: 50%;
+}
+
+.project-card::before,
+.system-card::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  z-index: 1;
+  pointer-events: none;
+  opacity: 0;
+  transition: opacity 0.35s ease;
+  background: radial-gradient(240px circle at var(--sx) var(--sy), hsl(var(--primary) / 0.13), transparent 70%);
+}
+
+.project-card:hover::before,
+.system-card:hover::before { opacity: 1; }
+
+.project-body, .system-card > * { position: relative; z-index: 2; }
+
+/* --- Word-by-word scroll reveal ----------------------------------------- */
+
+.reveal-words span.word {
+  display: inline-block;
+  opacity: 0;
+  transform: translateY(0.4em);
+  transition: opacity 0.5s ease, transform 0.5s ease;
+}
+
+.reveal-words.in-view span.word {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+/* --- Lead-in paragraph (editorial intro) -------------------------------- */
+
+.lead-in {
+  font-size: clamp(1.15rem, 2.2vw, 1.5rem);
+  line-height: 1.5;
+  font-weight: 500;
+  max-width: 760px;
+  color: hsl(var(--foreground) / 0.92);
+  letter-spacing: -0.01em;
+}
+
+.lead-in .hl {
+  color: hsl(var(--primary));
+  font-weight: 600;
+}
+
+/* --- Signature line ------------------------------------------------------ */
+
+.signature-line {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  font-family: var(--font-mono);
+  font-size: 0.75rem;
+  color: hsl(var(--muted-foreground) / 0.75);
+  letter-spacing: 0.08em;
+}
+
+.signature-line::before,
+.signature-line::after {
+  content: '';
+  height: 1px;
+  flex: 1;
+  background: hsl(var(--border));
+}
+
+/* --- Stat tweaks --------------------------------------------------------- */
+
+.stat-num { font-variant-numeric: tabular-nums; letter-spacing: -0.02em; }
+
+/* --- Hero status line (terminal-ish detail under the CTAs) --------------- */
+
+.hero-status {
+  font-size: 0.72rem;
+  letter-spacing: 0.04em;
+  color: hsl(var(--muted-foreground) / 0.8);
+  margin: -34px 0 44px;
+}
+
+.hero-status::before {
+  content: '';
+  display: inline-block;
+  width: 6px;
+  height: 6px;
+  border-radius: 50%;
+  background: hsl(var(--green));
+  margin-right: 9px;
+  vertical-align: middle;
+  box-shadow: 0 0 8px hsl(var(--green) / 0.7);
+}
+
+@media (max-width: 640px) {
+  .hero-status { margin: -26px 0 36px; font-size: 0.66rem; line-height: 1.9; }
+}
+
+/* --- Page hero meta line (inner pages) ----------------------------------- */
+
+.page-hero { padding-bottom: 8px; }
+.section-tight.container, .section.container { padding-left: 24px; padding-right: 24px; }
+
+.page-hero h1 { letter-spacing: -0.025em; }
+
+.page-meta {
+  font-size: 0.72rem;
+  letter-spacing: 0.06em;
+  color: hsl(var(--muted-foreground) / 0.75);
+  margin-top: 16px;
+  padding-top: 14px;
+  border-top: 1px solid hsl(var(--border) / 0.65);
+  display: inline-block;
 }
