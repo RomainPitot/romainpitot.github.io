@@ -108,8 +108,8 @@ PROJECTS = [
         "links": {"playstore": "https://play.google.com/store/apps/details?id=com.masseka.game.studio&hl=fr"},
         "highlights": ["Migrated Unity 2018 → 2022 codebase", "Fixed longstanding compatibility bugs", "Adaptive UI across device sizes"],
         "keySystems": ["Board Game Rules Engine", "Cross-device UI Scaling"],
-        "image": "kissoro-1.jpg",
-        "gallery": ["kissoro-2.jpg"],
+        "image": "kissoro-2.jpg",
+        "gallery": ["kissoro-1.jpg"],
     },
     {
         "id": "vaudoo", "title": "Vaudoo",
@@ -377,6 +377,12 @@ def cover_class(category):
     }.get(category, "cover-prototype")
 
 
+def project_cover_src(p):
+    """Real screenshot when there is one, otherwise the generated typographic
+    poster, so every card carries the same visual weight."""
+    return p.get("image") or ("%s-cover.jpg" % p["id"])
+
+
 def project_link_buttons(links, size_cls="btn-sm"):
     out = []
     if links.get("github"):
@@ -630,8 +636,8 @@ def system_visual(sid):
 # Card renderers
 # --------------------------------------------------------------------------
 
-def render_project_card(p, depth, show_view_overlay=True, lead=False):
-    return """<a class="card project-card reveal%(leadcls)s" data-project-card data-title="%(title)s" data-year="%(year)s"
+def render_project_card(p, depth, show_view_overlay=True):
+    return """<a class="card project-card reveal" data-project-card data-title="%(title)s" data-year="%(year)s"
      data-tags="%(tagpipe)s" href="%(depth)sprojects/%(id)s.html">
     <div class="project-cover %(coverclass)s">
       <div class="cover-tags">%(badges)s</div>
@@ -651,16 +657,12 @@ def render_project_card(p, depth, show_view_overlay=True, lead=False):
   </a>
 """ % {
         "title": p["title"], "year": p["year"], "id": p["id"], "depth": depth,
-        "leadcls": " is-lead" if lead else "",
         "tagpipe": "|".join([p["category"]] + p["tags"]),
         "coverclass": cover_class(p["category"]),
         "badges": corner_badges(p["status"], p["tags"]),
         "overlay": ('<div class="project-view">%s View Project</div>' % icon("external-link")) if show_view_overlay else "",
-        "media": (
-            '<img class="cover-img" src="%sassets/img/projects/%s" alt="%s screenshot" loading="lazy">' % (depth, p["image"], p["title"])
-            if p.get("image") else
-            '<span class="cover-icon">%s</span>' % icon("folder", "icon cover-icon")
-        ),
+        "media": '<img class="cover-img" src="%sassets/img/projects/%s" alt="%s cover" loading="lazy">' % (
+            depth, project_cover_src(p), p["title"]),
         "desc": p["shortDesc"],
         "monitor_icon": icon("monitor"), "engine": p["engine"],
         "clock_icon": icon("clock"), "duration": p["duration"],
@@ -748,7 +750,9 @@ MARQUEE_ITEMS = [
 
 
 def build_home():
-    featured = [p for p in PROJECTS if p["featured"]]
+    # Objective selection (most recent first) rather than a subjective "featured"
+    # pick, so no project is presented as more important than another.
+    featured = sorted(PROJECTS, key=lambda x: x["year"], reverse=True)[:3]
     depth = ""
 
     hero = """<section class="hero">
@@ -800,27 +804,24 @@ def build_home():
         ),
     }
 
-    lead_card = render_project_card(featured[0], depth, lead=True) if featured else ""
-    rest_cards = "".join(render_project_card(p, depth) for p in featured[1:])
+    featured_cards = "".join(render_project_card(p, depth) for p in featured)
 
     featured_html = """<section class="section">
     <div class="container">
       %(head)s
-      <div class="bento" data-project-grid>
-        %(lead)s
-        %(rest)s
+      <div class="grid grid-3" data-project-grid>
+        %(cards)s
       </div>
     </div>
   </section>
 """ % {
         "head": section_head(
-            "01", "Selected work",
-            '<h2 class="section-title shiny" data-i18n="home.featured_title">Featured Projects</h2>',
-            '<p class="section-sub" data-i18n="home.featured_subtitle">Studio work, a Bachelor capstone and a 48-hour jam</p>',
-            '<a class="section-link" href="projects.html"><span data-i18n="home.view_all">View all</span> %s</a>' % icon("arrow-right"),
+            "01", "Recent work",
+            '<h2 class="section-title shiny" data-i18n="home.featured_title">Latest Projects</h2>',
+            '<p class="section-sub" data-i18n="home.featured_subtitle">The three most recent &mdash; all twelve are on the projects page</p>',
+            '<a class="section-link" href="projects.html"><span data-i18n="home.view_all">View all 12</span> %s</a>' % icon("arrow-right"),
         ),
-        "lead": lead_card,
-        "rest": rest_cards,
+        "cards": featured_cards,
     }
 
     systems_html = """<section class="section" style="background:hsl(var(--background-deep) / .4)">
@@ -1043,11 +1044,8 @@ def build_project_detail(p):
         "title": p["title"],
         "badges": corner_badges(p["status"], p["tags"]),
         "coverclass": cover_class(p["category"]),
-        "cover_media": (
-            '<img class="cover-img" src="%sassets/img/projects/%s" alt="%s screenshot">' % (depth, p["image"], p["title"])
-            if p.get("image") else
-            '<span class="cover-category">%s</span><span class="cover-icon">%s</span>' % (p["category"], icon("folder", "icon cover-icon"))
-        ),
+        "cover_media": '<img class="cover-img" src="%sassets/img/projects/%s" alt="%s cover">' % (
+            depth, project_cover_src(p), p["title"]),
         "meta": meta_html,
         "description": p["description"],
         "gallery": (
