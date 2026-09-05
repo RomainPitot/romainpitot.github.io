@@ -585,6 +585,19 @@ button { font-family: inherit; cursor: pointer; }
   z-index: 1;
 }
 
+.cover-img {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  transition: transform 0.5s ease;
+}
+
+.card:hover .cover-img {
+  transform: scale(1.04);
+}
+
 .cover-tags {
   position: absolute;
   top: 12px;
@@ -1023,6 +1036,31 @@ button { font-family: inherit; cursor: pointer; }
   margin-bottom: 32px;
   position: relative;
   overflow: hidden;
+}
+
+.detail-cover .cover-img {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  object-position: center 30%;
+}
+
+.detail-gallery {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+  gap: 12px;
+  margin-top: 20px;
+  max-width: 760px;
+}
+
+.detail-gallery img {
+  width: 100%;
+  height: 160px;
+  object-fit: cover;
+  border-radius: 10px;
+  border: 1px solid hsl(var(--border));
 }
 
 .detail-cover::before {

@@ -92,6 +92,8 @@ PROJECTS = [
         "links": {"demo": "https://www.sandbox.game/en/experiences/The%20Legend%20Of%20Mulu/823bbdd4-8cab-4394-b8fb-bad31be27b7d/page/"},
         "highlights": ["Game design adapted to The Sandbox's toolset", "New lore-integrated explorable areas", "Contributed environment art"],
         "keySystems": ["Level Streaming", "Quest/Artifact Tracking", "Sandbox Scripting"],
+        "image": "legend-of-mulu-1.jpg",
+        "gallery": ["legend-of-mulu-2.jpg", "legend-of-mulu-3.jpg", "legend-of-mulu-4.jpg"],
     },
     {
         "id": "kissoro", "title": "Kissoro Tribal Game",
@@ -104,6 +106,8 @@ PROJECTS = [
         "links": {"playstore": "https://play.google.com/store/apps/details?id=com.masseka.game.studio&hl=fr"},
         "highlights": ["Migrated Unity 2018 → 2022 codebase", "Fixed longstanding compatibility bugs", "Adaptive UI across device sizes"],
         "keySystems": ["Board Game Rules Engine", "Cross-device UI Scaling"],
+        "image": "kissoro-1.jpg",
+        "gallery": ["kissoro-2.jpg"],
     },
     {
         "id": "vaudoo", "title": "Vaudoo",
@@ -178,6 +182,8 @@ PROJECTS = [
         "links": {"itch": "https://jules-gilli.itch.io/keep-dancing-to-live"},
         "highlights": ["Global Game Jam 2024 — \"Make Me Laugh\"", "Rhythm/timing-based dance mechanic", "Built and shipped in 48 hours"],
         "keySystems": ["Rhythm Input Judge", "Dance Move State Machine"],
+        "image": "keep-dancing-to-live-1.jpg",
+        "gallery": ["keep-dancing-to-live-2.jpg"],
     },
     {
         "id": "thermostat-8", "title": "Thermostat 8",
@@ -190,6 +196,8 @@ PROJECTS = [
         "links": {"itch": "https://phobosrandom.itch.io/thermostat-8"},
         "highlights": ["Game jam theme: \"Elevate\"", "Survival/exploration gameplay loop", "Visual effects work"],
         "keySystems": ["Survival Resource Loop", "VFX Pass"],
+        "image": "thermostat-8-1.jpg",
+        "gallery": ["thermostat-8-2.jpg"],
     },
     {
         "id": "falling-bot", "title": "Falling Bot",
@@ -202,6 +210,7 @@ PROJECTS = [
         "links": {"itch": "https://phobosrandom.itch.io/falling-bot"},
         "highlights": ["Ludum Dare 48 — \"Deeper and Deeper\"", "Fuel-management risk/reward loop", "Visual effects and UI"],
         "keySystems": ["Fuel/Resource Management", "Obstacle Spawner"],
+        "image": "falling-bot-1.jpg",
     },
     {
         "id": "trash-santa", "title": "Trash Santa",
@@ -227,6 +236,7 @@ PROJECTS = [
         "links": {},
         "highlights": ["Day/night investigate-then-survive loop", "Co-op multiplayer built from scratch", "Solo end-to-end development"],
         "keySystems": ["Day/Night Cycle", "Nest/Infestation Simulation", "Co-op Netcode"],
+        "image": "global-invasion-1.jpg",
     },
 ]
 
@@ -584,7 +594,7 @@ def render_project_card(p, depth, show_view_overlay=True):
     <div class="project-cover %(coverclass)s">
       <div class="cover-tags">%(badges)s</div>
       %(overlay)s
-      <span class="cover-icon">%(icon)s</span>
+      %(media)s
     </div>
     <div class="project-body">
       <div class="project-title-row"><h3>%(title)s</h3><span class="project-year">%(year)s</span></div>
@@ -603,7 +613,11 @@ def render_project_card(p, depth, show_view_overlay=True):
         "coverclass": cover_class(p["category"]),
         "badges": corner_badges(p["status"], p["tags"]),
         "overlay": ('<div class="project-view">%s View Project</div>' % icon("external-link")) if show_view_overlay else "",
-        "icon": icon("folder", "icon cover-icon"),
+        "media": (
+            '<img class="cover-img" src="%sassets/img/projects/%s" alt="%s screenshot" loading="lazy">' % (depth, p["image"], p["title"])
+            if p.get("image") else
+            '<span class="cover-icon">%s</span>' % icon("folder", "icon cover-icon")
+        ),
         "desc": p["shortDesc"],
         "monitor_icon": icon("monitor"), "engine": p["engine"],
         "clock_icon": icon("clock"), "duration": p["duration"],
@@ -876,16 +890,14 @@ def build_project_detail(p):
     <div class="cover-tags" style="position:static;margin-bottom:16px">%(badges)s</div>
     <h1 style="font-size:clamp(1.8rem,4vw,2.6rem);margin-bottom:28px">%(title)s</h1>
 
-    <div class="detail-cover %(coverclass)s">
-      <span class="cover-category">%(category)s</span>
-      <span class="cover-icon">%(icon)s</span>
-    </div>
+    <div class="detail-cover %(coverclass)s">%(cover_media)s</div>
 
     <div class="detail-meta-grid">%(meta)s</div>
 
     <div class="detail-section">
       <h2 data-i18n-skip>Overview</h2>
       <p>%(description)s</p>
+      %(gallery)s
     </div>
 
     <div class="detail-section">
@@ -917,10 +929,20 @@ def build_project_detail(p):
         "title": p["title"],
         "badges": corner_badges(p["status"], p["tags"]),
         "coverclass": cover_class(p["category"]),
-        "category": p["category"],
-        "icon": icon("folder", "icon cover-icon"),
+        "cover_media": (
+            '<img class="cover-img" src="%sassets/img/projects/%s" alt="%s screenshot">' % (depth, p["image"], p["title"])
+            if p.get("image") else
+            '<span class="cover-category">%s</span><span class="cover-icon">%s</span>' % (p["category"], icon("folder", "icon cover-icon"))
+        ),
         "meta": meta_html,
         "description": p["description"],
+        "gallery": (
+            '<div class="detail-gallery">%s</div>' % "".join(
+                '<img src="%sassets/img/projects/%s" alt="%s screenshot" loading="lazy">' % (depth, g, p["title"])
+                for g in p["gallery"]
+            )
+            if p.get("gallery") else ""
+        ),
         "highlights": "".join("<li>%s</li>" % h for h in p["highlights"]),
         "keysystems": "".join('<span class="tag">%s</span>' % k for k in p["keySystems"]),
         "tech": all_tech_tags(p["technologies"]),
