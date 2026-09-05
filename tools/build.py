@@ -805,7 +805,6 @@ def build_home():
     cta_html = """<section class="section">
     <div class="container">
       <div class="cta-panel reveal">
-        <span class="availability"><span class="dot"></span> AVAILABLE FOR OPPORTUNITIES</span>
         <h2>Let's build something<br><span class="accent">remarkable.</span></h2>
         <p>Looking for a junior gameplay programmer with a passion for clean architecture and interactive systems.</p>
         <div class="cta-buttons">
