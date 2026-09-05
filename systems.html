@@ -12,14 +12,19 @@
   <meta property="og:title" content="Systems — Romain Pitot">
   <meta property="og:description" content="Architecture deep-dives into inventory, save systems, procedural generation, AI, abilities and netcode.">
   <meta property="og:url" content="https://romainpitot.github.io/systems.html">
-  <meta name="twitter:card" content="summary">
+  <meta property="og:image" content="https://romainpitot.github.io/assets/img/og-cover.jpg">
+  <meta property="og:image:width" content="1200">
+  <meta property="og:image:height" content="630">
+  <meta property="og:image:alt" content="Romain Pitot — Gameplay Programmer, Unity / C#">
+  <meta name="twitter:card" content="summary_large_image">
   <meta name="twitter:title" content="Systems — Romain Pitot">
   <meta name="twitter:description" content="Architecture deep-dives into inventory, save systems, procedural generation, AI, abilities and netcode.">
+  <meta name="twitter:image" content="https://romainpitot.github.io/assets/img/og-cover.jpg">
   <link rel="icon" href="assets/img/favicon.svg" type="image/svg+xml">
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500;700&display=swap" rel="stylesheet">
-  <link rel="stylesheet" href="assets/css/style.css?v=b4152ddd71">
+  <link rel="stylesheet" href="assets/css/style.css?v=093e1cca23">
 <script type="application/ld+json">
   {
     "@context": "https://schema.org",
@@ -264,18 +269,39 @@
 
   </main>
   <footer class="site-footer">
-    <div class="container footer-inner">
-      <div class="footer-brand"><svg class="icon" viewBox="0 0 24 24"><polyline points="16 18 22 12 16 6"/><polyline points="8 6 2 12 8 18"/></svg> romain.pitot &mdash; <span data-i18n="footer.role">gameplay programmer</span></div>
-      <div class="footer-social">
-        <a href="mailto:romainpitot.dev@gmail.com" aria-label="Email"><svg class="icon" viewBox="0 0 24 24"><path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"/><polyline points="22 6 12 13 2 6"/></svg></a>
-        <a href="https://linkedin.com/in/romain-pitot" target="_blank" rel="noreferrer" aria-label="LinkedIn"><svg class="icon" viewBox="0 0 24 24"><path d="M16 8a6 6 0 0 1 6 6v7h-4v-7a2 2 0 0 0-2-2 2 2 0 0 0-2 2v7h-4v-7a6 6 0 0 1 6-6z"/><rect x="2" y="9" width="4" height="12"/><circle cx="4" cy="4" r="2"/></svg></a>
-        <a href="https://github.com/romainpitot" target="_blank" rel="noreferrer" aria-label="GitHub"><svg class="icon" viewBox="0 0 24 24"><path d="M9 19c-5 1.5-5-2.5-7-3m14 6v-3.87a3.37 3.37 0 0 0-.94-2.61c3.14-.35 6.44-1.54 6.44-7A5.44 5.44 0 0 0 20 4.77 5.07 5.07 0 0 0 19.91 1S18.73.65 16 2.48a13.38 13.38 0 0 0-7 0C6.27.65 5.09 1 5.09 1A5.07 5.07 0 0 0 5 4.77a5.44 5.44 0 0 0-1.5 3.78c0 5.42 3.3 6.61 6.44 7A3.37 3.37 0 0 0 9 18.13V22"/></svg></a>
+    <div class="container">
+      <div class="footer-grid">
+        <div class="footer-col footer-about">
+          <div class="footer-brand"><svg class="icon" viewBox="0 0 24 24"><polyline points="16 18 22 12 16 6"/><polyline points="8 6 2 12 8 18"/></svg> romain<span class="dot">.</span>pitot</div>
+          <p>Gameplay programmer &mdash; Unity &amp; C#. Currently building a co-op FPS solo, and open to interesting systems work.</p>
+          <p class="footer-loc font-mono">Toulouse, France</p>
+        </div>
+
+        <div class="footer-col">
+          <h4>Site</h4>
+          <nav class="footer-nav"><a href="index.html">Home</a><a href="projects.html">Projects</a><a href="systems.html">Systems</a><a href="about.html">About</a><a href="contact.html">Contact</a></nav>
+        </div>
+
+        <div class="footer-col">
+          <h4>Elsewhere</h4>
+          <nav class="footer-nav">
+            <a href="https://github.com/romainpitot" target="_blank" rel="noreferrer"><svg class="icon" viewBox="0 0 24 24"><path d="M9 19c-5 1.5-5-2.5-7-3m14 6v-3.87a3.37 3.37 0 0 0-.94-2.61c3.14-.35 6.44-1.54 6.44-7A5.44 5.44 0 0 0 20 4.77 5.07 5.07 0 0 0 19.91 1S18.73.65 16 2.48a13.38 13.38 0 0 0-7 0C6.27.65 5.09 1 5.09 1A5.07 5.07 0 0 0 5 4.77a5.44 5.44 0 0 0-1.5 3.78c0 5.42 3.3 6.61 6.44 7A3.37 3.37 0 0 0 9 18.13V22"/></svg> GitHub</a>
+            <a href="https://linkedin.com/in/romain-pitot" target="_blank" rel="noreferrer"><svg class="icon" viewBox="0 0 24 24"><path d="M16 8a6 6 0 0 1 6 6v7h-4v-7a2 2 0 0 0-2-2 2 2 0 0 0-2 2v7h-4v-7a6 6 0 0 1 6-6z"/><rect x="2" y="9" width="4" height="12"/><circle cx="4" cy="4" r="2"/></svg> LinkedIn</a>
+            <a href="mailto:romainpitot.dev@gmail.com"><svg class="icon" viewBox="0 0 24 24"><path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"/><polyline points="22 6 12 13 2 6"/></svg> Email</a>
+            <a href="cv.pdf" download><svg class="icon" viewBox="0 0 24 24"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg> Résumé (PDF)</a>
+          </nav>
+        </div>
       </div>
-      <div class="footer-copy">&copy; 2026 Romain Pitot</div>
+
+      <div class="footer-bottom">
+        <span class="footer-copy">&copy; 2026 Romain Pitot</span>
+        <span class="footer-colophon font-mono">Hand-built &mdash; vanilla HTML/CSS/JS, no framework, deployed by GitHub Actions</span>
+        <a class="footer-top" href="#main">Back to top <svg class="icon" viewBox="0 0 24 24"><line x1="12" y1="19" x2="12" y2="5"/><polyline points="5 12 12 5 19 12"/></svg></a>
+      </div>
     </div>
   </footer>
 
-  <script src="assets/js/i18n.js?v=b4152ddd71"></script>
-  <script src="assets/js/main.js?v=b4152ddd71"></script>
+  <script src="assets/js/i18n.js?v=093e1cca23"></script>
+  <script src="assets/js/main.js?v=093e1cca23"></script>
 </body>
 </html>

@@ -67,6 +67,8 @@ ICONS = {
     "play": '<polygon points="5 3 19 12 5 21 5 3"/>',
     "send": '<line x1="22" y1="2" x2="11" y2="13"/><polygon points="22 2 15 22 11 13 2 9 22 2"/>',
     "folder": '<path d="M22 19a2 2 0 0 1-2 2H4a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h5l2 3h9a2 2 0 0 1 2 2z"/>',
+    "arrow-up": '<line x1="12" y1="19" x2="12" y2="5"/><polyline points="5 12 12 5 19 12"/>',
+    "arrow-left": '<line x1="19" y1="12" x2="5" y2="12"/><polyline points="12 19 5 12 12 5"/>',
 }
 
 
@@ -415,15 +417,21 @@ def html_head(title, description, depth, canonical_path=""):
   <meta property="og:title" content="%(title)s">
   <meta property="og:description" content="%(description)s">
   <meta property="og:url" content="%(canonical)s">
-  <meta name="twitter:card" content="summary">
+  <meta property="og:image" content="%(site)s/assets/img/og-cover.jpg">
+  <meta property="og:image:width" content="1200">
+  <meta property="og:image:height" content="630">
+  <meta property="og:image:alt" content="Romain Pitot — Gameplay Programmer, Unity / C#">
+  <meta name="twitter:card" content="summary_large_image">
   <meta name="twitter:title" content="%(title)s">
   <meta name="twitter:description" content="%(description)s">
+  <meta name="twitter:image" content="%(site)s/assets/img/og-cover.jpg">
   <link rel="icon" href="%(depth)sassets/img/favicon.svg" type="image/svg+xml">
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500;700&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="%(depth)sassets/css/style.css?v=%(v)s">
-""" % {"title": title, "description": description, "depth": depth, "canonical": canonical, "v": ASSET_VERSION}
+""" % {"title": title, "description": description, "depth": depth, "canonical": canonical,
+       "v": ASSET_VERSION, "site": SITE_URL}
 
 
 def header_html(active, depth):
@@ -464,25 +472,59 @@ def header_html(active, depth):
 
 
 def footer_html(depth):
+    nav = [
+        ("Home", depth + "index.html"),
+        ("Projects", depth + "projects.html"),
+        ("Systems", depth + "systems.html"),
+        ("About", depth + "about.html"),
+        ("Contact", depth + "contact.html"),
+    ]
+    nav_links = "".join('<a href="%s">%s</a>' % (href, label) for label, href in nav)
+
     return """<footer class="site-footer">
-    <div class="container footer-inner">
-      <div class="footer-brand">%(code_icon)s romain.pitot &mdash; <span data-i18n="footer.role">gameplay programmer</span></div>
-      <div class="footer-social">
-        <a href="mailto:%(email)s" aria-label="Email">%(mail_icon)s</a>
-        <a href="%(linkedin)s" target="_blank" rel="noreferrer" aria-label="LinkedIn">%(linkedin_icon)s</a>
-        <a href="%(github)s" target="_blank" rel="noreferrer" aria-label="GitHub">%(github_icon)s</a>
+    <div class="container">
+      <div class="footer-grid">
+        <div class="footer-col footer-about">
+          <div class="footer-brand">%(code_icon)s romain<span class="dot">.</span>pitot</div>
+          <p>Gameplay programmer &mdash; Unity &amp; C#. Currently building a co-op FPS solo, and open to interesting systems work.</p>
+          <p class="footer-loc font-mono">Toulouse, France</p>
+        </div>
+
+        <div class="footer-col">
+          <h4>Site</h4>
+          <nav class="footer-nav">%(nav)s</nav>
+        </div>
+
+        <div class="footer-col">
+          <h4>Elsewhere</h4>
+          <nav class="footer-nav">
+            <a href="%(github)s" target="_blank" rel="noreferrer">%(github_icon)s GitHub</a>
+            <a href="%(linkedin)s" target="_blank" rel="noreferrer">%(linkedin_icon)s LinkedIn</a>
+            <a href="mailto:%(email)s">%(mail_icon)s Email</a>
+            <a href="%(depth)scv.pdf" download>%(dl_icon)s Résumé (PDF)</a>
+          </nav>
+        </div>
       </div>
-      <div class="footer-copy">&copy; %(year)s Romain Pitot</div>
+
+      <div class="footer-bottom">
+        <span class="footer-copy">&copy; %(year)s Romain Pitot</span>
+        <span class="footer-colophon font-mono">Hand-built &mdash; vanilla HTML/CSS/JS, no framework, deployed by GitHub Actions</span>
+        <a class="footer-top" href="#main">Back to top %(up_icon)s</a>
+      </div>
     </div>
   </footer>
 """ % {
         "code_icon": icon("code"),
+        "nav": nav_links,
         "email": CONTACT_EMAIL,
         "linkedin": REAL_LINKEDIN,
         "github": REAL_GITHUB,
         "mail_icon": icon("mail"),
         "linkedin_icon": icon("linkedin"),
         "github_icon": icon("github"),
+        "dl_icon": icon("download"),
+        "up_icon": icon("arrow-up"),
+        "depth": depth,
         "year": YEAR,
     }
 
@@ -926,6 +968,24 @@ def build_project_detail(p):
     depth = "../"
     others = [o for o in PROJECTS if o["id"] != p["id"]][:3]
 
+    idx = PROJECTS.index(p)
+    prev_p = PROJECTS[idx - 1] if idx > 0 else PROJECTS[-1]
+    next_p = PROJECTS[idx + 1] if idx < len(PROJECTS) - 1 else PROJECTS[0]
+    pager = """<nav class="project-pager">
+      <a class="pager-link pager-prev" href="%(prev_id)s.html">
+        <span class="pager-dir">%(left)s Previous</span>
+        <span class="pager-title">%(prev_title)s</span>
+      </a>
+      <a class="pager-link pager-next" href="%(next_id)s.html">
+        <span class="pager-dir">Next %(right)s</span>
+        <span class="pager-title">%(next_title)s</span>
+      </a>
+    </nav>""" % {
+        "prev_id": prev_p["id"], "prev_title": prev_p["title"],
+        "next_id": next_p["id"], "next_title": next_p["title"],
+        "left": icon("arrow-left"), "right": icon("arrow-right"),
+    }
+
     meta_items = [
         ("Category", p["category"]), ("Engine", p["engine"]), ("Platform", p["platform"]),
         ("Role", p["role"]), ("Duration", p["duration"]),
@@ -973,6 +1033,8 @@ def build_project_detail(p):
     </div>
   </section>
 
+  <section class="container">%(pager)s</section>
+
   <section class="section container">
     <div class="section-head"><h2 class="section-title" data-i18n-skip>Other projects</h2></div>
     <div class="other-projects">%(others)s</div>
@@ -1000,6 +1062,7 @@ def build_project_detail(p):
         "tech": all_tech_tags(p["technologies"]),
         "links": project_link_buttons(p["links"], "btn-sm") or '<span style="color:hsl(var(--muted-foreground));font-size:.85rem">No public links yet.</span>',
         "others": "".join(render_project_card(o, depth) for o in others),
+        "pager": pager,
     }
 
     write("projects/%s.html" % p["id"], page(
@@ -1198,11 +1261,16 @@ def build_robots_and_sitemap():
 
 def build_404():
     depth = ""
-    body = """<section class="page-hero container" style="text-align:center;padding:120px 24px">
-    <span class="eyebrow" data-i18n-skip>404</span>
-    <h1>Page not found</h1>
-    <p style="margin:0 auto 28px">This page doesn't exist &mdash; it may have moved, or the link is out of date.</p>
-    <a class="btn btn-primary" href="index.html">%(arrow)s Back to home</a>
+    body = """<section class="page-hero container error-page" style="text-align:center;padding:110px 24px 120px">
+    <div class="error-code font-mono" aria-hidden="true">404</div>
+    <h1>NullReferenceException</h1>
+    <p style="margin:14px auto 8px;max-width:520px">Object reference not set to an instance of a page. This route doesn't exist &mdash; it may have moved, or the link is out of date.</p>
+    <pre class="error-trace font-mono" aria-hidden="true">   at Portfolio.Router.Resolve(string path)
+   at Portfolio.Program.Main()</pre>
+    <div class="cta-buttons" style="margin-top:30px">
+      <a class="btn btn-primary" href="index.html">%(arrow)s Back to home</a>
+      <a class="btn btn-outline" href="projects.html">Browse projects</a>
+    </div>
   </section>
 """ % {"arrow": icon("arrow-right")}
     write("404.html", page(
