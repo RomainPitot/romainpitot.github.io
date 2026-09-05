@@ -80,77 +80,153 @@ def icon(name, cls="icon"):
 # --------------------------------------------------------------------------
 
 PROJECTS = [
+    # --- Work-study projects (Masseka Games Studio, Toulouse — Oct 2022-Oct 2024) ---
     {
-        "id": "echoes-of-the-rift", "title": "Echoes of the Rift",
-        "shortDesc": "Top-down action RPG with procedurally generated dungeons and a modular ability system.",
-        "description": "A top-down action RPG built during a 72-hour game jam. Features a fully modular ability system allowing runtime combination of effects, procedurally generated dungeons using BSP partitioning, and a custom AI state machine for enemy behaviors.",
+        "id": "legend-of-mulu", "title": "The Legend of Mulu",
+        "shortDesc": "Exploration game on The Sandbox: a young girl tracks down sorcerers who stole her village's sacred artifacts.",
+        "description": "An exploration game built on The Sandbox platform, set in Africa. Players control Mulu, a girl sent far from her village to recover sacred artifacts stolen by sorcerers. Worked as game designer, developer, level designer and artist: adapted the game design to The Sandbox's constraints, built new explorable areas integrated with the lore, and contributed artwork.",
+        "category": "Work", "engine": "The Sandbox / Unity", "platform": "The Sandbox", "role": "Game Designer, Developer, Level Designer, Artist",
+        "status": "Released", "year": 2023, "duration": "Work-study", "teamSize": 2,
+        "technologies": ["C#", "Unity", "The Sandbox", "Level Design"],
+        "tags": ["Work", "Adventure"], "featured": True,
+        "links": {"demo": "https://www.sandbox.game/en/experiences/The%20Legend%20Of%20Mulu/823bbdd4-8cab-4394-b8fb-bad31be27b7d/page/"},
+        "highlights": ["Game design adapted to The Sandbox's toolset", "New lore-integrated explorable areas", "Contributed environment art"],
+        "keySystems": ["Level Streaming", "Quest/Artifact Tracking", "Sandbox Scripting"],
+    },
+    {
+        "id": "kissoro", "title": "Kissoro Tribal Game",
+        "shortDesc": "African strategy board game on mobile — migrated from Unity 2018 to 2022 and stabilized across devices.",
+        "description": "An African strategy board game — \"a game that has traveled through centuries and continents\" — brought to mobile with single- and multiplayer modes. Took over post-production on an existing title: migrated the project from Unity 2018 to Unity 2022, resolved the resulting compatibility issues, fixed longstanding bugs, and ensured adaptive behaviour across devices.",
+        "category": "Work", "engine": "Unity", "platform": "Mobile (Android/iOS)", "role": "Unity Developer (maintenance)",
+        "status": "Released", "year": 2023, "duration": "Work-study", "teamSize": 1,
+        "technologies": ["C#", "Unity", "Mobile"],
+        "tags": ["Work", "Mobile"], "featured": False,
+        "links": {"playstore": "https://play.google.com/store/apps/details?id=com.masseka.game.studio&hl=fr"},
+        "highlights": ["Migrated Unity 2018 → 2022 codebase", "Fixed longstanding compatibility bugs", "Adaptive UI across device sizes"],
+        "keySystems": ["Board Game Rules Engine", "Cross-device UI Scaling"],
+    },
+    {
+        "id": "vaudoo", "title": "Vaudoo",
+        "shortDesc": "Mobile action-strategy game: a presidential candidate raises the dead to win an election, then fights the zombie apocalypse.",
+        "description": "A presidential candidate, desperate to win an election, turns to a mystic to make the dead vote — but the revived souls become flesh-hungry zombies, forcing a fight to save the nation. Blends action and strategy, with every decision mattering during the horde battles. Joined for a short work-study stint to fix bugs and make the UI properly adaptive across screen sizes.",
+        "category": "Work", "engine": "Unity", "platform": "Mobile (Android)", "role": "Unity Developer (maintenance)",
+        "status": "Released", "year": 2023, "duration": "A few weeks", "teamSize": 1,
+        "technologies": ["C#", "Unity", "Mobile", "UGUI"],
+        "tags": ["Work", "Mobile"], "featured": False,
+        "links": {"playstore": "https://play.google.com/store/apps/details?id=com.messeka.Vaudoo&hl=fr"},
+        "highlights": ["Adaptive UI across device sizes", "Bug fixing pass on an existing codebase"],
+        "keySystems": ["Horde Combat Loop", "Adaptive UI"],
+    },
+    {
+        "id": "little-cup", "title": "Little Cup",
+        "shortDesc": "Mobile penalty-shootout game: aim, power and technique against increasingly skilled goalkeepers.",
+        "description": "A penalty-focused sports game where you play an elite striker challenging increasingly skilled goalkeepers across varied weather conditions, stadiums and crowd dynamics. Precision and strategy around aim, power and technique matter, with unlockable special shots, player customization and a ranking system. Revived and built out solo from an abandoned internal prototype during the work-study.",
+        "category": "Work", "engine": "Unity", "platform": "Mobile", "role": "Developer (solo)",
+        "status": "Prototype", "year": 2023, "duration": "Work-study", "teamSize": 1,
+        "technologies": ["C#", "Unity", "Mobile"],
+        "tags": ["Work", "Sports"], "featured": False,
+        "links": {},
+        "highlights": ["Revived an abandoned prototype solo", "Aim/power/technique shot system", "Unlockables and ranking system"],
+        "keySystems": ["Shot Aiming System", "Ranking/Progression"],
+    },
+    # --- School projects (Bachelor, E-Artsup Toulouse — Sept 2019-Sept 2022) ---
+    {
+        "id": "medieval-skirmish", "title": "Medieval Skirmish",
+        "shortDesc": "Tower defense where you place towers and cast spells (fireball, freeze) to hold off waves of enemies.",
+        "description": "A strategic tower defense game: place towers, cast spells like fireball and freeze, and make tactical retreats by shifting towers to attack while moving. Built as the final-year Bachelor project, following a full development cycle from concept to completion with simulated client feedback rounds. Worked as developer, level designer and game designer on a 5-person team.",
+        "category": "School", "engine": "Unity", "platform": "PC", "role": "Developer, Level Designer, Game Designer",
+        "status": "Prototype", "year": 2022, "duration": "Final-year project", "teamSize": 5,
+        "technologies": ["C#", "Unity", "Design Patterns", "Git"],
+        "tags": ["School", "Tower Defense"], "featured": True,
+        "links": {},
+        "highlights": ["Full dev cycle with simulated client feedback", "Spell system (fireball, freeze)", "Tower repositioning while attacking"],
+        "keySystems": ["Wave Manager", "Spell/Ability System", "Tower Placement & Pathing"],
+    },
+    {
+        "id": "shipwrecked-island", "title": "Shipwrecked Island",
+        "shortDesc": "Multiplayer horror survival: gather resources and repair your ship before the hidden saboteur stops you.",
+        "description": "A shipwrecked pirate stranded on a mysterious island with a lurking monster. Together with crewmates, gather resources and repair the ship to escape — but one crew member is a hidden saboteur secretly working against the group. A school project in the multiplayer horror/social-deduction space, built with Netcode. Worked on UI and part of the core gameplay mechanics.",
+        "category": "School", "engine": "Unity", "platform": "PC", "role": "UI & Gameplay Programmer",
+        "status": "Prototype", "year": 2022, "duration": "School project", "teamSize": 4,
+        "technologies": ["C#", "Unity", "Netcode", "UGUI"],
+        "tags": ["School", "Multiplayer"], "featured": False,
+        "links": {},
+        "highlights": ["Multiplayer social-deduction gameplay loop", "Netcode-driven crew/saboteur mechanics", "UI for shared crew objectives"],
+        "keySystems": ["Netcode Session Sync", "Saboteur Role Logic", "Resource Gathering"],
+    },
+    {
+        "id": "just-dash", "title": "Just Dash",
+        "shortDesc": "Mobile platformer mixing Doodle Jump's vertical momentum with Celeste's precision dashing.",
+        "description": "A mobile platformer where a nimble robot navigates challenging levels using a dash ability, blending \"the vertical momentum of Doodle Jump and the precision platforming of Celeste.\" Dash resets are limited and must be earned through skillful moves, so timing and strategy matter to reach the goal. Developed part of the core gameplay as a school project.",
+        "category": "School", "engine": "Unity", "platform": "Mobile", "role": "Gameplay Programmer",
+        "status": "Released", "year": 2022, "duration": "School project", "teamSize": 3,
+        "technologies": ["C#", "Unity", "Mobile"],
+        "tags": ["School", "Platformer"], "featured": False,
+        "links": {"demo": "https://drive.google.com/file/d/17z5dnXX2XskFLim2g4_lbbTyLSIla8EJ/view"},
+        "highlights": ["Limited-resource dash mechanic", "Momentum-based vertical platforming"],
+        "keySystems": ["Dash/Resource System", "Procedural-feel Level Momentum"],
+    },
+    # --- Game jams ---
+    {
+        "id": "keep-dancing-to-live", "title": "Keep Dancing to Live",
+        "shortDesc": "Rhythm game: dance ridiculously as the king's jester, or it's off with your head. Global Game Jam 2024 — \"Make Me Laugh.\"",
+        "description": "A rhythm game where you play the king's jester, performing ridiculous dance moves on a wooden board to entertain the court and survive — fail to amuse, and it's off with your head. Built in 48 hours at the Global Game Jam 2024, on the theme \"Make Me Laugh.\" Developed the core gameplay mechanics.",
         "category": "Game Jam", "engine": "Unity", "platform": "PC", "role": "Gameplay Programmer",
-        "status": "Game Jam", "year": 2024, "duration": "72 hours", "teamSize": 3,
-        "technologies": ["C#", "Unity", "Procedural Generation", "AI", "State Machine"],
-        "tags": ["Game Jam", "Procedural", "AI"], "featured": True,
-        "links": {"github": "https://github.com", "itch": "https://itch.io"},
-        "highlights": ["BSP dungeon generation", "Modular ability system", "Custom enemy AI"],
-        "keySystems": ["Dungeon Generator", "Ability Compositor", "Enemy State Machine", "Loot Tables"],
+        "status": "Released", "year": 2024, "duration": "48 hours", "teamSize": 3,
+        "technologies": ["C#", "Unity"],
+        "tags": ["Game Jam", "Rhythm"], "featured": True,
+        "links": {"itch": "https://jules-gilli.itch.io/keep-dancing-to-live"},
+        "highlights": ["Global Game Jam 2024 — \"Make Me Laugh\"", "Rhythm/timing-based dance mechanic", "Built and shipped in 48 hours"],
+        "keySystems": ["Rhythm Input Judge", "Dance Move State Machine"],
     },
     {
-        "id": "nexus-tower-defense", "title": "Nexus Tower Defense",
-        "shortDesc": "Strategic tower defense with advanced path-finding, tower upgrade trees, and wave scripting.",
-        "description": "A feature-complete tower defense game with a custom wave editor, dynamic A* pathfinding that updates in real time as towers are placed, a full tower upgrade tree system, and a modular targeting strategy pattern.",
-        "category": "Prototype", "engine": "Unity", "platform": "PC / WebGL", "role": "Solo Developer",
-        "status": "Prototype", "year": 2024, "duration": "3 months", "teamSize": 1,
-        "technologies": ["C#", "Unity", "A*", "Design Patterns", "WebGL"],
-        "tags": ["Tools", "AI", "Prototype"], "featured": True,
-        "links": {"github": "https://github.com", "demo": "https://demo.io"},
-        "highlights": ["Real-time A* pathfinding", "Tower upgrade tree", "Wave scripting editor"],
-        "keySystems": ["Pathfinding Engine", "Wave Manager", "Tower Registry", "UI State Machine"],
+        "id": "thermostat-8", "title": "Thermostat 8",
+        "shortDesc": "Exploration survival game built for a game jam on the theme \"Elevate.\"",
+        "description": "A singleplayer exploration survival game built during a game jam on the theme \"Elevate.\" Worked on gameplay development and visual effects.",
+        "category": "Game Jam", "engine": "Unity", "platform": "PC", "role": "Gameplay & VFX",
+        "status": "Released", "year": 2021, "duration": "Game jam", "teamSize": 3,
+        "technologies": ["C#", "Unity", "VFX"],
+        "tags": ["Game Jam", "Survival"], "featured": False,
+        "links": {"itch": "https://phobosrandom.itch.io/thermostat-8"},
+        "highlights": ["Game jam theme: \"Elevate\"", "Survival/exploration gameplay loop", "Visual effects work"],
+        "keySystems": ["Survival Resource Loop", "VFX Pass"],
     },
     {
-        "id": "multiplayer-arena", "title": "Arena Sync",
-        "shortDesc": "Fast-paced multiplayer arena shooter with client-side prediction and server reconciliation.",
-        "description": "A real-time multiplayer arena prototype exploring netcode fundamentals. Implements client-side prediction, server authority, and lag compensation. Built with Unity Netcode for GameObjects and a custom rollback buffer.",
-        "category": "Prototype", "engine": "Unity", "platform": "PC", "role": "Netcode Programmer",
-        "status": "Prototype", "year": 2023, "duration": "2 months", "teamSize": 2,
-        "technologies": ["C#", "Unity", "Multiplayer", "Netcode", "NGO"],
-        "tags": ["Multiplayer", "Prototype"], "featured": True,
-        "links": {"github": "https://github.com"},
-        "highlights": ["Client-side prediction", "Server reconciliation", "Lag compensation"],
-        "keySystems": ["Rollback Buffer", "Input Serializer", "State Snapshot System", "Lobby Manager"],
+        "id": "falling-bot", "title": "Falling Bot",
+        "shortDesc": "Pilot an energy-constrained robot descending through caverns. Ludum Dare 48 — \"Deeper and Deeper.\"",
+        "description": "Pilot a robot descending through caverns while managing limited fuel and dodging or destroying obstacles — run out of fuel or crash, and it's game over. Built during Ludum Dare 48 on the theme \"Deeper and Deeper.\" Worked on visual effects and UI.",
+        "category": "Game Jam", "engine": "Unity", "platform": "PC", "role": "VFX & UI",
+        "status": "Released", "year": 2021, "duration": "48 hours", "teamSize": 3,
+        "technologies": ["C#", "Unity", "VFX", "UGUI"],
+        "tags": ["Game Jam", "Arcade"], "featured": False,
+        "links": {"itch": "https://phobosrandom.itch.io/falling-bot"},
+        "highlights": ["Ludum Dare 48 — \"Deeper and Deeper\"", "Fuel-management risk/reward loop", "Visual effects and UI"],
+        "keySystems": ["Fuel/Resource Management", "Obstacle Spawner"],
     },
     {
-        "id": "inventory-system-tool", "title": "Modular Inventory System",
-        "shortDesc": "Reusable data-driven inventory framework with drag-and-drop, item stacking, and serialization.",
-        "description": "A production-ready Unity inventory package built with clean architecture principles. Features a fully data-driven item database using ScriptableObjects, runtime drag-and-drop with grid snapping, item stacking and splitting, and JSON serialization for save/load.",
-        "category": "Tool", "engine": "Unity", "platform": "Unity Package", "role": "Tool Developer",
-        "status": "Released", "year": 2024, "duration": "6 weeks", "teamSize": 1,
-        "technologies": ["C#", "Unity", "ScriptableObjects", "UGUI", "JSON"],
-        "tags": ["Tools", "Unity"], "featured": False,
-        "links": {"github": "https://github.com"},
-        "highlights": ["Data-driven ScriptableObject items", "Grid-based drag and drop", "JSON save/load serialization"],
-        "keySystems": ["Item Registry", "Grid Manager", "Serialization Layer", "UI Event System"],
+        "id": "trash-santa", "title": "Trash Santa",
+        "shortDesc": "Chaotic multiplayer game about stealing presents from unsuspecting kids. Global Game Jam 2020 — \"Repair.\"",
+        "description": "A chaotic multiplayer game where players steal as many presents as possible from unsuspecting kids. Built in 48 hours at the Global Game Jam 2020, on the theme \"Repair.\" Worked on UI development and gameplay programming.",
+        "category": "Game Jam", "engine": "Unity", "platform": "PC", "role": "UI & Gameplay Programmer",
+        "status": "Released", "year": 2020, "duration": "48 hours", "teamSize": 4,
+        "technologies": ["C#", "Unity", "Multiplayer", "UGUI"],
+        "tags": ["Game Jam", "Multiplayer"], "featured": False,
+        "links": {"itch": "https://phobosrandom.itch.io/trash-santa"},
+        "highlights": ["Global Game Jam 2020 — \"Repair\"", "Local multiplayer chaos gameplay", "UI built under 48-hour constraint"],
+        "keySystems": ["Local Multiplayer Loop", "Steal/Score Tracking"],
     },
+    # --- Personal ---
     {
-        "id": "velvet-depths", "title": "Velvet Depths",
-        "shortDesc": "Narrative horror platformer with dynamic sound-reactive environments and branching story.",
-        "description": "A narrative-driven horror platformer created for the Global Game Jam 2024. The environment reacts dynamically to ambient audio using FFT analysis. Features a branching dialogue system and custom shader effects for the horror atmosphere.",
-        "category": "Game Jam", "engine": "Unity", "platform": "PC", "role": "Lead Programmer",
-        "status": "Game Jam", "year": 2024, "duration": "48 hours", "teamSize": 4,
-        "technologies": ["C#", "Unity", "Shaders", "FMOD", "Dialogue System"],
-        "tags": ["Game Jam", "Shaders"], "featured": False,
-        "links": {"itch": "https://itch.io"},
-        "highlights": ["FFT audio-reactive level", "Custom horror shaders", "Branching narrative system"],
-        "keySystems": ["Audio Analyzer", "Dialogue Tree", "Shader Controller", "Event Bus"],
-    },
-    {
-        "id": "proc-world-gen", "title": "ProceduralWorld Kit",
-        "shortDesc": "Runtime terrain and biome generation toolkit using noise layers, erosion simulation, and LOD.",
-        "description": "A Unity editor toolkit for procedurally generating terrain and biomes at runtime. Uses layered Perlin/Simplex noise for heightmaps, a custom hydraulic erosion simulation, biome blending based on temperature/humidity gradients, and LOD mesh generation.",
-        "category": "Tool", "engine": "Unity", "platform": "Unity Package", "role": "Systems Programmer",
+        "id": "global-invasion", "title": "Global Invasion",
+        "shortDesc": "Co-op FPS: a team of exterminators investigates infested houses by day and survives them by night.",
+        "description": "A cooperative FPS where you play a team of exterminators sent to infested houses. Investigate during daylight to identify pests and locate nests, then survive creature encounters at night through cooperation and improvisation. A solo personal project built from scratch in free time to explore multiplayer systems end to end.",
+        "category": "Personal", "engine": "Unity", "platform": "PC", "role": "Solo Developer",
         "status": "WIP", "year": 2025, "duration": "Ongoing", "teamSize": 1,
-        "technologies": ["C#", "Unity", "Compute Shaders", "Procedural Generation", "LOD"],
-        "tags": ["Procedural", "Tools"], "featured": False,
-        "links": {"github": "https://github.com"},
-        "highlights": ["GPU-accelerated noise via Compute Shaders", "Hydraulic erosion simulation", "Biome blending system"],
-        "keySystems": ["Noise Compositor", "Erosion Simulator", "Biome Atlas", "LOD Mesh Builder"],
+        "technologies": ["C#", "Unity", "Multiplayer", "Netcode"],
+        "tags": ["Personal", "Multiplayer"], "featured": False,
+        "links": {},
+        "highlights": ["Day/night investigate-then-survive loop", "Co-op multiplayer built from scratch", "Solo end-to-end development"],
+        "keySystems": ["Day/Night Cycle", "Nest/Infestation Simulation", "Co-op Netcode"],
     },
 ]
 
@@ -248,6 +324,9 @@ BADGE_COLOR = {
     "Tool": "badge-cat-tool",
     "Tools": "badge-cat-tool",
     "Released": "badge-cat-released",
+    "Work": "badge-cat-tool",
+    "School": "badge-cat-released",
+    "Personal": "badge-cat-jam",
     "WIP": "",
 }
 
@@ -280,6 +359,9 @@ def cover_class(category):
         "Game Jam": "cover-gamejam",
         "Prototype": "cover-prototype",
         "Tool": "cover-tool",
+        "Work": "cover-tool",
+        "School": "cover-released",
+        "Personal": "cover-personal",
     }.get(category, "cover-prototype")
 
 
@@ -289,8 +371,10 @@ def project_link_buttons(links, size_cls="btn-sm"):
         out.append('<a class="btn btn-outline %s" href="%s" target="_blank" rel="noreferrer">%s GitHub</a>' % (size_cls, links["github"], icon("github")))
     if links.get("itch"):
         out.append('<a class="btn btn-outline %s" href="%s" target="_blank" rel="noreferrer">%s Play on itch.io</a>' % (size_cls, links["itch"], icon("play")))
+    if links.get("playstore"):
+        out.append('<a class="btn btn-outline %s" href="%s" target="_blank" rel="noreferrer">%s Get it on Google Play</a>' % (size_cls, links["playstore"], icon("external-link")))
     if links.get("demo"):
-        out.append('<a class="btn btn-outline %s" href="%s" target="_blank" rel="noreferrer">%s Live Demo</a>' % (size_cls, links["demo"], icon("external-link")))
+        out.append('<a class="btn btn-outline %s" href="%s" target="_blank" rel="noreferrer">%s View Project</a>' % (size_cls, links["demo"], icon("external-link")))
     return "".join(out)
 
 
@@ -613,9 +697,9 @@ def build_home():
 
   <section class="stats-bar">
     <div class="container stats-grid">
-      <div class="stat"><div class="stat-num"><span data-count-to="6">0</span>+</div><div class="stat-label">Projects Shipped</div></div>
-      <div class="stat"><div class="stat-num"><span data-count-to="3">0</span>+</div><div class="stat-label">Game Jams</div></div>
-      <div class="stat"><div class="stat-num"><span data-count-to="2">0</span>+</div><div class="stat-label">Years Unity</div></div>
+      <div class="stat"><div class="stat-num"><span data-count-to="12">0</span>+</div><div class="stat-label">Projects Shipped</div></div>
+      <div class="stat"><div class="stat-num"><span data-count-to="4">0</span>+</div><div class="stat-label">Game Jams</div></div>
+      <div class="stat"><div class="stat-num"><span data-count-to="7">0</span>+</div><div class="stat-label">Years Unity</div></div>
       <div class="stat"><div class="stat-num">&#8734;</div><div class="stat-label">Systems Built</div></div>
     </div>
   </section>
@@ -733,7 +817,7 @@ def build_home():
 
 def build_projects_listing():
     depth = ""
-    filters = ["All", "Game Jam", "Prototype", "Tool", "Released"]
+    filters = ["All", "Work", "School", "Game Jam", "Personal"]
     filter_btns = "".join(
         '<button class="filter-btn%(active)s" type="button" data-filter="%(f)s" data-i18n="%(i18n)s">%(f)s</button>' % {
             "active": " active" if f == "All" else "",
@@ -900,8 +984,8 @@ def build_about():
       <div class="reveal">
         <p style="font-size:1.1rem;font-weight:600;margin-bottom:18px">I am a junior gameplay programmer passionate about building the systems that make games fun, responsive, and technically robust.</p>
         <p style="color:hsl(var(--muted-foreground));margin-bottom:14px">I hold a Master's degree in Game Development and specialize in Unity and C# with a focus on gameplay systems, AI, procedural generation, and multiplayer networking.</p>
-        <p style="color:hsl(var(--muted-foreground));margin-bottom:14px">I believe great gameplay comes from well-architected systems. I enjoy working at the intersection of design and engineering &mdash; translating game design intent into clean, scalable code.</p>
-        <p style="color:hsl(var(--muted-foreground));margin-bottom:24px">Outside of coding, I am an avid gamer and game systems analyst &mdash; breaking down what makes mechanics feel satisfying is both a hobby and a professional methodology.</p>
+        <p style="color:hsl(var(--muted-foreground));margin-bottom:14px">Game jams are the perfect opportunity for me to explore original and innovative ideas while honing my skills &mdash; I've shipped four of them since 2020, alongside work-study projects at Masseka Games Studio and a full Bachelor capstone game.</p>
+        <p style="color:hsl(var(--muted-foreground));margin-bottom:24px">I'm curious and challenge-driven, and my goal is to design engaging games and systems that leave a lasting impression on players.</p>
         <p class="font-mono" style="font-size:.85rem;color:hsl(var(--accent))" data-i18n="about.based">Based in France &mdash; Open to remote &amp; relocation</p>
 
         <h3 style="font-family:var(--font-mono);font-size:.75rem;letter-spacing:.15em;text-transform:uppercase;color:hsl(var(--primary)/.8);margin:36px 0 16px" data-i18n="about.education_title">Education</h3>

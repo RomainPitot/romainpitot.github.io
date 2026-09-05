@@ -692,6 +692,7 @@ button { font-family: inherit; cursor: pointer; }
 .cover-prototype { background: radial-gradient(circle at 30% 20%, hsl(var(--accent) / 0.25), transparent 60%), hsl(var(--background-deep)); }
 .cover-tool { background: radial-gradient(circle at 30% 20%, hsl(var(--teal) / 0.25), transparent 60%), hsl(var(--background-deep)); }
 .cover-released { background: radial-gradient(circle at 30% 20%, hsl(var(--green) / 0.25), transparent 60%), hsl(var(--background-deep)); }
+.cover-personal { background: radial-gradient(circle at 30% 20%, hsl(var(--indigo) / 0.25), transparent 60%), hsl(var(--background-deep)); }
 
 /* ---------------------------------------------------------------------- */
 /* Filters (projects listing)                                              */

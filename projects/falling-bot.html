@@ -3,23 +3,23 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Arena Sync — Romain Pitot</title>
-  <meta name="description" content="Fast-paced multiplayer arena shooter with client-side prediction and server reconciliation.">
-  <link rel="canonical" href="https://romainpitot.github.io/projects/multiplayer-arena.html">
+  <title>Falling Bot — Romain Pitot</title>
+  <meta name="description" content="Pilot an energy-constrained robot descending through caverns. Ludum Dare 48 — "Deeper and Deeper."">
+  <link rel="canonical" href="https://romainpitot.github.io/projects/falling-bot.html">
   <meta name="theme-color" content="#13161f">
   <meta property="og:type" content="website">
   <meta property="og:site_name" content="romain.pitot">
-  <meta property="og:title" content="Arena Sync — Romain Pitot">
-  <meta property="og:description" content="Fast-paced multiplayer arena shooter with client-side prediction and server reconciliation.">
-  <meta property="og:url" content="https://romainpitot.github.io/projects/multiplayer-arena.html">
+  <meta property="og:title" content="Falling Bot — Romain Pitot">
+  <meta property="og:description" content="Pilot an energy-constrained robot descending through caverns. Ludum Dare 48 — "Deeper and Deeper."">
+  <meta property="og:url" content="https://romainpitot.github.io/projects/falling-bot.html">
   <meta name="twitter:card" content="summary">
-  <meta name="twitter:title" content="Arena Sync — Romain Pitot">
-  <meta name="twitter:description" content="Fast-paced multiplayer arena shooter with client-side prediction and server reconciliation.">
+  <meta name="twitter:title" content="Falling Bot — Romain Pitot">
+  <meta name="twitter:description" content="Pilot an energy-constrained robot descending through caverns. Ludum Dare 48 — "Deeper and Deeper."">
   <link rel="icon" href="../assets/img/favicon.svg" type="image/svg+xml">
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500;700&display=swap" rel="stylesheet">
-  <link rel="stylesheet" href="../assets/css/style.css?v=412a53b4fc">
+  <link rel="stylesheet" href="../assets/css/style.css?v=424b538b07">
 <script type="application/ld+json">
   {
     "@context": "https://schema.org",
@@ -55,97 +55,97 @@
 
   <main id="main">
   <section class="container" style="padding-top:32px">
-    <div class="breadcrumb"><a href="../projects.html">&larr; Projects</a> / Arena Sync</div>
-    <div class="cover-tags" style="position:static;margin-bottom:16px"><span class="badge badge-cat-proto">Prototype</span><span class="badge ">Multiplayer</span><span class="badge badge-cat-proto">Prototype</span></div>
-    <h1 style="font-size:clamp(1.8rem,4vw,2.6rem);margin-bottom:28px">Arena Sync</h1>
+    <div class="breadcrumb"><a href="../projects.html">&larr; Projects</a> / Falling Bot</div>
+    <div class="cover-tags" style="position:static;margin-bottom:16px"><span class="badge badge-cat-released">Released</span><span class="badge badge-cat-jam">Game Jam</span><span class="badge ">Arcade</span></div>
+    <h1 style="font-size:clamp(1.8rem,4vw,2.6rem);margin-bottom:28px">Falling Bot</h1>
 
-    <div class="detail-cover cover-prototype">
-      <span class="cover-category">Prototype</span>
+    <div class="detail-cover cover-gamejam">
+      <span class="cover-category">Game Jam</span>
       <span class="cover-icon"><svg class="icon cover-icon" viewBox="0 0 24 24"><path d="M22 19a2 2 0 0 1-2 2H4a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h5l2 3h9a2 2 0 0 1 2 2z"/></svg></span>
     </div>
 
-    <div class="detail-meta-grid"><div><span class="detail-meta-label">Category</span><span class="detail-meta-value">Prototype</span></div><div><span class="detail-meta-label">Engine</span><span class="detail-meta-value">Unity</span></div><div><span class="detail-meta-label">Platform</span><span class="detail-meta-value">PC</span></div><div><span class="detail-meta-label">Role</span><span class="detail-meta-value">Netcode Programmer</span></div><div><span class="detail-meta-label">Duration</span><span class="detail-meta-value">2 months</span></div><div><span class="detail-meta-label">Team</span><span class="detail-meta-value">2 devs</span></div><div><span class="detail-meta-label">Status</span><span class="detail-meta-value">Prototype</span></div><div><span class="detail-meta-label">Year</span><span class="detail-meta-value">2023</span></div></div>
+    <div class="detail-meta-grid"><div><span class="detail-meta-label">Category</span><span class="detail-meta-value">Game Jam</span></div><div><span class="detail-meta-label">Engine</span><span class="detail-meta-value">Unity</span></div><div><span class="detail-meta-label">Platform</span><span class="detail-meta-value">PC</span></div><div><span class="detail-meta-label">Role</span><span class="detail-meta-value">VFX & UI</span></div><div><span class="detail-meta-label">Duration</span><span class="detail-meta-value">48 hours</span></div><div><span class="detail-meta-label">Team</span><span class="detail-meta-value">3 devs</span></div><div><span class="detail-meta-label">Status</span><span class="detail-meta-value">Released</span></div><div><span class="detail-meta-label">Year</span><span class="detail-meta-value">2021</span></div></div>
 
     <div class="detail-section">
       <h2 data-i18n-skip>Overview</h2>
-      <p>A real-time multiplayer arena prototype exploring netcode fundamentals. Implements client-side prediction, server authority, and lag compensation. Built with Unity Netcode for GameObjects and a custom rollback buffer.</p>
+      <p>Pilot a robot descending through caverns while managing limited fuel and dodging or destroying obstacles — run out of fuel or crash, and it's game over. Built during Ludum Dare 48 on the theme "Deeper and Deeper." Worked on visual effects and UI.</p>
     </div>
 
     <div class="detail-section">
       <h2 data-i18n-skip>Highlights</h2>
-      <ul><li>Client-side prediction</li><li>Server reconciliation</li><li>Lag compensation</li></ul>
+      <ul><li>Ludum Dare 48 — "Deeper and Deeper"</li><li>Fuel-management risk/reward loop</li><li>Visual effects and UI</li></ul>
     </div>
 
     <div class="detail-section">
       <h2 data-i18n-skip>Key Systems</h2>
-      <div class="tag-row"><span class="tag">Rollback Buffer</span><span class="tag">Input Serializer</span><span class="tag">State Snapshot System</span><span class="tag">Lobby Manager</span></div>
+      <div class="tag-row"><span class="tag">Fuel/Resource Management</span><span class="tag">Obstacle Spawner</span></div>
     </div>
 
     <div class="detail-section">
       <h2 data-i18n-skip>Technologies</h2>
-      <div class="tag-row"><span class="tag">C#</span><span class="tag">Unity</span><span class="tag">Multiplayer</span><span class="tag">Netcode</span><span class="tag">NGO</span></div>
+      <div class="tag-row"><span class="tag">C#</span><span class="tag">Unity</span><span class="tag">VFX</span><span class="tag">UGUI</span></div>
     </div>
 
     <div class="detail-section">
       <h2 data-i18n-skip>Links</h2>
-      <div class="detail-links"><a class="btn btn-outline btn-sm" href="https://github.com" target="_blank" rel="noreferrer"><svg class="icon" viewBox="0 0 24 24"><path d="M9 19c-5 1.5-5-2.5-7-3m14 6v-3.87a3.37 3.37 0 0 0-.94-2.61c3.14-.35 6.44-1.54 6.44-7A5.44 5.44 0 0 0 20 4.77 5.07 5.07 0 0 0 19.91 1S18.73.65 16 2.48a13.38 13.38 0 0 0-7 0C6.27.65 5.09 1 5.09 1A5.07 5.07 0 0 0 5 4.77a5.44 5.44 0 0 0-1.5 3.78c0 5.42 3.3 6.61 6.44 7A3.37 3.37 0 0 0 9 18.13V22"/></svg> GitHub</a></div>
+      <div class="detail-links"><a class="btn btn-outline btn-sm" href="https://phobosrandom.itch.io/falling-bot" target="_blank" rel="noreferrer"><svg class="icon" viewBox="0 0 24 24"><polygon points="5 3 19 12 5 21 5 3"/></svg> Play on itch.io</a></div>
     </div>
   </section>
 
   <section class="section container">
     <div class="section-head"><h2 class="section-title" data-i18n-skip>Other projects</h2></div>
-    <div class="other-projects"><a class="card project-card reveal" data-project-card data-title="Echoes of the Rift" data-year="2024"
-     data-tags="Game Jam|Game Jam|Procedural|AI" href="../projects/echoes-of-the-rift.html">
-    <div class="project-cover cover-gamejam">
-      <div class="cover-tags"><span class="badge badge-cat-jam">Game Jam</span><span class="badge badge-cat-jam">Game Jam</span><span class="badge ">Procedural</span></div>
-      <div class="project-view"><svg class="icon" viewBox="0 0 24 24"><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"/><polyline points="15 3 21 3 21 9"/><line x1="10" y1="14" x2="21" y2="3"/></svg> View Project</div>
-      <span class="cover-icon"><svg class="icon cover-icon" viewBox="0 0 24 24"><path d="M22 19a2 2 0 0 1-2 2H4a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h5l2 3h9a2 2 0 0 1 2 2z"/></svg></span>
-    </div>
-    <div class="project-body">
-      <div class="project-title-row"><h3>Echoes of the Rift</h3><span class="project-year">2024</span></div>
-      <p class="project-desc">Top-down action RPG with procedurally generated dungeons and a modular ability system.</p>
-      <div class="project-meta">
-        <span><svg class="icon" viewBox="0 0 24 24"><rect x="2" y="3" width="20" height="14" rx="2" ry="2"/><line x1="8" y1="21" x2="16" y2="21"/><line x1="12" y1="17" x2="12" y2="21"/></svg> Unity</span>
-        <span><svg class="icon" viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg> 72 hours</span>
-        <span><svg class="icon" viewBox="0 0 24 24"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></svg> 3 devs</span>
-      </div>
-      <div class="tag-row"><span class="tag">C#</span><span class="tag">Unity</span><span class="tag">Procedural Generation</span><span class="tag">AI</span><span class="tag tag-more">+1</span></div>
-    </div>
-  </a>
-<a class="card project-card reveal" data-project-card data-title="Nexus Tower Defense" data-year="2024"
-     data-tags="Prototype|Tools|AI|Prototype" href="../projects/nexus-tower-defense.html">
-    <div class="project-cover cover-prototype">
-      <div class="cover-tags"><span class="badge badge-cat-proto">Prototype</span><span class="badge badge-cat-tool">Tools</span><span class="badge ">AI</span></div>
-      <div class="project-view"><svg class="icon" viewBox="0 0 24 24"><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"/><polyline points="15 3 21 3 21 9"/><line x1="10" y1="14" x2="21" y2="3"/></svg> View Project</div>
-      <span class="cover-icon"><svg class="icon cover-icon" viewBox="0 0 24 24"><path d="M22 19a2 2 0 0 1-2 2H4a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h5l2 3h9a2 2 0 0 1 2 2z"/></svg></span>
-    </div>
-    <div class="project-body">
-      <div class="project-title-row"><h3>Nexus Tower Defense</h3><span class="project-year">2024</span></div>
-      <p class="project-desc">Strategic tower defense with advanced path-finding, tower upgrade trees, and wave scripting.</p>
-      <div class="project-meta">
-        <span><svg class="icon" viewBox="0 0 24 24"><rect x="2" y="3" width="20" height="14" rx="2" ry="2"/><line x1="8" y1="21" x2="16" y2="21"/><line x1="12" y1="17" x2="12" y2="21"/></svg> Unity</span>
-        <span><svg class="icon" viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg> 3 months</span>
-        <span><svg class="icon" viewBox="0 0 24 24"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></svg> Solo</span>
-      </div>
-      <div class="tag-row"><span class="tag">C#</span><span class="tag">Unity</span><span class="tag">A*</span><span class="tag">Design Patterns</span><span class="tag tag-more">+1</span></div>
-    </div>
-  </a>
-<a class="card project-card reveal" data-project-card data-title="Modular Inventory System" data-year="2024"
-     data-tags="Tool|Tools|Unity" href="../projects/inventory-system-tool.html">
+    <div class="other-projects"><a class="card project-card reveal" data-project-card data-title="The Legend of Mulu" data-year="2023"
+     data-tags="Work|Work|Adventure" href="../projects/legend-of-mulu.html">
     <div class="project-cover cover-tool">
-      <div class="cover-tags"><span class="badge badge-cat-released">Released</span><span class="badge badge-cat-tool">Tools</span><span class="badge ">Unity</span></div>
+      <div class="cover-tags"><span class="badge badge-cat-released">Released</span><span class="badge badge-cat-tool">Work</span><span class="badge ">Adventure</span></div>
       <div class="project-view"><svg class="icon" viewBox="0 0 24 24"><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"/><polyline points="15 3 21 3 21 9"/><line x1="10" y1="14" x2="21" y2="3"/></svg> View Project</div>
       <span class="cover-icon"><svg class="icon cover-icon" viewBox="0 0 24 24"><path d="M22 19a2 2 0 0 1-2 2H4a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h5l2 3h9a2 2 0 0 1 2 2z"/></svg></span>
     </div>
     <div class="project-body">
-      <div class="project-title-row"><h3>Modular Inventory System</h3><span class="project-year">2024</span></div>
-      <p class="project-desc">Reusable data-driven inventory framework with drag-and-drop, item stacking, and serialization.</p>
+      <div class="project-title-row"><h3>The Legend of Mulu</h3><span class="project-year">2023</span></div>
+      <p class="project-desc">Exploration game on The Sandbox: a young girl tracks down sorcerers who stole her village's sacred artifacts.</p>
+      <div class="project-meta">
+        <span><svg class="icon" viewBox="0 0 24 24"><rect x="2" y="3" width="20" height="14" rx="2" ry="2"/><line x1="8" y1="21" x2="16" y2="21"/><line x1="12" y1="17" x2="12" y2="21"/></svg> The Sandbox / Unity</span>
+        <span><svg class="icon" viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg> Work-study</span>
+        <span><svg class="icon" viewBox="0 0 24 24"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></svg> 2 devs</span>
+      </div>
+      <div class="tag-row"><span class="tag">C#</span><span class="tag">Unity</span><span class="tag">The Sandbox</span><span class="tag">Level Design</span></div>
+    </div>
+  </a>
+<a class="card project-card reveal" data-project-card data-title="Kissoro Tribal Game" data-year="2023"
+     data-tags="Work|Work|Mobile" href="../projects/kissoro.html">
+    <div class="project-cover cover-tool">
+      <div class="cover-tags"><span class="badge badge-cat-released">Released</span><span class="badge badge-cat-tool">Work</span><span class="badge ">Mobile</span></div>
+      <div class="project-view"><svg class="icon" viewBox="0 0 24 24"><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"/><polyline points="15 3 21 3 21 9"/><line x1="10" y1="14" x2="21" y2="3"/></svg> View Project</div>
+      <span class="cover-icon"><svg class="icon cover-icon" viewBox="0 0 24 24"><path d="M22 19a2 2 0 0 1-2 2H4a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h5l2 3h9a2 2 0 0 1 2 2z"/></svg></span>
+    </div>
+    <div class="project-body">
+      <div class="project-title-row"><h3>Kissoro Tribal Game</h3><span class="project-year">2023</span></div>
+      <p class="project-desc">African strategy board game on mobile — migrated from Unity 2018 to 2022 and stabilized across devices.</p>
       <div class="project-meta">
         <span><svg class="icon" viewBox="0 0 24 24"><rect x="2" y="3" width="20" height="14" rx="2" ry="2"/><line x1="8" y1="21" x2="16" y2="21"/><line x1="12" y1="17" x2="12" y2="21"/></svg> Unity</span>
-        <span><svg class="icon" viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg> 6 weeks</span>
+        <span><svg class="icon" viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg> Work-study</span>
         <span><svg class="icon" viewBox="0 0 24 24"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></svg> Solo</span>
       </div>
-      <div class="tag-row"><span class="tag">C#</span><span class="tag">Unity</span><span class="tag">ScriptableObjects</span><span class="tag">UGUI</span><span class="tag tag-more">+1</span></div>
+      <div class="tag-row"><span class="tag">C#</span><span class="tag">Unity</span><span class="tag">Mobile</span></div>
+    </div>
+  </a>
+<a class="card project-card reveal" data-project-card data-title="Vaudoo" data-year="2023"
+     data-tags="Work|Work|Mobile" href="../projects/vaudoo.html">
+    <div class="project-cover cover-tool">
+      <div class="cover-tags"><span class="badge badge-cat-released">Released</span><span class="badge badge-cat-tool">Work</span><span class="badge ">Mobile</span></div>
+      <div class="project-view"><svg class="icon" viewBox="0 0 24 24"><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"/><polyline points="15 3 21 3 21 9"/><line x1="10" y1="14" x2="21" y2="3"/></svg> View Project</div>
+      <span class="cover-icon"><svg class="icon cover-icon" viewBox="0 0 24 24"><path d="M22 19a2 2 0 0 1-2 2H4a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h5l2 3h9a2 2 0 0 1 2 2z"/></svg></span>
+    </div>
+    <div class="project-body">
+      <div class="project-title-row"><h3>Vaudoo</h3><span class="project-year">2023</span></div>
+      <p class="project-desc">Mobile action-strategy game: a presidential candidate raises the dead to win an election, then fights the zombie apocalypse.</p>
+      <div class="project-meta">
+        <span><svg class="icon" viewBox="0 0 24 24"><rect x="2" y="3" width="20" height="14" rx="2" ry="2"/><line x1="8" y1="21" x2="16" y2="21"/><line x1="12" y1="17" x2="12" y2="21"/></svg> Unity</span>
+        <span><svg class="icon" viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg> A few weeks</span>
+        <span><svg class="icon" viewBox="0 0 24 24"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></svg> Solo</span>
+      </div>
+      <div class="tag-row"><span class="tag">C#</span><span class="tag">Unity</span><span class="tag">Mobile</span><span class="tag">UGUI</span></div>
     </div>
   </a>
 </div>
@@ -164,7 +164,7 @@
     </div>
   </footer>
 
-  <script src="../assets/js/i18n.js?v=412a53b4fc"></script>
-  <script src="../assets/js/main.js?v=412a53b4fc"></script>
+  <script src="../assets/js/i18n.js?v=424b538b07"></script>
+  <script src="../assets/js/main.js?v=424b538b07"></script>
 </body>
 </html>
