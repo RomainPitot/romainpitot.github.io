@@ -11,8 +11,8 @@ window.PITOT_I18N = {
     },
     home: {
       featured_title: "Latest Projects",
-      featured_subtitle: "The three most recent — all twelve are on the projects page",
-      view_all: "View all 12",
+      featured_subtitle: "The three most recent — all thirteen are on the projects page",
+      view_all: "View all 13",
       systems_title: "Technical Systems",
       systems_subtitle: "Architecture deep-dives & production-ready frameworks",
       all_systems: "All systems",
@@ -70,8 +70,8 @@ window.PITOT_I18N = {
     },
     home: {
       featured_title: "Derniers Projets",
-      featured_subtitle: "Les trois plus récents — les douze sont sur la page projets",
-      view_all: "Voir les 12",
+      featured_subtitle: "Les trois plus récents — les treize sont sur la page projets",
+      view_all: "Voir les 13",
       systems_title: "Systèmes Techniques",
       systems_subtitle: "Approfondissements techniques & frameworks prêts pour la production",
       all_systems: "Tous les systèmes",

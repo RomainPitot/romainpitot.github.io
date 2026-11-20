@@ -229,16 +229,30 @@ PROJECTS = [
     # --- Personal ---
     {
         "id": "global-invasion", "title": "Global Invasion",
-        "shortDesc": "Co-op FPS: a team of exterminators investigates infested houses by day and survives them by night.",
-        "description": "A cooperative FPS where you play a team of exterminators sent to infested houses. Investigate during daylight to identify pests and locate nests, then survive creature encounters at night through cooperation and improvisation. A solo personal project built from scratch in free time to explore multiplayer systems end to end.",
+        "shortDesc": "Steam co-op for 1-4 players: exterminators investigate infested houses by day and survive the swarm by night.",
+        "description": "A cooperative first-person game for one to four players, in the spirit of Phasmophobia and Lethal Company. A team of pest-control agents investigates an infested home by day, hunting clues to find the hidden nest, then prepares and survives the night while the nest breeds, before destroying it at dawn. Steam lobbies and invitations, team votes on contracts, a supply truck shop, tools in hand (broom, UV lamp, spray, sticky traps, radio) and a swarm simulated locally on each machine so hundreds of insects stay cheap over the network. A solo personal project built from scratch to explore multiplayer systems end to end.",
         "category": "Personal", "engine": "Unity", "platform": "PC", "role": "Solo Developer",
-        "status": "WIP", "year": 2025, "duration": "Ongoing", "teamSize": 1,
-        "technologies": ["C#", "Unity", "Multiplayer", "Netcode"],
+        "status": "WIP", "year": 2026, "duration": "Ongoing", "teamSize": 1,
+        "technologies": ["C#", "Unity 6", "Netcode for GameObjects", "Steamworks", "Multiplayer"],
         "tags": ["Personal", "Multiplayer"], "featured": False,
         "links": {},
-        "highlights": ["Day/night investigate-then-survive loop", "Co-op multiplayer built from scratch", "Solo end-to-end development"],
-        "keySystems": ["Day/Night Cycle", "Nest/Infestation Simulation", "Co-op Netcode"],
+        "highlights": ["Day/night investigate-then-survive loop", "Steam co-op lobby, voting and networked missions", "Locally simulated swarm: events over the wire, not insects"],
+        "keySystems": ["Mission Clock (day/night)", "Random Nest & Clue Draw", "Swarm Simulation", "Co-op Netcode"],
         "image": "global-invasion-1.jpg",
+    },
+    {
+        "id": "on-air", "title": "On Air",
+        "shortDesc": "Live TV, 1978, seven-second delay: you direct the control room and cut everything before it airs. Epic AI MegaJam 2026 — \"Director's Cut.\"",
+        "description": "Unreal Engine 5 game made in five days for the Epic AI MegaJam 2026 (theme \"Director's Cut\"). You are the director of a tiny 1978 TV channel: everything the studio films shows on your PREVIEW monitor seven seconds before it goes on air. Bleep the swears on the tape, blur the rival brand, cut to another camera when a streaker runs in, and keep complaints down while ratings go up — except the audience secretly loves a scandal. Three live nights add one new tool or rule each, and the game ends on the Director's Cut: the version that never aired. Solo entry, with AI tools declared on the submission page.",
+        "category": "Game Jam", "engine": "Unreal", "platform": "PC", "role": "Solo Developer",
+        "status": "Released", "year": 2026, "duration": "5 days", "teamSize": 1,
+        "technologies": ["C++", "Unreal Engine 5", "UMG", "Game Jam"],
+        "tags": ["Game Jam", "Arcade"], "featured": False,
+        "links": {"itch": "https://romain-pitot.itch.io/on-air", "video": "https://youtu.be/pXM-Qu8bEsg"},
+        "highlights": ["Epic AI MegaJam 2026 — \"Director's Cut\"", "7-second broadcast delay as the core mechanic", "Rules that change each night, with decoys you must let air"],
+        "keySystems": ["Delayed Broadcast Tape", "Incident Scoring", "Nightly Rule Set"],
+        "image": "on-air-1.jpg",
+        "gallery": ["on-air-2.jpg", "on-air-3.jpg"],
     },
 ]
 
@@ -389,6 +403,8 @@ def project_link_buttons(links, size_cls="btn-sm"):
         out.append('<a class="btn btn-outline %s" href="%s" target="_blank" rel="noreferrer">%s GitHub</a>' % (size_cls, links["github"], icon("github")))
     if links.get("itch"):
         out.append('<a class="btn btn-outline %s" href="%s" target="_blank" rel="noreferrer">%s Play on itch.io</a>' % (size_cls, links["itch"], icon("play")))
+    if links.get("video"):
+        out.append('<a class="btn btn-outline %s" href="%s" target="_blank" rel="noreferrer">%s Watch the trailer</a>' % (size_cls, links["video"], icon("play")))
     if links.get("playstore"):
         out.append('<a class="btn btn-outline %s" href="%s" target="_blank" rel="noreferrer">%s Get it on Google Play</a>' % (size_cls, links["playstore"], icon("external-link")))
     if links.get("demo"):
@@ -785,7 +801,7 @@ def build_home():
 
   <section class="stats-bar">
     <div class="container stats-grid">
-      <div class="stat"><div class="stat-num"><span data-count-to="12">0</span></div><div class="stat-label">Projects Shipped</div></div>
+      <div class="stat"><div class="stat-num"><span data-count-to="13">0</span></div><div class="stat-label">Projects Shipped</div></div>
       <div class="stat"><div class="stat-num"><span data-count-to="4">0</span></div><div class="stat-label">Game Jams</div></div>
       <div class="stat"><div class="stat-num"><span data-count-to="7">0</span>+</div><div class="stat-label">Years On Unity</div></div>
       <div class="stat"><div class="stat-num"><span data-count-to="2">0</span></div><div class="stat-label">Live On Google Play</div></div>
@@ -818,8 +834,8 @@ def build_home():
         "head": section_head(
             "01", "Recent work",
             '<h2 class="section-title shiny" data-i18n="home.featured_title">Latest Projects</h2>',
-            '<p class="section-sub" data-i18n="home.featured_subtitle">The three most recent &mdash; all twelve are on the projects page</p>',
-            '<a class="section-link" href="projects.html"><span data-i18n="home.view_all">View all 12</span> %s</a>' % icon("arrow-right"),
+            '<p class="section-sub" data-i18n="home.featured_subtitle">The three most recent &mdash; all thirteen are on the projects page</p>',
+            '<a class="section-link" href="projects.html"><span data-i18n="home.view_all">View all 13</span> %s</a>' % icon("arrow-right"),
         ),
         "cards": featured_cards,
     }
@@ -943,7 +959,7 @@ def build_projects_listing():
     <span class="eyebrow" data-i18n-skip>Portfolio</span>
     <h1 data-i18n="projects.title">Projects</h1>
     <p data-i18n="projects.subtitle">Everything I've shipped &mdash; studio work, school projects, jams and one long-running solo build.</p>
-    <div class="page-meta font-mono">12 projects &nbsp;&middot;&nbsp; 2020 &rarr; 2025 &nbsp;&middot;&nbsp; Unity &middot; C# &middot; The Sandbox</div>
+    <div class="page-meta font-mono">13 projects &nbsp;&middot;&nbsp; 2020 &rarr; 2026 &nbsp;&middot;&nbsp; Unity &middot; Unreal &middot; C# &middot; C++ &middot; The Sandbox</div>
   </section>
   <section class="section-tight container" data-filter-bar>
     <div class="filter-bar">
