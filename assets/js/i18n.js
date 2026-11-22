@@ -12,7 +12,7 @@ window.PITOT_I18N = {
     },
     home: {
       featured_title: "Selected Projects",
-      featured_subtitle: "A game in progress, a jam in five days, a live web app — the full list is on the projects page",
+      featured_subtitle: "A game in progress, a jam entry, a live web app — the full list is on the projects page",
       view_all: "View all projects",
       systems_title: "Code you can read",
       systems_subtitle: "Real extracts from my current game, with the reasoning behind them",
@@ -72,7 +72,7 @@ window.PITOT_I18N = {
     },
     home: {
       featured_title: "Projets sélectionnés",
-      featured_subtitle: "Un jeu en cours, une jam en cinq jours, une appli web en ligne — la liste complète est sur la page projets",
+      featured_subtitle: "Un jeu en cours, une participation à une jam, une appli web en ligne — la liste complète est sur la page projets",
       view_all: "Voir tous les projets",
       systems_title: "Du code à lire",
       systems_subtitle: "De vrais extraits de mon jeu en cours, avec le raisonnement derrière",

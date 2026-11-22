@@ -69,7 +69,7 @@ ENRICH = {
         "status": "Archived",
         "links": {},
         "description": "An African strategy board game — \"a game that has traveled through centuries and continents\" — on mobile with single- and multiplayer modes. The original game was created by Masseka years before I joined; I took over its post-production: migrated the project from Unity 2018 to Unity 2022, fixed the regressions that migration caused along with older bugs, and made the UI adapt to different devices.",
-        "note": "No longer available: the title was removed from the stores because it had not been updated in a long time (the studio says so on its own site).",
+        "note": "One of the two games I spent most of my work-study on. It is no longer listed on the stores (the studio removed it after a long time without updates), so there is no link; the work is described here.",
         "challenges": [
             ("A migration that fixes some bugs and creates others",
              "Moving a 2018 codebase to Unity 2022 changed APIs and behaviours. It cleared long-standing problems but introduced new ones, on top of a UI that had to hold up on very different screens.",
@@ -79,8 +79,8 @@ ENRICH = {
     "vaudoo": {
         "shortDesc": "Mobile zombie shooter on Google Play: a presidential candidate raises the dead to win an election, then fights the apocalypse.",
         "description": "A presidential candidate, desperate to win an election, turns to a mystic to make the dead vote — but the revived souls become flesh-hungry zombies, and he has to fight to save the country. A mobile shooter with several environments, upgrades and weapons. I joined for a short work-study stint, a few weeks while waiting for the next project, to fix bugs and make the UI adapt properly to different screen sizes.",
-        "facts": [("Google Play", "1k+ downloads"), ("Store rating", "3.0 ★ · 37 reviews")],
-        "note": "Store figures are the game's own public numbers (Google Play, November 2026), not a measure of my share of the work, which was a few weeks of maintenance.",
+        "facts": [("Google Play", "1k+ downloads")],
+        "note": "The download figure is the game's own public number (Google Play, November 2026), not a measure of my share of the work, which was a few weeks of maintenance.",
         "keySystems": ["Adaptive UI", "Bug-fixing pass"],
     },
     "little-cup": {
@@ -125,9 +125,9 @@ ENRICH = {
         "role": "Solo Developer (AI-assisted)",
         "note": "Made during the Epic AI MegaJam, where using AI tools is part of the brief and the process has to be documented. I designed the game and directed the build; Claude Code wrote much of the C++ under my review, and the dev log is public.",
         "retro": {
-            "constraint": "Five days, solo, with AI tools declared and a public dev log required, on the theme \"Director's Cut\".",
+            "constraint": "A jam window of several days, but I could only work about one day of it. Solo, with AI tools declared and a public dev log required, on the theme \"Director's Cut\".",
             "built": "The design (the 7-second delay as the core mechanic), the architecture, and the integration and playtesting of everything the AI generated.",
-            "redo": "I would start outside playtests a day earlier. The nightly rule changes are the part a new player has to learn, and I only saw how readable they were once the loop was complete.",
+            "redo": "With so little time I would have cut a night of content and used the hours for outside playtests. The nightly rule changes are the part a new player has to learn, and I only saw how readable they were once the loop was complete.",
         },
         "challenges": [
             ("A 7-second broadcast delay without a video buffer",
@@ -155,7 +155,7 @@ ENRICH = {
 }
 
 # Home page picks (explicit, mixes game and non-game work)
-HOME_FEATURED = ["global-invasion", "on-air", "climb-euw"]
+HOME_FEATURED = ["global-invasion", "kissoro", "legend-of-mulu", "on-air", "climb-euw", "vaudoo"]
 
 # Project order shown on the listing: current work first, then the rest.
 # (Pager follows PROJECTS order, which build.py keeps as written.)

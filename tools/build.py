@@ -256,9 +256,9 @@ PROJECTS = [
     {
         "id": "on-air", "title": "On Air",
         "shortDesc": "Live TV, 1978, seven-second delay: you direct the control room and cut everything before it airs. Epic AI MegaJam 2026 — \"Director's Cut.\"",
-        "description": "Unreal Engine 5 game made in five days for the Epic AI MegaJam 2026 (theme \"Director's Cut\"). You are the director of a tiny 1978 TV channel: everything the studio films shows on your PREVIEW monitor seven seconds before it goes on air. Bleep the swears on the tape, blur the rival brand, cut to another camera when a streaker runs in, and keep complaints down while ratings go up — except the audience secretly loves a scandal. Three live nights add one new tool or rule each, and the game ends on the Director's Cut: the version that never aired. Solo entry, with AI tools declared on the submission page.",
+        "description": "Unreal Engine 5 game made for the Epic AI MegaJam 2026, in about one day of actual work inside the jam window (I was unavailable for much of it) (theme \"Director's Cut\"). You are the director of a tiny 1978 TV channel: everything the studio films shows on your PREVIEW monitor seven seconds before it goes on air. Bleep the swears on the tape, blur the rival brand, cut to another camera when a streaker runs in, and keep complaints down while ratings go up — except the audience secretly loves a scandal. Three live nights add one new tool or rule each, and the game ends on the Director's Cut: the version that never aired. Solo entry, with AI tools declared on the submission page.",
         "category": "Game Jam", "engine": "Unreal", "platform": "PC", "role": "Solo Developer",
-        "status": "Released", "year": 2026, "duration": "5 days", "teamSize": 1,
+        "status": "Released", "year": 2026, "duration": "~1 day of work", "teamSize": 1,
         "technologies": ["C++", "Unreal Engine 5", "UMG", "Game Jam"],
         "tags": ["Game Jam", "Arcade"], "featured": False,
         "links": {"itch": "https://romain-pitot.itch.io/on-air", "video": "https://youtu.be/pXM-Qu8bEsg"},
@@ -662,14 +662,7 @@ def build_home():
     depth = ""
 
     hero = """<section class="hero">
-    <div class="hero-bg" aria-hidden="true">
-      <div class="grid-layer"></div>
-      <div class="orb orb-primary"></div>
-      <div class="orb orb-accent"></div>
-      <div class="orb orb-violet"></div>
-    </div>
-    <div class="cursor-glow" aria-hidden="true"></div>
-    <div class="cursor-dot" aria-hidden="true"></div>
+    <div class="hero-bg" aria-hidden="true"></div>
     <div class="container">
       <span class="hero-role" data-i18n="hero.title">Gameplay Programmer</span>
       <h1 class="text-glow" data-decrypt><span class="decrypt-seg">Romain</span> <span class="accent decrypt-seg">Pitot</span></h1>
@@ -696,7 +689,7 @@ def build_home():
       <div class="stat"><div class="stat-num"><span data-count-to="%(n)d">%(n)d</span></div><div class="stat-label">Projects built</div></div>
       <div class="stat"><div class="stat-num"><span data-count-to="5">5</span></div><div class="stat-label">Game jams</div></div>
       <div class="stat"><div class="stat-num"><span data-count-to="7">7</span>+</div><div class="stat-label">Years on Unity</div></div>
-      <div class="stat"><div class="stat-num"><span data-count-to="1">1</span>k+</div><div class="stat-label">Downloads on Google Play (Vaudoo)</div></div>
+      <div class="stat"><div class="stat-num"><span data-count-to="1">1</span>k+</div><div class="stat-label">Downloads on Google Play (one title)</div></div>
     </div>
   </section>
 
@@ -728,7 +721,7 @@ def build_home():
         "head": section_head(
             "01", "Selected work",
             '<h2 class="section-title shiny" data-i18n="home.featured_title">Selected Projects</h2>',
-            '<p class="section-sub" data-i18n="home.featured_subtitle">A game in progress, a jam in five days, a live web app &mdash; the full list is on the projects page</p>',
+            '<p class="section-sub" data-i18n="home.featured_subtitle">A game in progress, a jam entry, a live web app &mdash; the full list is on the projects page</p>',
             '<a class="section-link" href="projects.html"><span data-i18n="home.view_all">View all projects</span> %s</a>' % icon("arrow-right"),
         ),
         "cards": featured_cards,
@@ -776,7 +769,7 @@ def build_home():
     about_html = """<section class="section" style="background:hsl(var(--background-deep) / .4)">
     <div class="container">
       %(head)s
-      <p class="lead-in reveal-words" style="margin-bottom:36px">I'm Romain, a developer based in Toulouse. Two years of work-study at Masseka Games Studio on mobile games, a Master's in game development, five game jams &mdash; and a co-op Steam game I'm building solo, with lobbies, netcode and about eighty unit tests.</p>
+      <p class="lead-in reveal-words" style="margin-bottom:36px">I'm Romain, a developer based in Toulouse. Two years of work-study at Masseka Games Studio on mobile games, a Master's in game development, five game jams &mdash; and a co-op Steam game I'm building solo, with lobbies, netcode and game rules covered by tests.</p>
       <div class="two-col">
         <div class="avatar-row reveal">
           <div class="avatar-box">%(user_icon)s</div>
@@ -824,7 +817,7 @@ def build_home():
     body = hero + featured_html + systems_html + skills_html + about_html + cta_html
     write("index.html", page(
         "%s — Unity / C# Developer, Toulouse" % AUTHOR,
-        "Romain Pitot, Unity and C# developer in Toulouse. Gameplay systems, co-op multiplayer and tools. A game live on Google Play, a Steam co-op game in progress. Open to work.",
+        "Romain Pitot, Unity and C# developer in Toulouse. Gameplay systems, co-op multiplayer and tools. Two mobile games shipped on Google Play, a Steam co-op game in progress. Open to work.",
         "home", depth, body, "",
     ))
 
@@ -885,7 +878,12 @@ def render_facts(p):
 
 def render_challenges(p):
     if not p.get("challenges"):
-        return ""
+        # Visible only to the owner (open any page once with ?owner=1): a reminder
+        # to fill in a real challenge. Nothing is shown to visitors.
+        return ('<div class="detail-section owner-todo" data-owner-only hidden><h2 data-i18n-skip>Technical challenge '
+                '<span class="owner-tag">TODO (visible only to you)</span></h2>'
+                '<div class="challenge"><dl><dt>The problem</dt><dd>What was hard here? One concrete obstacle.</dd>'
+                '<dt>What I did</dt><dd>How you solved it, in two sentences. Add it in tools/content_extra.py (ENRICH, "challenges").</dd></dl></div></div>')
     items = "".join(
         '<div class="challenge"><h3>%s</h3><dl><dt>The problem</dt><dd>%s</dd><dt>What I did</dt><dd>%s</dd></dl></div>' % c
         for c in p["challenges"]
@@ -896,7 +894,11 @@ def render_challenges(p):
 def render_retro(p):
     r = p.get("retro")
     if not r:
-        return ""
+        if p.get("category") != "Game Jam":
+            return ""
+        return ('<div class="detail-section owner-todo" data-owner-only hidden><h2 data-i18n-skip>Jam retrospective '
+                '<span class="owner-tag">TODO (visible only to you)</span></h2>'
+                '<p>Constraint, what you built, what you would redo. Add it in tools/content_extra.py (ENRICH, "retro").</p></div>')
     return """<div class="detail-section"><h2 data-i18n-skip>Jam retrospective</h2>
       <div class="retro-grid">
         <div class="retro-card"><h3>The constraint</h3><p>%(constraint)s</p></div>
@@ -1081,7 +1083,7 @@ def build_about():
       <div class="reveal about-text">
         <p class="about-lead">I'm Romain. I write Unity and C#, and I like turning a game rule into code that can be tested.</p>
         <p>I spent two years in work-study at Masseka Games Studio in Toulouse, mostly on mobile games: migrating <em>Kissoro</em> from Unity 2018 to 2022, fixing bugs and making the UI adapt to different screens on <em>Vaudoo</em> (now at 1k+ downloads on Google Play), reviving an abandoned prototype on my own, and adapting a game to The Sandbox's constraints.</p>
-        <p>Outside the studio I took part in five game jams, and I am building <em>Global Invasion</em> alone: a Steam co-op game with lobbies, Netcode for GameObjects and about eighty unit tests. I also made a React web app (CLIMB.EUW) and a Python Windows tool that work together, which is why I am open to any developer role and not only games.</p>
+        <p>Outside the studio I took part in five game jams, and I am building <em>Global Invasion</em> alone: a Steam co-op game with lobbies, Netcode for GameObjects and its rules covered by unit tests. I also made a React web app (CLIMB.EUW) and a Python Windows tool that work together, which is why I am open to any developer role and not only games.</p>
         <h2 class="about-h">How I work</h2>
         <ul class="about-list">
           <li>Game rules in plain C# with time and randomness passed in, so they can be tested without launching the game. Network and engine classes stay thin.</li>
