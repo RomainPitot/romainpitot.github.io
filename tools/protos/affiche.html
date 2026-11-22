@@ -1,0 +1,27 @@
+<!DOCTYPE html>
+<html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<meta name="robots" content="noindex"><title>Prototype B — Affiche</title>
+<style>
+:root{--o:#ff5a1f}
+*{box-sizing:border-box}body{margin:0;background:#fff;color:#000;font-family:Impact,'Arial Narrow Bold','Arial Narrow',sans-serif;overflow-x:hidden}
+.bar{background:#000;color:var(--o);font:13px ui-monospace,Consolas,monospace;display:flex;gap:30px;padding:9px 20px;white-space:nowrap;overflow:hidden}
+.bar b{font-weight:400;animation:slide 18s linear infinite;display:flex;gap:30px}@keyframes slide{to{transform:translateX(-50%)}}
+.hero{position:relative;display:grid;grid-template-columns:1fr 24vw;min-height:88vh;border-bottom:4px solid #000}
+.hero h1{margin:0;font-weight:400;font-size:clamp(80px,19vw,300px);line-height:.84;padding:3vw;text-transform:uppercase;letter-spacing:-.01em}
+.hero aside{background:var(--o);padding:20px;display:flex;flex-direction:column;justify-content:space-between;font:14px ui-monospace,Consolas,monospace}
+.hero aside a{color:#000;text-decoration:none;border-bottom:2px solid #000;align-self:flex-start}
+.sub{font:15px ui-monospace,Consolas,monospace;padding:18px 3vw;border-bottom:4px solid #000;display:flex;justify-content:space-between;flex-wrap:wrap;gap:10px}
+.p{display:grid;grid-template-columns:70px 1fr 38vw;border-bottom:2px solid #000;min-height:34vh;text-decoration:none;color:inherit;position:relative;overflow:hidden}
+.p .n{font:15px ui-monospace,Consolas,monospace;padding:16px}.p h2{margin:0;font-weight:400;font-size:clamp(44px,8vw,128px);line-height:.9;text-transform:uppercase;padding:16px 0;align-self:center}
+.p img{width:100%;height:100%;object-fit:cover;filter:grayscale(1) contrast(1.15);transition:filter .3s,transform .5s}
+.p:hover{background:var(--o)}.p:hover img{filter:none;transform:scale(1.04)}.p .m{position:absolute;left:86px;bottom:12px;font:12px ui-monospace,Consolas,monospace}
+@media(max-width:760px){.hero{grid-template-columns:1fr}.p{grid-template-columns:44px 1fr}.p img{display:none}}
+</style></head><body>
+<div class="bar"><b><span>UNITY</span><span>C#</span><span>TOULOUSE</span><span>AVAILABLE NOW</span><span>15 PROJECTS</span><span>5 GAME JAMS</span><span>7 YEARS ON UNITY</span><span>UNITY</span><span>C#</span><span>TOULOUSE</span><span>AVAILABLE NOW</span><span>15 PROJECTS</span><span>5 GAME JAMS</span><span>7 YEARS ON UNITY</span></b></div>
+<header class="hero"><h1>Romain<br>Pitot</h1><aside><span>DEVELOPER<br>UNITY / C#<br>GAMEPLAY SYSTEMS<br>MULTIPLAYER<br>TOOLS</span><a href="../contact.html">CONTACT →</a></aside></header>
+<div class="sub"><span>SELECTED WORK, NEWEST FIRST</span><span><a href="../about.html" style="color:#000">ABOUT</a> · <a href="../code.html" style="color:#000">CODE</a> · <a href="index.html" style="color:#000">PROTOTYPES</a></span></div>
+<main id="l"></main>
+<script>
+const DATA=__DATA__;const l=document.getElementById('l');
+[...DATA].sort((a,b)=>b.year-a.year).forEach((p,i)=>{l.insertAdjacentHTML('beforeend',`<a class="p" href="../projects/${p.id}.html"><div class="n">${String(i+1).padStart(2,'0')}</div><h2>${p.title}</h2><img src="${p.cover}" alt="" loading="lazy"><span class="m">${p.year} · ${p.cat}</span></a>`)});
+</script></body></html>

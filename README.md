@@ -76,3 +76,16 @@ One-time setup on GitHub: **Settings → Pages → Build and deployment → Sour
 - Projects without a technical challenge (and jams without a retrospective) carry
   a hidden TODO block. Open any page once with `?owner=1` to see them in your
   browser (`?owner=0` to switch off). Visitors never see them.
+
+## Local editor (texts, images, to-dos)
+
+Double-click `Editeur.bat` (or `python tools/editor.py`, then http://localhost:8780).
+Pick a project, edit text, links, challenges, jam retrospective, cover and
+gallery, then "Save + rebuild" (live preview) and "Publish to GitHub". Edits
+are stored in `content/overrides.json` (merged by `build.py`). The red badges in
+the list are the to-dos (missing challenge, retrospective, real screenshot).
+
+## Prototypes
+
+`tools/protos/*.html` are unlisted design prototypes of the home page
+(`python tools/build_protos.py` writes them to `proto/`, `Disallow`ed in robots.txt).

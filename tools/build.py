@@ -10,6 +10,7 @@ Re-run this script after editing PROJECTS / SYSTEMS / SKILLS below, then commit
 the regenerated HTML.
 """
 import hashlib
+import json
 import os
 import re
 import sys
@@ -25,7 +26,7 @@ def _compute_asset_version():
     so browsers pick up changes immediately instead of serving a stale
     cached copy after a redeploy."""
     h = hashlib.sha256()
-    for rel in ("assets/css/style.css", "assets/js/main.js", "assets/js/i18n.js"):
+    for rel in ("assets/css/style.css", "assets/js/main.js", "assets/js/i18n.js", "assets/js/field.js"):
         path = os.path.join(ROOT, rel)
         if os.path.exists(path):
             with open(path, "rb") as f:
@@ -275,6 +276,27 @@ PROJECTS = [
 PROJECTS.extend(X.NEW_PROJECTS)
 for _p in PROJECTS:
     _p.update(X.ENRICH.get(_p["id"], {}))
+
+
+def _apply_overrides():
+    """Edits made with tools/editor.py live in content/overrides.json and win
+    over everything above (base data and content_extra)."""
+    path = os.path.join(ROOT, "content", "overrides.json")
+    if not os.path.exists(path):
+        return
+    with open(path, encoding="utf-8") as f:
+        data = json.load(f)
+    for p in PROJECTS:
+        ov = data.get("projects", {}).get(p["id"])
+        if not ov:
+            continue
+        for k, v in ov.items():
+            if k in ("challenges", "facts"):
+                v = [tuple(x) for x in v]
+            p[k] = v
+
+
+_apply_overrides()
 SKILL_TIERS = X.SKILL_TIERS
 MARQUEE_ITEMS = X.MARQUEE_ITEMS
 
@@ -523,7 +545,7 @@ def page(title, description, active, depth, body, canonical_path="", body_attrs=
 <head>
   %(head)s%(jsonld)s</head>
 <body%(body_attrs)s>
-  <div class="noise-overlay" aria-hidden="true"></div>
+  %(field)s<div class="noise-overlay" aria-hidden="true"></div>
   <div class="scroll-progress" aria-hidden="true"></div>
   <a class="skip-link" href="#main">Skip to content</a>
   %(header)s
@@ -533,7 +555,7 @@ def page(title, description, active, depth, body, canonical_path="", body_attrs=
   %(footer)s
   <script src="%(depth)sassets/js/i18n.js?v=%(v)s"></script>
   <script src="%(depth)sassets/js/main.js?v=%(v)s"></script>
-</body>
+  %(field_js)s</body>
 </html>
 """ % {
         "head": html_head(title, description, depth, canonical_path),
@@ -544,6 +566,8 @@ def page(title, description, active, depth, body, canonical_path="", body_attrs=
         "depth": depth,
         "v": ASSET_VERSION,
         "body_attrs": body_attrs,
+        "field": "" if body_attrs else '<canvas class="bg-field" aria-hidden="true"></canvas>' + chr(10) + "  ",
+        "field_js": "" if body_attrs else '<script src="%sassets/js/field.js?v=%s"></script>' % (depth, ASSET_VERSION) + chr(10),
     }
 
 

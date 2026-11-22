@@ -122,7 +122,7 @@ ENRICH = {
         },
     },
     "on-air": {
-        "role": "Solo Developer (AI-assisted)",
+        "role": "Solo Developer",
         "note": "Made during the Epic AI MegaJam, where using AI tools is part of the brief and the process has to be documented. I designed the game and directed the build; Claude Code wrote much of the C++ under my review, and the dev log is public.",
         "retro": {
             "constraint": "A jam window of several days, but I could only work about one day of it. Solo, with AI tools declared and a public dev log required, on the theme \"Director's Cut\".",

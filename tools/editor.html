@@ -1,0 +1,75 @@
+<!DOCTYPE html>
+<html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Portfolio editor</title>
+<style>
+:root{--bg:#14161c;--panel:#1c1f27;--line:#2c303a;--fg:#eceae4;--mut:#9aa0ab;--acc:#f4b942;--ok:#4cc38a;--bad:#ff6b5a}
+*{box-sizing:border-box}body{margin:0;background:var(--bg);color:var(--fg);font:15px/1.5 system-ui,sans-serif;display:grid;grid-template-columns:280px 1fr;min-height:100vh}
+aside{border-right:1px solid var(--line);padding:16px;position:sticky;top:0;height:100vh;overflow:auto}
+main{padding:24px 32px;max-width:900px}
+h1{font-size:18px;margin:0 0 12px}h2{font-size:15px;margin:28px 0 8px;color:var(--acc);text-transform:uppercase;letter-spacing:.08em}
+button,input,select,textarea{font:inherit;color:var(--fg);background:var(--panel);border:1px solid var(--line);border-radius:8px;padding:8px 10px}
+textarea{width:100%;min-height:90px;resize:vertical}input[type=text],input[type=number],select{width:100%}
+button{cursor:pointer;min-height:40px}button.p{background:var(--acc);color:#1a1405;border-color:var(--acc);font-weight:600}
+button:focus-visible,input:focus-visible,textarea:focus-visible,select:focus-visible,.item:focus-visible{outline:2px solid var(--acc);outline-offset:2px}
+label{display:block;font-size:13px;color:var(--mut);margin:14px 0 4px}
+.item{display:flex;justify-content:space-between;gap:8px;padding:9px 10px;border-radius:8px;cursor:pointer;border:1px solid transparent}
+.item:hover{background:var(--panel)}.item.on{background:var(--panel);border-color:var(--acc)}
+.badge{background:var(--bad);color:#200;border-radius:99px;padding:0 8px;font-size:12px;font-weight:600;align-self:center}
+.card{background:var(--panel);border:1px solid var(--line);border-radius:12px;padding:14px;margin:10px 0}
+.row{display:grid;grid-template-columns:1fr 1fr;gap:12px}.bar{position:sticky;bottom:0;background:var(--bg);padding:14px 0;display:flex;gap:10px;flex-wrap:wrap;border-top:1px solid var(--line);margin-top:28px}
+.todo{color:var(--bad);font-size:13px;margin:2px 0}.msg{color:var(--mut);font-size:13px;white-space:pre-wrap}
+img.th{width:120px;height:75px;object-fit:cover;border-radius:6px;border:1px solid var(--line)}.gal{display:flex;gap:10px;flex-wrap:wrap}
+.gal div{position:relative}.gal button{position:absolute;top:2px;right:2px;min-height:24px;padding:0 6px}
+iframe{width:100%;height:420px;border:1px solid var(--line);border-radius:12px;background:#fff}
+@media(max-width:800px){body{grid-template-columns:1fr}aside{position:static;height:auto}.row{grid-template-columns:1fr}}
+</style></head><body>
+<aside><h1>Portfolio editor</h1><div id="list" role="list"></div>
+<p class="msg" style="margin-top:16px">Saved to <code>content/overrides.json</code>. "Build" regenerates the pages, "Publish" pushes to GitHub Pages.</p></aside>
+<main id="main"><p class="msg">Loading…</p></main>
+<script>
+const $=(s,r=document)=>r.querySelector(s);let P=[],cur=null,status="";
+const api=async(u,b)=>{const r=await fetch(u,b?{method:"POST",body:JSON.stringify(b)}:{});return r.json()};
+const esc=s=>String(s??"").replace(/[&<>"]/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;"}[c]));
+const lines=(a)=>(a||[]).join("\n"),fromLines=t=>t.split("\n").map(s=>s.trim()).filter(Boolean);
+const kv=(o)=>Object.entries(o||{}).map(([k,v])=>k+": "+v).join("\n");
+const fromKv=t=>Object.fromEntries(fromLines(t).map(l=>{const i=l.indexOf(":");return[l.slice(0,i).trim(),l.slice(i+1).trim()]}).filter(x=>x[0]));
+const pairs=a=>(a||[]).map(x=>x[0]+": "+x[1]).join("\n"),fromPairs=t=>fromLines(t).map(l=>{const i=l.indexOf(":");return[l.slice(0,i).trim(),l.slice(i+1).trim()]});
+async function load(){P=await api("/api/projects");renderList();if(!cur)cur=P[0].id;show(cur)}
+function renderList(){$("#list").innerHTML=P.map(p=>`<div class="item ${p.id===cur?"on":""}" role="listitem" tabindex="0" data-id="${p.id}"><span>${esc(p.title)}</span>${p.todo.length?`<span class="badge" title="${esc(p.todo.join(", "))}">${p.todo.length}</span>`:""}</div>`).join("");
+$("#list").querySelectorAll(".item").forEach(e=>{const go=()=>{cur=e.dataset.id;renderList();show(cur)};e.onclick=go;e.onkeydown=k=>{if(k.key==="Enter"||k.key===" "){k.preventDefault();go()}}})}
+function chBlock(c,i){return `<div class="card ch"><label>Problem title</label><input type="text" class="c0" value="${esc(c[0])}"><label>The problem</label><textarea class="c1">${esc(c[1])}</textarea><label>What I did</label><textarea class="c2">${esc(c[2])}</textarea><button type="button" class="rm">Remove this challenge</button></div>`}
+function show(id){const p=P.find(x=>x.id===id);const st=["Released","WIP","Prototype","Archived"];
+$("#main").innerHTML=`<h1>${esc(p.title)} <small style="color:var(--mut)">(${esc(p.category)})</small></h1>
+${p.todo.map(t=>`<div class="todo">To do: ${esc(t)}</div>`).join("")}
+<h2>Text</h2><label>Title</label><input type="text" id="title" value="${esc(p.title)}">
+<label>Short description (cards, Google)</label><textarea id="shortDesc">${esc(p.shortDesc)}</textarea>
+<label>Description</label><textarea id="description" style="min-height:160px">${esc(p.description)}</textarea>
+<div class="row"><div><label>Role</label><input type="text" id="role" value="${esc(p.role)}"></div><div><label>Status</label><select id="status">${st.map(s=>`<option ${s===p.status?"selected":""}>${s}</option>`).join("")}</select></div>
+<div><label>Year</label><input type="number" id="year" value="${esc(p.year)}"></div><div><label>Duration</label><input type="text" id="duration" value="${esc(p.duration)}"></div></div>
+<label>Note under the description (optional)</label><textarea id="note">${esc(p.note)}</textarea>
+<h2>Lists (one per line)</h2><label>Highlights</label><textarea id="highlights">${esc(lines(p.highlights))}</textarea>
+<label>Key systems</label><textarea id="keySystems">${esc(lines(p.keySystems))}</textarea><label>Technologies</label><textarea id="technologies">${esc(lines(p.technologies))}</textarea>
+<label>Links (key: url — keys: itch, video, github, playstore, steam, demo, website)</label><textarea id="links">${esc(kv(p.links))}</textarea>
+<label>Facts (label: value)</label><textarea id="facts">${esc(pairs(p.facts))}</textarea>
+<h2>Technical challenges</h2><div id="chs">${p.challenges.map(chBlock).join("")}</div><button type="button" id="addch">+ Add a challenge</button>
+<h2>Jam retrospective</h2><label>The constraint</label><textarea id="r0">${esc(p.retro.constraint)}</textarea><label>What I built</label><textarea id="r1">${esc(p.retro.built)}</textarea><label>What I would redo</label><textarea id="r2">${esc(p.retro.redo)}</textarea>
+<h2>Images</h2><label>Cover (${esc(p.cover)})</label><img class="th" id="coverimg" src="/assets/img/projects/${esc(p.cover)}?t=${Date.now()}" alt=""><br><input type="file" id="coverup" accept="image/*">
+<label>Gallery</label><div class="gal" id="gal">${p.gallery.map(g=>`<div data-g="${esc(g)}"><img class="th" src="/assets/img/projects/${esc(g)}" alt=""><button type="button" class="rg">✕</button></div>`).join("")}</div><input type="file" id="galup" accept="image/*" style="margin-top:8px">
+<h2>Preview</h2><iframe id="pv" src="/projects/${p.id}.html" title="Preview"></iframe>
+<div class="bar"><button class="p" id="save">Save + rebuild</button><button id="pub">Publish to GitHub</button><span class="msg" id="msg">${esc(status)}</span></div>`;
+const bind=()=>{document.querySelectorAll(".rm").forEach(b=>b.onclick=()=>b.closest(".ch").remove());document.querySelectorAll(".rg").forEach(b=>b.onclick=()=>b.closest("[data-g]").remove())};bind();
+$("#addch").onclick=()=>{$("#chs").insertAdjacentHTML("beforeend",chBlock(["","",""]));bind()};
+const toB64=f=>new Promise(r=>{const x=new FileReader();x.onload=()=>r(x.result);x.readAsDataURL(f)});
+async function up(file,prefix){const name=`${p.id}-${prefix}${Date.now().toString(36)}.${file.name.split(".").pop()}`;const r=await api("/api/upload",{name,data:await toB64(file)});if(!r.ok)throw new Error(r.error);return r.name}
+let newCover=null;$("#coverup").onchange=async e=>{try{newCover=await up(e.target.files[0],"cover-");$("#coverimg").src="/assets/img/projects/"+newCover;msg("Cover uploaded: save to apply it.")}catch(x){msg("Error: "+x.message)}};
+$("#galup").onchange=async e=>{try{const n=await up(e.target.files[0],"g-");$("#gal").insertAdjacentHTML("beforeend",`<div data-g="${n}"><img class="th" src="/assets/img/projects/${n}" alt=""><button type="button" class="rg">✕</button></div>`);bind();msg("Added: save to apply it.")}catch(x){msg("Error: "+x.message)}};
+const msg=t=>{$("#msg").textContent=t};
+const fields=()=>({title:$("#title").value,shortDesc:$("#shortDesc").value,description:$("#description").value,role:$("#role").value,status:$("#status").value,year:+$("#year").value||p.year,duration:$("#duration").value,note:$("#note").value,
+highlights:fromLines($("#highlights").value),keySystems:fromLines($("#keySystems").value),technologies:fromLines($("#technologies").value),links:fromKv($("#links").value),facts:fromPairs($("#facts").value),
+challenges:[...document.querySelectorAll(".ch")].map(c=>[$(".c0",c).value,$(".c1",c).value,$(".c2",c).value]).filter(c=>c[0]||c[1]||c[2]),
+retro:($("#r0").value||$("#r1").value||$("#r2").value)?{constraint:$("#r0").value,built:$("#r1").value,redo:$("#r2").value}:null,
+gallery:[...document.querySelectorAll("#gal [data-g]")].map(d=>d.dataset.g),...(newCover?{image:newCover}:{})});
+$("#save").onclick=async()=>{msg("Saving…");const f=fields();if(f.retro===null)delete f.retro;const r=await api("/api/save",{id:p.id,fields:f});if(!r.ok)return msg("Error: "+r.error);const b=await api("/api/build",{});msg(b.ok?"Saved and rebuilt at "+new Date().toLocaleTimeString():"Build failed:\n"+b.log);$("#pv").src="/projects/"+p.id+".html?t="+Date.now();P=await api("/api/projects");renderList()};
+$("#pub").onclick=async()=>{if(!confirm("Rebuild, commit and push to GitHub Pages?"))return;msg("Publishing…");const r=await api("/api/publish",{});msg((r.ok?"Pushed ("+r.branch+").":"Push failed.")+"\n"+r.log)}}
+load();
+</script></body></html>

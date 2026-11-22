@@ -1,0 +1,107 @@
+<!DOCTYPE html>
+<html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<meta name="robots" content="noindex"><title>Prototype 2 — Diorama</title>
+<style>
+:root{--ink:#22302a;--paper:#f4efe2;--acc:#e8743b}
+*{box-sizing:border-box}html,body{margin:0}body{background:#cfe0d2;color:var(--ink);font-family:Georgia,'Times New Roman',serif}
+#scroller{height:560vh}
+canvas{position:fixed;inset:0;width:100%;height:100%;display:block}
+.hud{position:fixed;inset:0;pointer-events:none;display:flex;flex-direction:column;justify-content:space-between;padding:22px 28px}
+.top{display:flex;justify-content:space-between;font:13px/1 ui-monospace,Consolas,monospace;letter-spacing:.08em;text-transform:uppercase}
+.top a{pointer-events:auto;color:inherit;text-decoration:none;border-bottom:1px solid}
+.card{position:fixed;left:6vw;bottom:9vh;max-width:min(440px,88vw);background:var(--paper);padding:22px 24px;border-radius:4px;opacity:0;transform:translateY(16px);transition:opacity .45s,transform .45s;box-shadow:6px 6px 0 var(--ink)}
+.card.on{opacity:1;transform:none}
+.card h1,.card h2{margin:0 0 8px;font-size:clamp(28px,5vw,46px);line-height:1}
+.card p{margin:0 0 10px;font-size:17px;line-height:1.5}
+.card .k{font:12px ui-monospace,Consolas,monospace;letter-spacing:.1em;text-transform:uppercase;color:var(--acc);margin-bottom:6px}
+.card a{color:var(--ink);font-weight:bold}
+.dots{position:fixed;right:20px;top:50%;transform:translateY(-50%);display:flex;flex-direction:column;gap:10px}
+.dots i{width:10px;height:10px;border-radius:50%;border:2px solid var(--ink);display:block}.dots i.on{background:var(--ink)}
+#fallback{display:none;padding:40px;font-size:18px}
+@media (prefers-reduced-motion:reduce){.card{transition:none}}
+</style></head><body>
+<div id="scroller"></div><canvas id="c" aria-hidden="true"></canvas>
+<div class="hud"><div class="top"><span>Romain Pitot — Unity / C#</span><span><a href="index.html">all prototypes</a></span></div><div></div></div>
+<div class="dots" id="dots" aria-hidden="true"></div>
+<section class="card on" data-s="0"><div class="k">Toulouse · available now</div><h1>Romain Pitot</h1><p>I build gameplay systems in Unity and C#. Scroll: the camera visits the workshop.</p></section>
+<section class="card" data-s="1"><div class="k">The desk</div><h2>Projects</h2><p>Fifteen projects: shipped mobile games, a Steam co-op game in progress, game jams and two web/desktop apps. The screen shows the list.</p><a href="../projects.html">Open the projects →</a></section>
+<section class="card" data-s="2"><div class="k">The workbench</div><h2>Code</h2><p>Real C# extracts with the reasoning behind them: a mission clock, a seeded draw, a local swarm simulation.</p><a href="../code.html">Read the code →</a></section>
+<section class="card" data-s="3"><div class="k">The reading corner</div><h2>About</h2><p>Two years of work-study in a studio, a Master's in game development, a habit of testing what I write.</p><a href="../about.html">About me →</a></section>
+<section class="card" data-s="4"><div class="k">The mailbox</div><h2>Contact</h2><p>Open to any developer offer, starting now. Write to me, I answer.</p><a href="../contact.html">Send a message →</a></section>
+<div id="fallback">WebGL is not available in this browser. Open <a href="../index.html">the normal site</a>.</div>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
+<script>
+const DATA=[{"id": "legend-of-mulu", "title": "The Legend of Mulu", "year": 2023, "cat": "Work", "status": "Archived", "desc": "Exploration game on The Sandbox: a young girl tracks down sorcerers who stole her village's sacred artifacts.", "cover": "../assets/img/projects/legend-of-mulu-1.jpg", "tech": ["C#", "Unity", "The Sandbox"]}, {"id": "kissoro", "title": "Kissoro Tribal Game", "year": 2023, "cat": "Work", "status": "Archived", "desc": "African strategy board game on mobile — migrated from Unity 2018 to 2022 and stabilized across devices.", "cover": "../assets/img/projects/kissoro-2.jpg", "tech": ["C#", "Unity", "Mobile"]}, {"id": "vaudoo", "title": "Vaudoo", "year": 2023, "cat": "Work", "status": "Released", "desc": "Mobile zombie shooter on Google Play: a presidential candidate raises the dead to win an election, then fights the apocalypse.", "cover": "../assets/img/projects/vaudoo-cover.jpg", "tech": ["C#", "Unity", "Mobile"]}, {"id": "little-cup", "title": "Little Cup", "year": 2023, "cat": "Work", "status": "Prototype", "desc": "Mobile penalty-shootout game: aim, power and technique against increasingly skilled goalkeepers.", "cover": "../assets/img/projects/little-cup-cover.jpg", "tech": ["C#", "Unity", "Mobile"]}, {"id": "medieval-skirmish", "title": "Medieval Skirmish", "year": 2022, "cat": "School", "status": "Prototype", "desc": "Tower defense where you place towers and cast spells (fireball, freeze) to hold off waves of enemies.", "cover": "../assets/img/projects/medieval-skirmish-cover.jpg", "tech": ["C#", "Unity", "Design Patterns"]}, {"id": "shipwrecked-island", "title": "Shipwrecked Island", "year": 2022, "cat": "School", "status": "Prototype", "desc": "Multiplayer horror survival: gather resources and repair your ship before the hidden saboteur stops you.", "cover": "../assets/img/projects/shipwrecked-island-cover.jpg", "tech": ["C#", "Unity", "Netcode"]}, {"id": "just-dash", "title": "Just Dash", "year": 2022, "cat": "School", "status": "Released", "desc": "Mobile platformer mixing Doodle Jump's vertical momentum with Celeste's precision dashing.", "cover": "../assets/img/projects/just-dash-cover.jpg", "tech": ["C#", "Unity", "Mobile"]}, {"id": "keep-dancing-to-live", "title": "Keep Dancing to Live", "year": 2024, "cat": "Game Jam", "status": "Released", "desc": "Rhythm game: dance ridiculously as the king's jester, or it's off with your head. Global Game Jam 2024 — \"Make Me Laugh.\"", "cover": "../assets/img/projects/keep-dancing-to-live-1.jpg", "tech": ["C#", "Unity"]}, {"id": "thermostat-8", "title": "Thermostat 8", "year": 2021, "cat": "Game Jam", "status": "Released", "desc": "Exploration survival game built for a game jam on the theme \"Elevate.\"", "cover": "../assets/img/projects/thermostat-8-1.jpg", "tech": ["C#", "Unity", "VFX"]}, {"id": "falling-bot", "title": "Falling Bot", "year": 2021, "cat": "Game Jam", "status": "Released", "desc": "Pilot an energy-constrained robot descending through caverns. Ludum Dare 48 — \"Deeper and Deeper.\"", "cover": "../assets/img/projects/falling-bot-1.jpg", "tech": ["C#", "Unity", "VFX"]}, {"id": "trash-santa", "title": "Trash Santa", "year": 2020, "cat": "Game Jam", "status": "Released", "desc": "Chaotic multiplayer game about stealing presents from unsuspecting kids. Global Game Jam 2020 — \"Repair.\"", "cover": "../assets/img/projects/trash-santa-cover.jpg", "tech": ["C#", "Unity", "Multiplayer"]}, {"id": "global-invasion", "title": "Global Invasion", "year": 2026, "cat": "Personal", "status": "WIP", "desc": "Steam co-op for 1-4 players: exterminators investigate infested houses by day and survive the swarm by night.", "cover": "../assets/img/projects/global-invasion-1.jpg", "tech": ["C#", "Unity 6", "Netcode for GameObjects"]}, {"id": "on-air", "title": "On Air", "year": 2026, "cat": "Game Jam", "status": "Released", "desc": "Live TV, 1978, seven-second delay: you direct the control room and cut everything before it airs. Epic AI MegaJam 2026 — \"Director's Cut.\"", "cover": "../assets/img/projects/on-air-1.jpg", "tech": ["C++", "Unreal Engine 5", "UMG"]}, {"id": "climb-euw", "title": "CLIMB.EUW", "year": 2026, "cat": "App", "status": "Released", "desc": "Web app that tracks a League of Legends SoloQ climb game by game, detects sessions and exports a recap for an AI coach.", "cover": "../assets/img/projects/climb-euw-cover.jpg", "tech": ["JavaScript", "React", "Vite"]}, {"id": "game-detector-lol", "title": "GameDetectorLol", "year": 2026, "cat": "App", "status": "Released", "desc": "Windows companion app that watches the League of Legends client and game and shows the live match status on CLIMB.EUW.", "cover": "../assets/img/projects/game-detector-lol-cover.jpg", "tech": ["Python", "Local REST APIs", "Windows installer"]}];
+(function(){
+if(!window.THREE){document.getElementById('fallback').style.display='block';return}
+const reduced=matchMedia('(prefers-reduced-motion: reduce)').matches;
+const canvas=document.getElementById('c');
+let renderer;try{renderer=new THREE.WebGLRenderer({canvas,antialias:true})}catch(e){document.getElementById('fallback').style.display='block';return}
+renderer.setPixelRatio(Math.min(devicePixelRatio,2));
+const scene=new THREE.Scene();scene.background=new THREE.Color(0xcfe0d2);scene.fog=new THREE.Fog(0xcfe0d2,28,70);
+const cam=new THREE.PerspectiveCamera(48,1,.1,120);
+scene.add(new THREE.HemisphereLight(0xeef3ff,0x6f8f78,.72));
+const sun=new THREE.DirectionalLight(0xfff1d6,.7);sun.position.set(8,14,6);scene.add(sun);
+const M=(c,o={})=>new THREE.MeshLambertMaterial(Object.assign({color:c,flatShading:true},o));
+function box(w,h,d,c,x,y,z,p){const m=new THREE.Mesh(new THREE.BoxGeometry(w,h,d),M(c));m.position.set(x,y,z);(p||scene).add(m);return m}
+function cyl(r,h,c,x,y,z,seg=7,p){const m=new THREE.Mesh(new THREE.CylinderGeometry(r,r,h,seg),M(c));m.position.set(x,y,z);(p||scene).add(m);return m}
+function cone(r,h,c,x,y,z,seg=6,p){const m=new THREE.Mesh(new THREE.ConeGeometry(r,h,seg),M(c));m.position.set(x,y,z);(p||scene).add(m);return m}
+const stops=[
+ {p:[-9,5.5,11],t:[2,3,-6]},
+ {p:[2.5,3.5,5.5],t:[0,2.4,0]},
+ {p:[8,4.4,1.5],t:[14,2.6,-10]},
+ {p:[-1,4,-13],t:[-6,2.2,-22]},
+ {p:[-12,4,0],t:[-18,2.8,-8]}];
+const nearCam=(x,z)=>stops.some(s=>Math.hypot(x-s.p[0],z-s.p[2])<7);
+// ground + scenery
+const ground=new THREE.Mesh(new THREE.CircleGeometry(60,10),M(0x86b383));ground.rotation.x=-Math.PI/2;scene.add(ground);
+let seed=7;const rnd=()=>(seed=(seed*16807)%2147483647)/2147483647;
+for(let i=0;i<70;i++){const a=rnd()*6.28,r=14+rnd()*34,x=Math.cos(a)*r+8,z=Math.sin(a)*r-6;
+ if(nearCam(x,z))continue;
+ if(rnd()<.7){cyl(.18,1.2,0x6b4a33,x,.6,z,5);cone(1+rnd()*.7,2.6+rnd()*1.4,rnd()<.5?0x4d8a5b:0x5fa06b,x,2.3,z)}else{const m=new THREE.Mesh(new THREE.DodecahedronGeometry(.5+rnd()*.6),M(0xa9b3a8));m.position.set(x,.3,z);scene.add(m)}}
+// canvas textures
+function tex(w,h,fn){const c=document.createElement('canvas');c.width=w;c.height=h;fn(c.getContext('2d'),w,h);const t=new THREE.CanvasTexture(c);t.anisotropy=4;return t}
+const listTex=tex(512,320,(g,w,h)=>{g.fillStyle='#101418';g.fillRect(0,0,w,h);g.fillStyle='#e8743b';g.font='bold 20px monospace';g.fillText('> projects/',16,30);g.fillStyle='#dfe6df';g.font='16px monospace';DATA.slice(0,11).forEach((p,i)=>g.fillText(p.title.slice(0,24).padEnd(24,' ')+' '+p.year,16,60+i*22))});
+const codeTex=tex(512,320,(g,w,h)=>{g.fillStyle='#0f1318';g.fillRect(0,0,w,h);const L=['public sealed class MissionClock','{','  public Phase Phase { get; private set; }','  public void Tick(float dt)','  {','    elapsed += dt;','    Phase = Resolve(elapsed);','  }','}'];g.font='17px monospace';L.forEach((l,i)=>{g.fillStyle=i%3==0?'#8bd3dd':'#e0d9c3';g.fillText(l,14,34+i*28)})});
+// station 1: desk
+const desk=new THREE.Group();scene.add(desk);
+box(5,.25,2.4,0xc79a63,0,1.5,0,desk);[[-2.3,-1],[2.3,-1],[-2.3,1],[2.3,1]].forEach(p=>box(.25,1.5,.25,0x8a6038,p[0],.75,p[1],desk));
+box(2.4,1.5,.15,0x2b3036,0,2.65,-.5,desk);const scr=new THREE.Mesh(new THREE.PlaneGeometry(2.2,1.34),new THREE.MeshBasicMaterial({map:listTex}));scr.position.set(0,2.65,-.42);desk.add(scr);
+box(.3,.7,.3,0x2b3036,0,1.9,-.5,desk);box(1.2,.06,.4,0x3a4048,0,1.66,.5,desk);cyl(.22,.3,0xe8743b,-1.9,1.78,.4,8,desk);
+desk.position.set(0,0,0);
+// station 2: workbench
+const bench=new THREE.Group();scene.add(bench);bench.position.set(14,0,-10);bench.rotation.y=-.5;
+box(6,.3,2.4,0x8a6a4a,0,1.4,0,bench);[[-2.7,-1],[2.7,-1],[-2.7,1],[2.7,1]].forEach(p=>box(.3,1.4,.3,0x5d4630,p[0],.7,p[1],bench));
+box(5.8,2.6,.2,0xd9d2bf,0,3.6,-1.1,bench);
+const mon=new THREE.Mesh(new THREE.PlaneGeometry(2.6,1.6),new THREE.MeshBasicMaterial({map:codeTex}));mon.position.set(-.6,2.3,-.2);bench.add(mon);box(2.8,1.8,.12,0x2b3036,-.6,2.3,-.3,bench);
+const gear=new THREE.Mesh(new THREE.CylinderGeometry(.7,.7,.25,8),M(0xe8743b));gear.rotation.x=Math.PI/2;gear.position.set(2,1.75,.4);bench.add(gear);
+[0xe8743b,0x4d8a5b,0x4a7fb5].forEach((c,i)=>box(.12,1.1,.12,c,1.9+i*.3,4.3,-1,bench));
+// station 3: reading corner
+const read=new THREE.Group();scene.add(read);read.position.set(-6,0,-22);read.rotation.y=.4;
+box(4,3.4,.7,0x9a7048,0,1.7,0,read);[0,1,2].forEach(r=>{let x=-1.6;for(let k=0;k<6;k++){const w=.28+rnd()*.2;box(w,.8,.5,[0xd8553b,0x4a7fb5,0xe0b84a,0x4d8a5b,0x8b5fb0][(k+r)%5],x+w/2,.7+r*1.05,.1,read);x+=w+.08}}) ;
+cyl(.5,.12,0x333b45,3,.06,1,8,read);cyl(.06,2.2,0x333b45,3,1.2,1,6,read);cone(.7,.7,0xf1d37a,3,2.5,1,8,read);box(1.6,.9,1.6,0xc9594a,2.6,.45,2.4,read);
+// station 4: mailbox
+const mail=new THREE.Group();scene.add(mail);mail.position.set(-18,0,-8);mail.rotation.y=.9;
+cyl(.15,2.4,0x6b4a33,0,1.2,0,6,mail);box(1.8,1,1,0x3f6fa8,0,2.7,0,mail);const roof=new THREE.Mesh(new THREE.CylinderGeometry(.5,.5,1.8,8,1,false,0,Math.PI),M(0x3f6fa8));roof.rotation.z=Math.PI/2;roof.position.set(0,3.2,0);mail.add(roof);
+const flag=box(.12,.8,.5,0xe8743b,1,3.1,0,mail);
+const plane=new THREE.Mesh(new THREE.ConeGeometry(.35,1.1,3),M(0xfff6e0));plane.rotation.z=-Math.PI/2;scene.add(plane);
+// camera path
+
+const N=stops.length-1;let cardOn=-1;
+const cards=[...document.querySelectorAll('.card')];const dots=document.getElementById('dots');stops.forEach(()=>dots.appendChild(document.createElement('i')));
+const ease=t=>t<.5?4*t*t*t:1-Math.pow(-2*t+2,3)/2;
+let mx=0,my=0;addEventListener('pointermove',e=>{mx=e.clientX/innerWidth-.5;my=e.clientY/innerHeight-.5},{passive:true});
+function resize(){renderer.setSize(innerWidth,innerHeight,false);cam.aspect=innerWidth/innerHeight;cam.updateProjectionMatrix()}addEventListener('resize',resize);resize();
+const v=new THREE.Vector3(),w=new THREE.Vector3();let cur=0;
+function frame(now){
+ const max=document.documentElement.scrollHeight-innerHeight;const target=max>0?scrollY/max:0;cur+=(target-cur)*(reduced?1:.08);
+ const f=Math.min(cur*N,N-1e-6),i=Math.floor(f),k=ease(f-i);
+ const a=stops[i],b=stops[i+1];
+ v.set(...a.p).lerp(w.set(...b.p),k);cam.position.copy(v);cam.position.x+=mx*.9;cam.position.y+=-my*.5+Math.sin(now/1800)*.06;
+ v.set(...a.t).lerp(w.set(...b.t),k);cam.lookAt(v);
+ const idx=Math.round(cur*N);if(idx!==cardOn){cardOn=idx;cards.forEach((c,n)=>c.classList.toggle('on',n===idx));[...dots.children].forEach((d,n)=>d.classList.toggle('on',n===idx))}
+ gear.rotation.y=now/900;flag.rotation.z=Math.sin(now/600)*.15;plane.position.set(-18+Math.cos(now/1500)*4,6+Math.sin(now/900),-8+Math.sin(now/1500)*4);plane.rotation.y=-now/1500;
+ renderer.render(scene,cam);if(!reduced||true)requestAnimationFrame(frame)}
+requestAnimationFrame(frame);
+})();
+</script></body></html>
