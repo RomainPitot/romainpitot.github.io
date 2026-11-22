@@ -1,0 +1,324 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Code samples — Romain Pitot</title>
+  <meta name="description" content="Real C# extracts from Global Invasion, a Steam co-op game in Unity: a tested mission state machine, a seeded nest draw and a local swarm simulation.">
+  <link rel="canonical" href="https://romainpitot.github.io/code.html">
+  <meta name="theme-color" content="#13161f">
+  <meta property="og:type" content="website">
+  <meta property="og:site_name" content="romain.pitot">
+  <meta property="og:locale" content="en_GB">
+  <meta property="og:title" content="Code samples — Romain Pitot">
+  <meta property="og:description" content="Real C# extracts from Global Invasion, a Steam co-op game in Unity: a tested mission state machine, a seeded nest draw and a local swarm simulation.">
+  <meta property="og:url" content="https://romainpitot.github.io/code.html">
+  <meta property="og:image" content="https://romainpitot.github.io/assets/img/og-cover.jpg">
+  <meta property="og:image:width" content="1200">
+  <meta property="og:image:height" content="630">
+  <meta property="og:image:alt" content="Romain Pitot — Unity / C# developer">
+  <meta name="twitter:card" content="summary_large_image">
+  <meta name="twitter:title" content="Code samples — Romain Pitot">
+  <meta name="twitter:description" content="Real C# extracts from Global Invasion, a Steam co-op game in Unity: a tested mission state machine, a seeded nest draw and a local swarm simulation.">
+  <meta name="twitter:image" content="https://romainpitot.github.io/assets/img/og-cover.jpg">
+  <link rel="icon" href="assets/img/favicon.svg" type="image/svg+xml">
+  <meta http-equiv="Content-Security-Policy" content="default-src 'self'; img-src 'self' data:; style-src 'self' 'unsafe-inline'; script-src 'self'; font-src 'self'; connect-src 'self' https://formspree.io; form-action https://formspree.io; base-uri 'self'; object-src 'none'">
+  <meta name="referrer" content="strict-origin-when-cross-origin">
+  <link rel="preload" href="assets/fonts/inter-latin.woff2" as="font" type="font/woff2" crossorigin>
+  <link rel="preload" href="assets/fonts/jetbrains-mono-latin.woff2" as="font" type="font/woff2" crossorigin>
+  <link rel="stylesheet" href="assets/css/style.css?v=547cf639bf">
+<script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "Person",
+    "name": "Romain Pitot",
+    "jobTitle": "Unity / C# Developer",
+    "address": {"@type": "PostalAddress", "addressLocality": "Toulouse", "addressCountry": "FR"},
+    "alumniOf": [{"@type": "EducationalOrganization", "name": "Gaming Campus"}, {"@type": "EducationalOrganization", "name": "E-Artsup"}],
+    "url": "https://romainpitot.github.io/",
+    "sameAs": ["https://github.com/romainpitot", "https://linkedin.com/in/romain-pitot"],
+    "knowsAbout": ["Unity", "C#", "Gameplay Programming", "Multiplayer Netcode", "Unreal Engine", "Python", "React"]
+  }
+  </script>
+</head>
+<body>
+  <div class="noise-overlay" aria-hidden="true"></div>
+  <div class="scroll-progress" aria-hidden="true"></div>
+  <a class="skip-link" href="#main">Skip to content</a>
+  <header class="site-header">
+    <div class="nav-inner">
+      <a class="brand" href="index.html">
+        <span class="brand-icon"><svg class="icon" viewBox="0 0 24 24"><polyline points="16 18 22 12 16 6"/><polyline points="8 6 2 12 8 18"/></svg></span>
+        romain<span class="dot">.</span>pitot
+      </a>
+      <nav class="main-nav" id="main-nav"><span class="nav-indicator" aria-hidden="true"></span><a href="index.html" data-i18n="nav.home">Home</a><a href="projects.html" data-i18n="nav.projects">Projects</a><a href="code.html" aria-current="page" data-i18n="nav.code">Code</a><a href="about.html" data-i18n="nav.about">About</a><a href="contact.html" data-i18n="nav.contact">Contact</a></nav>
+      <div class="nav-right">
+        <button class="lang-toggle" type="button" aria-label="Switch language">FR</button>
+        <button class="nav-toggle" type="button" aria-label="Toggle menu" aria-expanded="false" aria-controls="main-nav">
+          <span class="icon-menu"><svg class="icon" viewBox="0 0 24 24"><line x1="3" y1="12" x2="21" y2="12"/><line x1="3" y1="6" x2="21" y2="6"/><line x1="3" y1="18" x2="21" y2="18"/></svg></span>
+          <span class="icon-close" hidden><svg class="icon" viewBox="0 0 24 24"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg></span>
+        </button>
+      </div>
+    </div>
+  </header>
+
+  <main id="main">
+  <section class="page-hero container">
+    <span class="eyebrow" data-i18n-skip>Code</span>
+    <h1 data-i18n="systems.title">Code you can read</h1>
+    <p data-i18n="systems.subtitle">Real extracts from my repositories, trimmed, with the reasoning behind them</p>
+    <div class="page-meta font-mono">most of my game repos are private &middot; the code below comes straight from them</div>
+  </section>
+  <section class="section-tight container code-list"><article class="code-sample reveal" id="mission-clock">
+    <header class="code-head">
+      <div class="code-meta"><span class="code-project">Global Invasion</span><span class="font-mono code-path">Mission/MissionClock.cs</span></div>
+      <h2>Mission state machine</h2>
+      <p class="code-tagline">Day → Night → Dawn → Debrief, on deadlines, with no dependency on Unity or the network.</p>
+    </header>
+    <div class="code-window">
+      <div class="code-bar"><span class="font-mono">Mission/MissionClock.cs</span><button class="code-copy" type="button" data-copy>Copy</button></div>
+      <pre tabindex="0"><code><span class="tok-c">// Day → Night → Dawn → Debrief → Over, each on a deadline.</span>
+<span class="tok-c">//</span>
+<span class="tok-c">// Plain C# with the time passed in, like ContractVoteTally: the network</span>
+<span class="tok-c">// wrapper (MissionManager) feeds it the server clock, and the tests feed it</span>
+<span class="tok-c">// whatever numbers they want.</span>
+<span class="tok-k">public</span> <span class="tok-k">class</span> <span class="tok-t">MissionClock</span>
+{
+    <span class="tok-k">public</span> <span class="tok-k">struct</span> <span class="tok-t">Durations</span>
+    {
+        <span class="tok-k">public</span> <span class="tok-k">double</span> day;
+        <span class="tok-k">public</span> <span class="tok-k">double</span> night;
+        <span class="tok-k">public</span> <span class="tok-k">double</span> dawn;
+        <span class="tok-k">public</span> <span class="tok-k">double</span> debrief;
+    }
+
+    <span class="tok-k">readonly</span> <span class="tok-t">Durations</span> durations;
+
+    <span class="tok-k">public</span> <span class="tok-t">MissionPhase</span> Phase { <span class="tok-k">get</span>; <span class="tok-k">private</span> <span class="tok-k">set</span>; } = <span class="tok-t">MissionPhase</span>.None;
+
+    <span class="tok-c">// Anyone can press the truck button, even far too early: that&#x27;s the joke</span>
+    <span class="tok-c">// (GDD 13.1). Only meaningful during the day.</span>
+    <span class="tok-k">public</span> <span class="tok-k">bool</span> RequestNight(<span class="tok-k">double</span> now)
+    {
+        <span class="tok-k">if</span> (Phase != <span class="tok-t">MissionPhase</span>.Day) <span class="tok-k">return</span> <span class="tok-k">false</span>;
+
+        Enter(<span class="tok-t">MissionPhase</span>.Night, now);
+        <span class="tok-k">return</span> <span class="tok-k">true</span>;
+    }
+
+    <span class="tok-c">// Moves at most one phase per call. Returns true when the phase changed.</span>
+    <span class="tok-k">public</span> <span class="tok-k">bool</span> Tick(<span class="tok-k">double</span> now)
+    {
+        <span class="tok-k">if</span> (Phase == <span class="tok-t">MissionPhase</span>.None || Phase == <span class="tok-t">MissionPhase</span>.Over) <span class="tok-k">return</span> <span class="tok-k">false</span>;
+        <span class="tok-k">if</span> (now &lt; Deadline) <span class="tok-k">return</span> <span class="tok-k">false</span>;
+
+        Enter(Next(Phase), now);
+        <span class="tok-k">return</span> <span class="tok-k">true</span>;
+    }
+
+    <span class="tok-k">public</span> <span class="tok-k">double</span> SecondsLeft(<span class="tok-k">double</span> now)
+    {
+        <span class="tok-k">if</span> (Phase == <span class="tok-t">MissionPhase</span>.None || Phase == <span class="tok-t">MissionPhase</span>.Over) <span class="tok-k">return</span> <span class="tok-n">0</span>;
+        <span class="tok-k">return</span> now &gt;= Deadline ? <span class="tok-n">0</span> : Deadline - now;
+    }
+}
+</code></pre>
+    </div>
+    <p class="code-why"><strong>Why it is written this way.</strong> The rules are plain C# and receive the time as a parameter. The network wrapper feeds it the server clock; the tests feed it any number they want, so the whole mission loop is tested without launching a session.</p>
+    <div class="tag-row"><span class="tag">C#</span><span class="tag">State machine</span><span class="tag">Testable design</span></div>
+  </article>
+<article class="code-sample reveal" id="nest-draw">
+    <header class="code-head">
+      <div class="code-meta"><span class="code-project">Global Invasion</span><span class="font-mono code-path">Mission/NestDraw.cs</span></div>
+      <h2>Seeded nest & clue draw</h2>
+      <p class="code-tagline">Picks where the nest is this run and which clues (and decoys) are on site.</p>
+    </header>
+    <div class="code-window">
+      <div class="code-bar"><span class="font-mono">Mission/NestDraw.cs</span><button class="code-copy" type="button" data-copy>Copy</button></div>
+      <pre tabindex="0"><code><span class="tok-c">// Picks where the nest is this time and which clues are on site.</span>
+<span class="tok-c">// Plain C# with the randomness injected, so the draw is testable and the</span>
+<span class="tok-c">// server is the only one rolling dice.</span>
+<span class="tok-k">public</span> <span class="tok-k">static</span> <span class="tok-k">class</span> <span class="tok-t">NestDraw</span>
+{
+    <span class="tok-k">public</span> <span class="tok-k">struct</span> <span class="tok-t">Result</span>
+    {
+        <span class="tok-k">public</span> <span class="tok-k">int</span> nest;
+        <span class="tok-k">public</span> <span class="tok-t">List</span>&lt;<span class="tok-k">int</span>&gt; clues;
+    }
+
+    <span class="tok-c">// clueNest[i] = index of the nest clue i leads to, or -1 for a decoy.</span>
+    <span class="tok-c">// Every clue of the drawn nest is shown (no single clue is enough, GDD 4:</span>
+    <span class="tok-c">// they have to be crossed), plus a few decoys so a clue alone proves nothing.</span>
+    <span class="tok-k">public</span> <span class="tok-k">static</span> <span class="tok-t">Result</span> Draw(<span class="tok-t">Random</span> rng, <span class="tok-k">int</span> nestCount, <span class="tok-t">IList</span>&lt;<span class="tok-k">int</span>&gt; clueNest, <span class="tok-k">int</span> decoysToShow)
+    {
+        <span class="tok-t">Result</span> result = <span class="tok-k">new</span> <span class="tok-t">Result</span> { nest = -<span class="tok-n">1</span>, clues = <span class="tok-k">new</span> <span class="tok-t">List</span>&lt;<span class="tok-k">int</span>&gt;() };
+        <span class="tok-k">if</span> (rng == <span class="tok-k">null</span> || nestCount &lt;= <span class="tok-n">0</span> || clueNest == <span class="tok-k">null</span>) <span class="tok-k">return</span> result;
+
+        result.nest = rng.Next(nestCount);
+
+        <span class="tok-t">List</span>&lt;<span class="tok-k">int</span>&gt; decoys = <span class="tok-k">new</span> <span class="tok-t">List</span>&lt;<span class="tok-k">int</span>&gt;();
+        <span class="tok-k">for</span> (<span class="tok-k">int</span> i = <span class="tok-n">0</span>; i &lt; clueNest.Count; i++)
+        {
+            <span class="tok-k">if</span> (clueNest[i] == result.nest) result.clues.Add(i);
+            <span class="tok-k">else</span> <span class="tok-k">if</span> (clueNest[i] &lt; <span class="tok-n">0</span>) decoys.Add(i);
+        }
+
+        <span class="tok-c">// Partial Fisher-Yates: the first n decoys end up random.</span>
+        <span class="tok-k">int</span> take = <span class="tok-t">Math</span>.Min(<span class="tok-t">Math</span>.Max(<span class="tok-n">0</span>, decoysToShow), decoys.Count);
+        <span class="tok-k">for</span> (<span class="tok-k">int</span> i = <span class="tok-n">0</span>; i &lt; take; i++)
+        {
+            <span class="tok-k">int</span> j = rng.Next(i, decoys.Count);
+            (decoys[i], decoys[j]) = (decoys[j], decoys[i]);
+            result.clues.Add(decoys[i]);
+        }
+
+        result.clues.Sort();
+        <span class="tok-k">return</span> result;
+    }
+}
+</code></pre>
+    </div>
+    <p class="code-why"><strong>Why it is written this way.</strong> Randomness is injected, so the draw is reproducible in tests and only the server rolls the dice. Decoys are chosen with a partial Fisher–Yates shuffle so no single clue is enough on its own.</p>
+    <div class="tag-row"><span class="tag">C#</span><span class="tag">Procedural</span><span class="tag">Server authority</span></div>
+  </article>
+<article class="code-sample reveal" id="swarm-sim">
+    <header class="code-head">
+      <div class="code-meta"><span class="code-project">Global Invasion</span><span class="font-mono code-path">Swarm/SwarmSim.cs</span></div>
+      <h2>Local swarm, events on the wire</h2>
+      <p class="code-tagline">Hundreds of roaches simulated on every PC; only events cross the network.</p>
+    </header>
+    <div class="code-window">
+      <div class="code-bar"><span class="font-mono">Swarm/SwarmSim.cs</span><button class="code-copy" type="button" data-copy>Copy</button></div>
+      <pre tabindex="0"><code><span class="tok-c">// What the swarm needs to know about the level. Real game: physics colliders</span>
+<span class="tok-c">// (PhysicsSwarmWorld). Tests: a fake.</span>
+<span class="tok-k">public</span> <span class="tok-k">interface</span> <span class="tok-t">ISwarmWorld</span>
+{
+    <span class="tok-c">// Can a roach crawling at `height` go from A to B in a straight line?</span>
+    <span class="tok-k">bool</span> Blocked(<span class="tok-t">Vector2</span> from, <span class="tok-t">Vector2</span> to, <span class="tok-k">float</span> height, <span class="tok-k">out</span> <span class="tok-t">Vector2</span> normal);
+
+    <span class="tok-c">// Height of the highest surface at p below `probeTop` (floor = 0).</span>
+    <span class="tok-k">float</span> SurfaceHeight(<span class="tok-t">Vector2</span> p, <span class="tok-k">float</span> probeTop);
+}
+
+<span class="tok-c">// The cockroach swarm, simulated on every PC.</span>
+<span class="tok-c">//</span>
+<span class="tok-c">// Only events travel over the network: &quot;N roaches appear here&quot; (seeded, so</span>
+<span class="tok-c">// every PC places them the same way), &quot;kill what&#x27;s in this cone&quot;, &quot;kill what&#x27;s</span>
+<span class="tok-c">// in this circle&quot;. After that each PC moves its own roaches; small</span>
+<span class="tok-c">// differences between PCs don&#x27;t matter for a crowd.</span>
+<span class="tok-c">//</span>
+<span class="tok-c">// Plain C# on arrays, no per-roach objects: hundreds must stay cheap.</span>
+<span class="tok-k">public</span> <span class="tok-k">class</span> <span class="tok-t">SwarmSim</span>
+{
+    <span class="tok-k">public</span> <span class="tok-k">const</span> <span class="tok-k">int</span> Capacity = <span class="tok-n">400</span>;
+
+    <span class="tok-k">public</span> <span class="tok-k">struct</span> <span class="tok-t">Settings</span>
+    {
+        <span class="tok-k">public</span> <span class="tok-k">float</span> wanderSpeed;
+        <span class="tok-k">public</span> <span class="tok-k">float</span> fleeSpeed;
+        <span class="tok-k">public</span> <span class="tok-k">float</span> playerFearRadius;   <span class="tok-c">// roaches flee agents and UV light...</span>
+        <span class="tok-k">public</span> <span class="tok-k">float</span> boldFraction;       <span class="tok-c">// ...except the bold ones that chase them</span>
+        <span class="tok-k">public</span> <span class="tok-k">float</span> climberFraction;    <span class="tok-c">// share that climbs the furniture they bump into</span>
+        <span class="tok-k">public</span> <span class="tok-k">float</span> maxClimb;           <span class="tok-c">// furniture yes, walls no</span>
+    }
+}
+</code></pre>
+    </div>
+    <p class="code-why"><strong>Why it is written this way.</strong> The level is hidden behind an interface so the real game uses physics colliders and the tests use a fake. Data is stored in arrays rather than objects: I measured 0.25 ms per step for 300 roaches.</p>
+    <div class="tag-row"><span class="tag">C#</span><span class="tag">Netcode</span><span class="tag">Performance</span></div>
+  </article>
+<article class="code-sample reveal" id="turret">
+    <header class="code-head">
+      <div class="code-meta"><span class="code-project">Turret prototype (private repo)</span><span class="font-mono code-path">TurretScript.cs</span></div>
+      <h2>MOBA-style turret targeting</h2>
+      <p class="code-tagline">A small early prototype: creeps are targeted before the player, and a locked target is never swapped.</p>
+    </header>
+    <div class="code-window">
+      <div class="code-bar"><span class="font-mono">TurretScript.cs</span><button class="code-copy" type="button" data-copy>Copy</button></div>
+      <pre tabindex="0"><code><span class="tok-c">// Prototype: a MOBA-style turret. Creeps are targeted before the player,</span>
+<span class="tok-c">// and a locked target is never swapped while it stays in range.</span>
+<span class="tok-k">public</span> <span class="tok-k">class</span> <span class="tok-t">TurretScript</span> : <span class="tok-t">MonoBehaviour</span>
+{
+    <span class="tok-k">public</span> <span class="tok-t">Transform</span> turretHead;
+    <span class="tok-k">public</span> <span class="tok-k">float</span> rotationSpeed = <span class="tok-n">5f</span>;
+    <span class="tok-k">public</span> <span class="tok-k">float</span> fireRate = <span class="tok-n">1f</span>;        <span class="tok-c">// shots per second</span>
+
+    <span class="tok-k">private</span> <span class="tok-t">Transform</span> target;
+
+    <span class="tok-k">void</span> OnTriggerEnter(<span class="tok-t">Collider</span> other)
+    {
+        <span class="tok-c">// Already locked on: keep the target.</span>
+        <span class="tok-k">if</span> (target != <span class="tok-k">null</span>) <span class="tok-k">return</span>;
+
+        <span class="tok-c">// Creeps first...</span>
+        <span class="tok-k">if</span> (other.CompareTag(<span class="tok-s">&quot;Creeps&quot;</span>))
+        {
+            target = other.transform;
+            <span class="tok-k">return</span>;
+        }
+
+        <span class="tok-c">// ...and the player only if nothing else is in range.</span>
+        <span class="tok-k">if</span> (other.CompareTag(<span class="tok-s">&quot;Player&quot;</span>))
+            target = other.transform;
+    }
+
+    <span class="tok-k">void</span> OnTriggerExit(<span class="tok-t">Collider</span> other)
+    {
+        <span class="tok-k">if</span> (other.transform == target)
+            target = <span class="tok-k">null</span>;             <span class="tok-c">// target left the zone: free the turret</span>
+    }
+
+    <span class="tok-k">void</span> AimAtTarget()
+    {
+        <span class="tok-t">Vector3</span> direction = target.position - turretHead.position;
+        <span class="tok-t">Quaternion</span> lookRot = <span class="tok-t">Quaternion</span>.LookRotation(direction);
+        turretHead.rotation = <span class="tok-t">Quaternion</span>.Slerp(
+            turretHead.rotation, lookRot, rotationSpeed * <span class="tok-t">Time</span>.deltaTime);
+    }
+}
+</code></pre>
+    </div>
+    <p class="code-why"><strong>Why it is written this way.</strong> Small on purpose. It shows how I start: one clear rule per piece of code, written first and tuned after. Newer work (above) is where the structure and tests are.</p>
+    <div class="tag-row"><span class="tag">C#</span><span class="tag">Unity</span><span class="tag">Prototype</span></div>
+  </article>
+</section>
+  <section class="container"><p class="code-foot">Public repositories: <a href="https://github.com/RomainPitot/lol-climb-tracker" target="_blank" rel="noopener noreferrer">lol-climb-tracker</a> (React) and <a href="https://github.com/RomainPitot/GameDetectorLol" target="_blank" rel="noopener noreferrer">GameDetectorLol</a> (Python). I can share access to the private ones during a hiring process.</p></section>
+
+  </main>
+  <footer class="site-footer">
+    <div class="container">
+      <div class="footer-grid">
+        <div class="footer-col footer-about">
+          <div class="footer-brand"><svg class="icon" viewBox="0 0 24 24"><polyline points="16 18 22 12 16 6"/><polyline points="8 6 2 12 8 18"/></svg> romain<span class="dot">.</span>pitot</div>
+          <p>Unity &amp; C# developer. Open to work &mdash; available now, any offer.</p>
+          <p class="footer-loc font-mono">Toulouse, France</p>
+        </div>
+
+        <div class="footer-col">
+          <h4>Site</h4>
+          <nav class="footer-nav"><a href="index.html">Home</a><a href="projects.html">Projects</a><a href="code.html">Code</a><a href="about.html">About</a><a href="contact.html">Contact</a></nav>
+        </div>
+
+        <div class="footer-col">
+          <h4>Elsewhere</h4>
+          <nav class="footer-nav">
+            <a href="https://github.com/romainpitot" target="_blank" rel="noopener noreferrer"><svg class="icon" viewBox="0 0 24 24"><path d="M9 19c-5 1.5-5-2.5-7-3m14 6v-3.87a3.37 3.37 0 0 0-.94-2.61c3.14-.35 6.44-1.54 6.44-7A5.44 5.44 0 0 0 20 4.77 5.07 5.07 0 0 0 19.91 1S18.73.65 16 2.48a13.38 13.38 0 0 0-7 0C6.27.65 5.09 1 5.09 1A5.07 5.07 0 0 0 5 4.77a5.44 5.44 0 0 0-1.5 3.78c0 5.42 3.3 6.61 6.44 7A3.37 3.37 0 0 0 9 18.13V22"/></svg> GitHub</a>
+            <a href="https://linkedin.com/in/romain-pitot" target="_blank" rel="noopener noreferrer"><svg class="icon" viewBox="0 0 24 24"><path d="M16 8a6 6 0 0 1 6 6v7h-4v-7a2 2 0 0 0-2-2 2 2 0 0 0-2 2v7h-4v-7a6 6 0 0 1 6-6z"/><rect x="2" y="9" width="4" height="12"/><circle cx="4" cy="4" r="2"/></svg> LinkedIn</a>
+            <a class="" href="contact.html" data-mail data-u="romainpitot.dev" data-h="gmail.com"><svg class="icon" viewBox="0 0 24 24"><path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"/><polyline points="22 6 12 13 2 6"/></svg> romainpitot.dev [at] gmail.com</a>
+            <a href="cv.pdf" download><svg class="icon" viewBox="0 0 24 24"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg> Résumé (PDF)</a>
+          </nav>
+        </div>
+      </div>
+
+      <div class="footer-bottom">
+        <span class="footer-copy">&copy; 2026 Romain Pitot</span>
+        <span class="footer-colophon font-mono">Static site &mdash; HTML, CSS and JS, deployed with GitHub Actions</span>
+        <a class="footer-top" href="#main">Back to top <svg class="icon" viewBox="0 0 24 24"><line x1="12" y1="19" x2="12" y2="5"/><polyline points="5 12 12 5 19 12"/></svg></a>
+      </div>
+    </div>
+  </footer>
+
+  <script src="assets/js/i18n.js?v=547cf639bf"></script>
+  <script src="assets/js/main.js?v=547cf639bf"></script>
+</body>
+</html>

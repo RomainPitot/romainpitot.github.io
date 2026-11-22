@@ -1,36 +1,37 @@
 // UI copy only — project/system data stays in English (matches source content).
 window.PITOT_I18N = {
   en: {
-    nav: { home: "Home", projects: "Projects", systems: "Systems", about: "About", contact: "Contact" },
+    nav: { home: "Home", projects: "Projects", code: "Code", about: "About", contact: "Contact" },
     hero: {
-      title: "Gameplay Programmer",
-      tagline: "I build the systems games run on — AI, netcode, procedural generation and the tools around them.",
+      title: "Unity / C# Developer",
+      tagline: "Unity & C# developer. I build gameplay systems, co-op multiplayer and the tools around them — two years in a game studio, a solo Steam co-op game in progress.",
+      cta_contact: "Contact me",
       cta_projects: "View Projects",
       cta_cv: "Download CV",
       scroll: "Scroll to explore"
     },
     home: {
-      featured_title: "Latest Projects",
-      featured_subtitle: "The three most recent — all thirteen are on the projects page",
-      view_all: "View all 13",
-      systems_title: "Technical Systems",
-      systems_subtitle: "Architecture deep-dives & production-ready frameworks",
-      all_systems: "All systems",
-      skills_title: "Core Skills",
+      featured_title: "Selected Projects",
+      featured_subtitle: "A game in progress, a jam in five days, a live web app — the full list is on the projects page",
+      view_all: "View all projects",
+      systems_title: "Code you can read",
+      systems_subtitle: "Real extracts from my current game, with the reasoning behind them",
+      all_systems: "All samples",
+      skills_title: "Skills, by how I use them",
       about_title: "About Me",
       full_profile: "Full profile"
     },
     projects: {
       title: "Projects",
-      subtitle: "Everything I've shipped — studio work, school projects, jams and one long-running solo build.",
+      subtitle: "Studio work, personal apps, game jams, school projects and one long-running solo game.",
       filter_all: "All",
       sort_latest: "Latest",
       sort_alpha: "A–Z",
       view_detail: "View Project"
     },
     systems: {
-      title: "Systems",
-      subtitle: "Technical deep-dives into gameplay engineering",
+      title: "Code you can read",
+      subtitle: "Real extracts from my repositories, trimmed, with the reasoning behind them",
       architecture: "Architecture",
       challenges: "Challenges",
       solutions: "Solutions Implemented",
@@ -39,16 +40,16 @@ window.PITOT_I18N = {
     },
     about: {
       title: "About Me",
-      subtitle: "Gameplay Programmer — Unity / C#",
+      subtitle: "Unity / C# developer",
       education_title: "Education",
-      skills_title: "Technical Skills",
+      skills_title: "Skills, by how I use them",
       languages_title: "Languages",
       based: "Based in France — Open to remote & relocation"
     },
     contact: {
       title: "Get In Touch",
-      subtitle: "Open to opportunities, collaborations, and interesting projects",
-      availability: "Open to new opportunities",
+      subtitle: "Hiring, freelance or just curious about a project — I reply within two working days",
+      availability: "Open to work — available now, any offer",
       send: "Send Message",
       sending: "Sending…",
       sent: "Thanks! Your message has been sent — I'll get back to you soon.",
@@ -57,39 +58,40 @@ window.PITOT_I18N = {
       resume: "Resume",
       form_title: "Send a message"
     },
-    footer: { role: "gameplay programmer" }
+    footer: { role: "Unity / C# developer" }
   },
   fr: {
-    nav: { home: "Accueil", projects: "Projets", systems: "Systèmes", about: "À propos", contact: "Contact" },
+    nav: { home: "Accueil", projects: "Projets", code: "Code", about: "À propos", contact: "Contact" },
     hero: {
-      title: "Programmeur Gameplay",
-      tagline: "Je construis les systèmes qui font tourner les jeux — IA, netcode, génération procédurale et les outils autour.",
+      title: "Développeur Unity / C#",
+      tagline: "Développeur Unity & C#. Je construis des systèmes de gameplay, du multijoueur coop et les outils autour — deux ans en studio de jeu, un jeu coop Steam en solo en cours.",
+      cta_contact: "Me contacter",
       cta_projects: "Voir les projets",
       cta_cv: "Télécharger le CV",
       scroll: "Défiler pour explorer"
     },
     home: {
-      featured_title: "Derniers Projets",
-      featured_subtitle: "Les trois plus récents — les treize sont sur la page projets",
-      view_all: "Voir les 13",
-      systems_title: "Systèmes Techniques",
-      systems_subtitle: "Approfondissements techniques & frameworks prêts pour la production",
-      all_systems: "Tous les systèmes",
-      skills_title: "Compétences clés",
+      featured_title: "Projets sélectionnés",
+      featured_subtitle: "Un jeu en cours, une jam en cinq jours, une appli web en ligne — la liste complète est sur la page projets",
+      view_all: "Voir tous les projets",
+      systems_title: "Du code à lire",
+      systems_subtitle: "De vrais extraits de mon jeu en cours, avec le raisonnement derrière",
+      all_systems: "Tous les extraits",
+      skills_title: "Compétences, selon mon niveau d'usage",
       about_title: "À Propos",
       full_profile: "Profil complet"
     },
     projects: {
       title: "Projets",
-      subtitle: "Tout ce que j'ai livré — projets studio, projets d'école, jams et un gros projet solo en cours.",
+      subtitle: "Projets studio, applis perso, game jams, projets d'école et un gros jeu solo en cours.",
       filter_all: "Tout",
       sort_latest: "Récent",
       sort_alpha: "A–Z",
       view_detail: "Voir le projet"
     },
     systems: {
-      title: "Systèmes",
-      subtitle: "Approfondissements techniques en ingénierie gameplay",
+      title: "Du code à lire",
+      subtitle: "De vrais extraits de mes dépôts, raccourcis, avec le raisonnement derrière",
       architecture: "Architecture",
       challenges: "Défis",
       solutions: "Solutions Implémentées",
@@ -98,16 +100,16 @@ window.PITOT_I18N = {
     },
     about: {
       title: "À Propos",
-      subtitle: "Programmeur Gameplay — Unity / C#",
+      subtitle: "Développeur Unity / C#",
       education_title: "Formation",
-      skills_title: "Compétences Techniques",
+      skills_title: "Compétences, selon mon niveau d'usage",
       languages_title: "Langues",
       based: "Basé en France — Ouvert au remote & à la relocalisation"
     },
     contact: {
       title: "Me Contacter",
-      subtitle: "Ouvert aux opportunités, collaborations et projets intéressants",
-      availability: "Ouvert aux nouvelles opportunités",
+      subtitle: "Recrutement, freelance ou simple curiosité — je réponds sous deux jours ouvrés",
+      availability: "Disponible maintenant — ouvert à toute offre",
       send: "Envoyer le message",
       sending: "Envoi en cours…",
       sent: "Merci ! Votre message a bien été envoyé — je vous répondrai rapidement.",
@@ -116,6 +118,6 @@ window.PITOT_I18N = {
       resume: "CV",
       form_title: "Envoyer un message"
     },
-    footer: { role: "programmeur gameplay" }
+    footer: { role: "développeur Unity / C#" }
   }
 };

@@ -4,36 +4,40 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>About — Romain Pitot</title>
-  <meta name="description" content="About Romain Pitot: junior gameplay programmer, MSc Game Development, Unity/C# specialist.">
+  <meta name="description" content="About Romain Pitot: Unity and C# developer in Toulouse, MSc Game Development, two years in a game studio, open to any developer role.">
   <link rel="canonical" href="https://romainpitot.github.io/about.html">
   <meta name="theme-color" content="#13161f">
   <meta property="og:type" content="website">
   <meta property="og:site_name" content="romain.pitot">
+  <meta property="og:locale" content="en_GB">
   <meta property="og:title" content="About — Romain Pitot">
-  <meta property="og:description" content="About Romain Pitot: junior gameplay programmer, MSc Game Development, Unity/C# specialist.">
+  <meta property="og:description" content="About Romain Pitot: Unity and C# developer in Toulouse, MSc Game Development, two years in a game studio, open to any developer role.">
   <meta property="og:url" content="https://romainpitot.github.io/about.html">
   <meta property="og:image" content="https://romainpitot.github.io/assets/img/og-cover.jpg">
   <meta property="og:image:width" content="1200">
   <meta property="og:image:height" content="630">
-  <meta property="og:image:alt" content="Romain Pitot — Gameplay Programmer, Unity / C#">
+  <meta property="og:image:alt" content="Romain Pitot — Unity / C# developer">
   <meta name="twitter:card" content="summary_large_image">
   <meta name="twitter:title" content="About — Romain Pitot">
-  <meta name="twitter:description" content="About Romain Pitot: junior gameplay programmer, MSc Game Development, Unity/C# specialist.">
+  <meta name="twitter:description" content="About Romain Pitot: Unity and C# developer in Toulouse, MSc Game Development, two years in a game studio, open to any developer role.">
   <meta name="twitter:image" content="https://romainpitot.github.io/assets/img/og-cover.jpg">
   <link rel="icon" href="assets/img/favicon.svg" type="image/svg+xml">
-  <link rel="preconnect" href="https://fonts.googleapis.com">
-  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500;700&display=swap" rel="stylesheet">
-  <link rel="stylesheet" href="assets/css/style.css?v=a7ad219111">
+  <meta http-equiv="Content-Security-Policy" content="default-src 'self'; img-src 'self' data:; style-src 'self' 'unsafe-inline'; script-src 'self'; font-src 'self'; connect-src 'self' https://formspree.io; form-action https://formspree.io; base-uri 'self'; object-src 'none'">
+  <meta name="referrer" content="strict-origin-when-cross-origin">
+  <link rel="preload" href="assets/fonts/inter-latin.woff2" as="font" type="font/woff2" crossorigin>
+  <link rel="preload" href="assets/fonts/jetbrains-mono-latin.woff2" as="font" type="font/woff2" crossorigin>
+  <link rel="stylesheet" href="assets/css/style.css?v=547cf639bf">
 <script type="application/ld+json">
   {
     "@context": "https://schema.org",
     "@type": "Person",
     "name": "Romain Pitot",
-    "jobTitle": "Gameplay Programmer",
+    "jobTitle": "Unity / C# Developer",
+    "address": {"@type": "PostalAddress", "addressLocality": "Toulouse", "addressCountry": "FR"},
+    "alumniOf": [{"@type": "EducationalOrganization", "name": "Gaming Campus"}, {"@type": "EducationalOrganization", "name": "E-Artsup"}],
     "url": "https://romainpitot.github.io/",
     "sameAs": ["https://github.com/romainpitot", "https://linkedin.com/in/romain-pitot"],
-    "knowsAbout": ["Unity", "C#", "Gameplay Programming", "Procedural Generation", "Game AI", "Multiplayer Netcode"]
+    "knowsAbout": ["Unity", "C#", "Gameplay Programming", "Multiplayer Netcode", "Unreal Engine", "Python", "React"]
   }
   </script>
 </head>
@@ -47,7 +51,7 @@
         <span class="brand-icon"><svg class="icon" viewBox="0 0 24 24"><polyline points="16 18 22 12 16 6"/><polyline points="8 6 2 12 8 18"/></svg></span>
         romain<span class="dot">.</span>pitot
       </a>
-      <nav class="main-nav" id="main-nav"><span class="nav-indicator" aria-hidden="true"></span><a href="index.html" data-i18n="nav.home">Home</a><a href="projects.html" data-i18n="nav.projects">Projects</a><a href="systems.html" data-i18n="nav.systems">Systems</a><a href="about.html" aria-current="page" data-i18n="nav.about">About</a><a href="contact.html" data-i18n="nav.contact">Contact</a></nav>
+      <nav class="main-nav" id="main-nav"><span class="nav-indicator" aria-hidden="true"></span><a href="index.html" data-i18n="nav.home">Home</a><a href="projects.html" data-i18n="nav.projects">Projects</a><a href="code.html" data-i18n="nav.code">Code</a><a href="about.html" aria-current="page" data-i18n="nav.about">About</a><a href="contact.html" data-i18n="nav.contact">Contact</a></nav>
       <div class="nav-right">
         <button class="lang-toggle" type="button" aria-label="Switch language">FR</button>
         <button class="nav-toggle" type="button" aria-label="Toggle menu" aria-expanded="false" aria-controls="main-nav">
@@ -62,20 +66,25 @@
   <section class="page-hero container">
     <span class="eyebrow" data-i18n-skip>About</span>
     <h1 data-i18n="about.title">About Me</h1>
-    <p data-i18n="about.subtitle">Gameplay Programmer &mdash; Unity / C#</p>
+    <p data-i18n="about.subtitle">Unity / C# developer</p>
     <div class="page-meta font-mono">Toulouse, FR &nbsp;&middot;&nbsp; MSc Game Development &nbsp;&middot;&nbsp; 2 years at Masseka Games Studio</div>
   </section>
 
   <section class="section-tight container">
     <div class="two-col">
-      <div class="reveal">
-        <p style="font-size:1.1rem;font-weight:600;margin-bottom:18px">I am a junior gameplay programmer passionate about building the systems that make games fun, responsive, and technically robust.</p>
-        <p style="color:hsl(var(--muted-foreground));margin-bottom:14px">I hold a Master's degree in Game Development and specialize in Unity and C# with a focus on gameplay systems, AI, procedural generation, and multiplayer networking.</p>
-        <p style="color:hsl(var(--muted-foreground));margin-bottom:14px">Game jams are the perfect opportunity for me to explore original and innovative ideas while honing my skills &mdash; I've shipped four of them since 2020, alongside work-study projects at Masseka Games Studio and a full Bachelor capstone game.</p>
-        <p style="color:hsl(var(--muted-foreground));margin-bottom:24px">I'm curious and challenge-driven, and my goal is to design engaging games and systems that leave a lasting impression on players.</p>
-        <p class="font-mono" style="font-size:.85rem;color:hsl(var(--accent))" data-i18n="about.based">Based in France &mdash; Open to remote &amp; relocation</p>
+      <div class="reveal about-text">
+        <p class="about-lead">I'm Romain. I write Unity and C#, and I like turning a game rule into code that can be tested.</p>
+        <p>I spent two years in work-study at Masseka Games Studio in Toulouse, mostly on mobile games: migrating <em>Kissoro</em> from Unity 2018 to 2022, fixing bugs and making the UI adapt to different screens on <em>Vaudoo</em> (now at 1k+ downloads on Google Play), reviving an abandoned prototype on my own, and adapting a game to The Sandbox's constraints.</p>
+        <p>Outside the studio I took part in five game jams, and I am building <em>Global Invasion</em> alone: a Steam co-op game with lobbies, Netcode for GameObjects and about eighty unit tests. I also made a React web app (CLIMB.EUW) and a Python Windows tool that work together, which is why I am open to any developer role and not only games.</p>
+        <h3 class="about-h">How I work</h3>
+        <ul class="about-list">
+          <li>Game rules in plain C# with time and randomness passed in, so they can be tested without launching the game. Network and engine classes stay thin.</li>
+          <li>I use AI assistants (Claude Code) as a pair programmer. I decide the design, review what comes back and test it. Where a project relies on AI tools, as in On Air, its page says so.</li>
+          <li>Small commits, one branch per feature, and a written plan before a change.</li>
+        </ul>
+        <p class="font-mono about-based" data-i18n="about.based">Based in France &mdash; Open to remote &amp; relocation</p>
 
-        <h3 style="font-family:var(--font-mono);font-size:.75rem;letter-spacing:.15em;text-transform:uppercase;color:hsl(var(--primary)/.8);margin:36px 0 16px" data-i18n="about.education_title">Education</h3>
+        <h3 class="about-h" data-i18n="about.education_title">Education</h3>
         <div style="margin-bottom:16px"><strong>Master Video Game Developer & Rendering Systems</strong><br><span style="color:hsl(var(--muted-foreground));font-size:.9rem">Gaming Campus, Lyon — alternance at Masseka Games Studio, Toulouse &middot; Oct 2022 – Oct 2024</span></div><div style="margin-bottom:16px"><strong>Bachelor's, Game Design & Video Games (Creative Coding)</strong><br><span style="color:hsl(var(--muted-foreground));font-size:.9rem">E-Artsup, Toulouse &middot; Sep 2019 – Sep 2022</span></div>
       </div>
 
@@ -83,21 +92,21 @@
         <div class="cv-icon"><svg class="icon" viewBox="0 0 24 24"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg></div>
         <div>
           <strong>Curriculum Vit&aelig;</strong>
-          <p style="color:hsl(var(--muted-foreground));font-size:.85rem;margin-top:4px">Gameplay Programmer &mdash; Unity / C#<br>PDF &middot; Updated 2026</p>
+          <p style="color:hsl(var(--muted-foreground));font-size:.85rem;margin-top:4px">Unity / C# developer<br>PDF &middot; Updated 2026</p>
         </div>
         <a class="btn btn-primary btn-block" href="cv.pdf" download><svg class="icon" viewBox="0 0 24 24"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg> <span data-i18n="hero.cta_cv">Download CV</span></a>
         <div style="border-top:1px solid hsl(var(--border));margin-top:6px;padding-top:16px">
-          <span class="availability"><span class="dot"></span> <span data-i18n="contact.availability">Open to new opportunities</span></span>
+          <span class="availability"><span class="dot"></span> <span data-i18n="contact.availability">Open to work &mdash; available now, any offer</span></span>
         </div>
       </div>
     </div>
   </section>
 
   <section class="section container" style="border-top:1px solid hsl(var(--border)/.5)">
-    <h3 style="font-family:var(--font-mono);font-size:.75rem;letter-spacing:.15em;text-transform:uppercase;color:hsl(var(--primary)/.8);margin-bottom:18px" data-i18n="about.skills_title">Technical Skills</h3>
-    <div class="tag-row" style="margin-bottom:40px"><span class="tag">Unity</span><span class="tag">C#</span><span class="tag">Gameplay Systems</span><span class="tag">AI / Behavior Trees</span><span class="tag">Procedural Generation</span><span class="tag">Netcode / Multiplayer</span><span class="tag">ShaderLab / HLSL</span><span class="tag">ScriptableObjects</span><span class="tag">Design Patterns</span><span class="tag">Git</span><span class="tag">Unreal Engine</span><span class="tag">C++</span></div>
+    <h3 class="about-h" data-i18n="about.skills_title">Skills, by how I use them</h3>
+    <div class="skills-grid skills-tiers" style="margin-bottom:40px"><div class="skill-col"><h4>DAILY</h4><p class="skill-sub">what I write most weeks</p><ul><li>Unity (URP)</li><li>C#</li><li>Netcode for GameObjects</li><li>NUnit EditMode tests</li><li>Custom editor tools</li><li>ScriptableObjects</li><li>UGUI</li><li>Git / GitHub</li></ul></div><div class="skill-col"><h4>USED ON REAL PROJECTS</h4><p class="skill-sub">shipped or in a repo</p><ul><li>Steamworks lobbies</li><li>Unreal Engine 5 / C++ (On Air)</li><li>Android builds</li><li>NavMesh & agent simulation</li><li>Python tools & automation</li><li>React / Vite web app</li><li>VFX & shaders (jam level)</li><li>AI-assisted workflow (Claude Code)</li></ul></div><div class="skill-col"><h4>LEARNING</h4><p class="skill-sub">not yet on a project</p><ul><li>Unity DOTS</li></ul></div></div>
 
-    <h3 style="font-family:var(--font-mono);font-size:.75rem;letter-spacing:.15em;text-transform:uppercase;color:hsl(var(--primary)/.8);margin-bottom:18px" data-i18n="about.languages_title">Languages</h3>
+    <h3 class="about-h" data-i18n="about.languages_title">Languages</h3>
     <div class="tag-row">
       <span class="tag">French &middot; Native</span>
       <span class="tag">English &middot; Professional</span>
@@ -110,21 +119,21 @@
       <div class="footer-grid">
         <div class="footer-col footer-about">
           <div class="footer-brand"><svg class="icon" viewBox="0 0 24 24"><polyline points="16 18 22 12 16 6"/><polyline points="8 6 2 12 8 18"/></svg> romain<span class="dot">.</span>pitot</div>
-          <p>Gameplay programmer &mdash; Unity &amp; C#. Currently building a co-op FPS solo, and open to interesting systems work.</p>
+          <p>Unity &amp; C# developer. Open to work &mdash; available now, any offer.</p>
           <p class="footer-loc font-mono">Toulouse, France</p>
         </div>
 
         <div class="footer-col">
           <h4>Site</h4>
-          <nav class="footer-nav"><a href="index.html">Home</a><a href="projects.html">Projects</a><a href="systems.html">Systems</a><a href="about.html">About</a><a href="contact.html">Contact</a></nav>
+          <nav class="footer-nav"><a href="index.html">Home</a><a href="projects.html">Projects</a><a href="code.html">Code</a><a href="about.html">About</a><a href="contact.html">Contact</a></nav>
         </div>
 
         <div class="footer-col">
           <h4>Elsewhere</h4>
           <nav class="footer-nav">
-            <a href="https://github.com/romainpitot" target="_blank" rel="noreferrer"><svg class="icon" viewBox="0 0 24 24"><path d="M9 19c-5 1.5-5-2.5-7-3m14 6v-3.87a3.37 3.37 0 0 0-.94-2.61c3.14-.35 6.44-1.54 6.44-7A5.44 5.44 0 0 0 20 4.77 5.07 5.07 0 0 0 19.91 1S18.73.65 16 2.48a13.38 13.38 0 0 0-7 0C6.27.65 5.09 1 5.09 1A5.07 5.07 0 0 0 5 4.77a5.44 5.44 0 0 0-1.5 3.78c0 5.42 3.3 6.61 6.44 7A3.37 3.37 0 0 0 9 18.13V22"/></svg> GitHub</a>
-            <a href="https://linkedin.com/in/romain-pitot" target="_blank" rel="noreferrer"><svg class="icon" viewBox="0 0 24 24"><path d="M16 8a6 6 0 0 1 6 6v7h-4v-7a2 2 0 0 0-2-2 2 2 0 0 0-2 2v7h-4v-7a6 6 0 0 1 6-6z"/><rect x="2" y="9" width="4" height="12"/><circle cx="4" cy="4" r="2"/></svg> LinkedIn</a>
-            <a href="mailto:romainpitot.dev@gmail.com"><svg class="icon" viewBox="0 0 24 24"><path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"/><polyline points="22 6 12 13 2 6"/></svg> Email</a>
+            <a href="https://github.com/romainpitot" target="_blank" rel="noopener noreferrer"><svg class="icon" viewBox="0 0 24 24"><path d="M9 19c-5 1.5-5-2.5-7-3m14 6v-3.87a3.37 3.37 0 0 0-.94-2.61c3.14-.35 6.44-1.54 6.44-7A5.44 5.44 0 0 0 20 4.77 5.07 5.07 0 0 0 19.91 1S18.73.65 16 2.48a13.38 13.38 0 0 0-7 0C6.27.65 5.09 1 5.09 1A5.07 5.07 0 0 0 5 4.77a5.44 5.44 0 0 0-1.5 3.78c0 5.42 3.3 6.61 6.44 7A3.37 3.37 0 0 0 9 18.13V22"/></svg> GitHub</a>
+            <a href="https://linkedin.com/in/romain-pitot" target="_blank" rel="noopener noreferrer"><svg class="icon" viewBox="0 0 24 24"><path d="M16 8a6 6 0 0 1 6 6v7h-4v-7a2 2 0 0 0-2-2 2 2 0 0 0-2 2v7h-4v-7a6 6 0 0 1 6-6z"/><rect x="2" y="9" width="4" height="12"/><circle cx="4" cy="4" r="2"/></svg> LinkedIn</a>
+            <a class="" href="contact.html" data-mail data-u="romainpitot.dev" data-h="gmail.com"><svg class="icon" viewBox="0 0 24 24"><path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"/><polyline points="22 6 12 13 2 6"/></svg> romainpitot.dev [at] gmail.com</a>
             <a href="cv.pdf" download><svg class="icon" viewBox="0 0 24 24"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg> Résumé (PDF)</a>
           </nav>
         </div>
@@ -132,13 +141,13 @@
 
       <div class="footer-bottom">
         <span class="footer-copy">&copy; 2026 Romain Pitot</span>
-        <span class="footer-colophon font-mono">Hand-built &mdash; vanilla HTML/CSS/JS, no framework, deployed by GitHub Actions</span>
+        <span class="footer-colophon font-mono">Static site &mdash; HTML, CSS and JS, deployed with GitHub Actions</span>
         <a class="footer-top" href="#main">Back to top <svg class="icon" viewBox="0 0 24 24"><line x1="12" y1="19" x2="12" y2="5"/><polyline points="5 12 12 5 19 12"/></svg></a>
       </div>
     </div>
   </footer>
 
-  <script src="assets/js/i18n.js?v=a7ad219111"></script>
-  <script src="assets/js/main.js?v=a7ad219111"></script>
+  <script src="assets/js/i18n.js?v=547cf639bf"></script>
+  <script src="assets/js/main.js?v=547cf639bf"></script>
 </body>
 </html>

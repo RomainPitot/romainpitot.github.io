@@ -2,7 +2,7 @@
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
   <url><loc>https://romainpitot.github.io/</loc></url>
   <url><loc>https://romainpitot.github.io/projects.html</loc></url>
-  <url><loc>https://romainpitot.github.io/systems.html</loc></url>
+  <url><loc>https://romainpitot.github.io/code.html</loc></url>
   <url><loc>https://romainpitot.github.io/about.html</loc></url>
   <url><loc>https://romainpitot.github.io/contact.html</loc></url>
   <url><loc>https://romainpitot.github.io/projects/legend-of-mulu.html</loc></url>
@@ -18,4 +18,6 @@
   <url><loc>https://romainpitot.github.io/projects/trash-santa.html</loc></url>
   <url><loc>https://romainpitot.github.io/projects/global-invasion.html</loc></url>
   <url><loc>https://romainpitot.github.io/projects/on-air.html</loc></url>
+  <url><loc>https://romainpitot.github.io/projects/climb-euw.html</loc></url>
+  <url><loc>https://romainpitot.github.io/projects/game-detector-lol.html</loc></url>
 </urlset>
