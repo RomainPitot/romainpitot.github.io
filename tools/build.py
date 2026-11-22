@@ -860,6 +860,7 @@ def build_projects_listing():
       <div class="filter-group">%(filters)s</div>
       <div class="filter-group"><span class="sort-label" data-i18n-skip>Sort:</span>%(sorts)s</div>
     </div>
+    <h2 class="sr-only">All projects</h2>
     <div class="grid grid-3" data-project-grid>%(cards)s</div>
   </section>
 """ % {"filters": filter_btns, "sorts": sort_btns, "cards": cards}
