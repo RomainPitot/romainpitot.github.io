@@ -25,8 +25,7 @@ def _compute_asset_version():
     so browsers pick up changes immediately instead of serving a stale
     cached copy after a redeploy."""
     h = hashlib.sha256()
-    for rel in ("assets/css/style.css", "assets/js/main.js", "assets/js/i18n.js",
-                "assets/js/swarm.js", "assets/js/daynight.js"):
+    for rel in ("assets/css/style.css", "assets/js/main.js", "assets/js/i18n.js"):
         path = os.path.join(ROOT, rel)
         if os.path.exists(path):
             with open(path, "rb") as f:
@@ -518,11 +517,11 @@ def person_jsonld():
 """ % {"author": AUTHOR, "site": SITE_URL, "github": REAL_GITHUB, "linkedin": REAL_LINKEDIN}
 
 
-def page(title, description, active, depth, body, canonical_path="", home=False):
+def page(title, description, active, depth, body, canonical_path=""):
     return """<!DOCTYPE html>
-<html lang="en"%(html_attrs)s>
+<html lang="en">
 <head>
-  %(head)s%(extra_head)s%(jsonld)s</head>
+  %(head)s%(jsonld)s</head>
 <body>
   <div class="noise-overlay" aria-hidden="true"></div>
   <div class="scroll-progress" aria-hidden="true"></div>
@@ -533,14 +532,11 @@ def page(title, description, active, depth, body, canonical_path="", home=False)
   </main>
   %(footer)s
   <script src="%(depth)sassets/js/i18n.js?v=%(v)s"></script>
-  <script src="%(depth)sassets/js/main.js?v=%(v)s"></script>%(home_scripts)s
+  <script src="%(depth)sassets/js/main.js?v=%(v)s"></script>
 </body>
 </html>
 """ % {
         "head": html_head(title, description, depth, canonical_path),
-        "html_attrs": ' data-page="home"' if home else "",
-        "extra_head": ('  <link rel="preload" href="%sassets/fonts/anton-latin.woff2" as="font" type="font/woff2" crossorigin>\n' % depth) if home else "",
-        "home_scripts": ('\n  <script src="%(d)sassets/js/swarm.js?v=%(v)s"></script>\n  <script src="%(d)sassets/js/daynight.js?v=%(v)s"></script>' % {"d": depth, "v": ASSET_VERSION}) if home else "",
         "jsonld": person_jsonld(),
         "header": header_html(active, depth),
         "body": body,
@@ -665,31 +661,37 @@ def build_home():
     featured = [project_by_id(i) for i in X.HOME_FEATURED]
     depth = ""
 
-    hero = """<section class="hero hero-swarm" data-swarm-hero>
-    <canvas class="swarm-canvas" aria-hidden="true"></canvas>
-    <div class="container">
-      <div class="hero-copy">
-        <span class="hero-role" data-swarm-avoid data-i18n="hero.title">Unity / C# Developer</span>
-        <h1 data-swarm-name aria-label="Romain Pitot"><span class="h1-line">Romain</span><span class="h1-line accent">Pitot</span></h1>
-        <p class="hero-tagline" data-swarm-avoid data-i18n="hero.tagline">Unity &amp; C# developer. I build gameplay systems, co-op multiplayer and the tools around them &mdash; two years in a game studio, a solo Steam co-op game in progress.</p>
-        <p class="hero-avail" data-swarm-avoid><span class="availability"><span class="dot"></span> <span data-i18n="contact.availability">Open to work &mdash; available now, any offer</span></span></p>
-        <div class="hero-ctas" data-swarm-avoid>
-          <a class="btn btn-primary" href="projects.html"><span data-i18n="hero.cta_projects">View Projects</span> %(arrow)s</a>
-          <a class="btn btn-outline" href="cv.pdf" download>%(dl)s <span data-i18n="hero.cta_cv">Download CV</span></a>
-          <a class="btn btn-outline" href="contact.html">%(mail)s <span data-i18n="hero.cta_contact">Contact me</span></a>
-        </div>
-        <div class="hero-status font-mono" data-swarm-avoid>Toulouse, FR &nbsp;&middot;&nbsp; remote &amp; relocation OK &nbsp;&middot;&nbsp; building a co-op FPS, solo</div>
-      </div>
+    hero = """<section class="hero">
+    <div class="hero-bg" aria-hidden="true">
+      <div class="grid-layer"></div>
+      <div class="orb orb-primary"></div>
+      <div class="orb orb-accent"></div>
+      <div class="orb orb-violet"></div>
     </div>
-    <div class="hero-hud font-mono" aria-hidden="true">
-      <span class="hero-hint">The swarm is the one from my game &mdash; move the cursor, click to squash</span>
-      <span class="hero-count">Exterminated: <b data-squash-count>0</b></span>
+    <div class="cursor-glow" aria-hidden="true"></div>
+    <div class="cursor-dot" aria-hidden="true"></div>
+    <div class="container">
+      <span class="hero-role" data-i18n="hero.title">Gameplay Programmer</span>
+      <h1 class="text-glow" data-decrypt><span class="decrypt-seg">Romain</span> <span class="accent decrypt-seg">Pitot</span></h1>
+      <div class="badge-row">
+        <span class="pill pill-primary">Unity</span>
+        <span class="pill pill-accent">C#</span>
+        <span class="pill">Gameplay Systems</span>
+        <span class="pill">Multiplayer</span>
+      </div>
+      <p class="hero-tagline" data-i18n="hero.tagline">Unity &amp; C# developer. I build gameplay systems, co-op multiplayer and the tools around them &mdash; two years in a game studio, a solo Steam co-op game in progress.</p>
+      <p class="hero-avail"><span class="availability"><span class="dot"></span> <span data-i18n="contact.availability">Open to work &mdash; available now, any offer</span></span></p>
+      <div class="hero-ctas">
+        <a class="btn btn-primary" href="projects.html"><span data-i18n="hero.cta_projects">View Projects</span> %(arrow)s</a>
+        <a class="btn btn-outline" href="cv.pdf" download>%(dl)s <span data-i18n="hero.cta_cv">Download CV</span></a>
+        <a class="btn btn-outline" href="contact.html">%(mail)s <span data-i18n="hero.cta_contact">Contact me</span></a>
+      </div>
+      <div class="hero-status font-mono">Toulouse, FR &nbsp;&middot;&nbsp; remote &amp; relocation OK &nbsp;&middot;&nbsp; building a co-op FPS, solo</div>
+      <div class="scroll-hint" data-i18n="hero.scroll">Scroll to explore</div>
     </div>
   </section>
 
-  <div class="phase-hud font-mono" aria-hidden="true"><span class="phase-name">DAY</span><span class="phase-time">07:00</span></div>
-
-    <section class="stats-bar">
+  <section class="stats-bar">
     <div class="container stats-grid">
       <div class="stat"><div class="stat-num"><span data-count-to="%(n)d">%(n)d</span></div><div class="stat-label">Projects built</div></div>
       <div class="stat"><div class="stat-num"><span data-count-to="5">5</span></div><div class="stat-label">Game jams</div></div>
@@ -805,7 +807,7 @@ def build_home():
         "dl": icon("download"),
     }
 
-    cta_html = """<section class="section" data-phase-dawn>
+    cta_html = """<section class="section">
     <div class="container">
       <div class="cta-panel reveal">
         <h2>Hiring a developer<br>who <span class="accent">finishes things?</span></h2>
@@ -823,7 +825,7 @@ def build_home():
     write("index.html", page(
         "%s — Unity / C# Developer, Toulouse" % AUTHOR,
         "Romain Pitot, Unity and C# developer in Toulouse. Gameplay systems, co-op multiplayer and tools. A game live on Google Play, a Steam co-op game in progress. Open to work.",
-        "home", depth, body, "", home=True,
+        "home", depth, body, "",
     ))
 
 

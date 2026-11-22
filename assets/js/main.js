@@ -3,7 +3,7 @@
   "use strict";
 
   /* Hero: mouse-reactive glow + subtle parallax ---------------------------- */
-  var heroSection = document.querySelector(".hero:not([data-swarm-hero])");
+  var heroSection = document.querySelector(".hero");
   var prefersReducedMotion = window.matchMedia && window.matchMedia("(prefers-reduced-motion: reduce)").matches;
   if (heroSection && !prefersReducedMotion) {
     var heroBg = heroSection.querySelector(".hero-bg");
