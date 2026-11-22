@@ -1,8 +1,8 @@
 # romain.pitot — portfolio
 
-Static portfolio site for Romain Pitot (gameplay programmer, Unity/C#).
-Plain HTML/CSS/JS, no build tools required to run it — GitHub Actions deploys
-this repo straight to GitHub Pages on every push to `main`.
+Static portfolio site for Romain Pitot (Unity / C# developer, Toulouse).
+Plain HTML/CSS/JS, no framework: GitHub Actions deploys this repo straight to
+GitHub Pages on every push to `main`.
 
 Live at: **https://romainpitot.github.io/**
 
@@ -11,60 +11,59 @@ Live at: **https://romainpitot.github.io/**
 ```
 index.html            Home
 projects.html         Projects listing (filter/sort)
-projects/<slug>.html  One page per project
-systems.html          Technical systems deep-dives
-about.html            About / education / skills
-contact.html          Contact form (mailto) + links
-assets/css/style.css  Shared styles (design tokens, components)
-assets/js/main.js     Nav, filters, scroll reveal, i18n toggle, contact form
-assets/js/i18n.js     EN/FR UI copy dictionary
-cv.pdf                Placeholder résumé — replace with the real PDF
-tools/build.py        Generator that produced the HTML pages (see below)
+projects/<slug>.html  One page per project (challenge, jam retrospective, links)
+code.html             Real C# extracts with the reasoning behind them
+about.html            About, how I work, education, skills by level of use
+contact.html          Contact form (Formspree) + availability
+systems.html          Redirect to code.html (old URL)
+assets/css/style.css  Design tokens and components
+assets/js/main.js     Nav, filters, reveal, i18n toggle, form, email assembly
+assets/js/i18n.js     EN/FR UI copy
+assets/fonts/         Self-hosted Inter and JetBrains Mono (latin subset)
+cv.pdf                Résumé
+tools/build.py        Generator for every .html page
+tools/content_extra.py  Corrections, challenges, retrospectives, skills, code samples
+tools/samples/        The C# extracts shown on code.html
 ```
 
 ## Editing content
 
-Project/system data, skills, and education lives in `tools/build.py` as plain
-Python data (`PROJECTS`, `SYSTEMS`, `SKILLS`, `EDUCATION`). To change copy:
+Pages are generated. Base project data is in `tools/build.py` (`PROJECTS`),
+everything added on top is in `tools/content_extra.py`:
 
-1. Edit the data (or the HTML templates) in `tools/build.py`.
-2. Regenerate the static pages:
+- `ENRICH` — per-project overrides (status, note, challenges, jam retrospective, facts).
+- `NEW_PROJECTS` — projects added after the base list.
+- `SKILL_TIERS` — skills grouped by how they are used.
+- `CODE_SAMPLES` — the extracts of `code.html` (source files in `tools/samples/`).
 
-   ```bash
-   python tools/build.py
-   ```
+Then:
 
-3. Commit the regenerated `.html` files along with your `build.py` change.
+```bash
+python tools/make_project_covers.py   # only if a project has no real screenshot
+python tools/build.py                 # regenerates every .html, sitemap, robots
+```
 
-If you only need to tweak one page's wording, editing the generated `.html`
-file directly also works — just know it'll be overwritten next time someone
-runs the generator.
+Commit the regenerated `.html` files with the data change.
 
-## Known placeholders to replace
+Preview locally: `python -m http.server 8765` from the root.
 
-This content was reconstructed from an earlier Base44 draft that still had
-template placeholders in it. Before treating the site as final, replace:
+## Content rules
 
-- Per-project GitHub / itch.io / demo links in `tools/build.py` (`PROJECTS[*]["links"]`)
-  — currently point at bare `github.com` / `itch.io` / `demo.io`. Blocked on the
-  real itch.io page being published.
-- The `PROJECTS` list itself is still the fictional Base44 sample content
-  (Echoes of the Rift, Nexus Tower Defense, ...) — swap in the real shipped
-  projects (Kissoro, La légende de Mulu, MiniCup, ...) once screenshots/links
-  are ready.
-- Project cover art is CSS-only placeholders — swap in real screenshots/GIFs
-  when available.
+- Nothing on the site is a number I cannot defend. Store figures are public
+  (Google Play), test counts come from the repo, measurements are labelled.
+- Projects removed from stores are marked **Archived** with the reason.
+- Where a project relied on AI tools (On Air), its page says so.
 
-`cv.pdf` is now the real résumé (replace the same path whenever it's updated —
-no code changes needed). Education in `tools/build.py` (`EDUCATION`) reflects
-the real degrees.
+## Security and privacy
 
-GitHub and LinkedIn links in the footer/contact page already point at the
-real profiles (`github.com/romainpitot`, `linkedin.com/in/romain-pitot`).
+- Content-Security-Policy and referrer policy are set with `<meta>` (GitHub
+  Pages cannot send headers). Third parties: only Formspree (contact form).
+- The e-mail address is assembled by JavaScript from two data attributes, and
+  the form has a honeypot field, to limit scraping and spam.
+- Fonts are self-hosted: no request to Google at load time.
 
-## Deployment (GitHub Actions → GitHub Pages)
+## Deployment
 
 One-time setup on GitHub: **Settings → Pages → Build and deployment → Source
-→ GitHub Actions**. After that, every push to `main` runs
-`.github/workflows/deploy.yml`, which uploads the repo as a Pages artifact
-and deploys it — no build step needed since the site is already static HTML.
+→ GitHub Actions**. After that every push to `main` runs
+`.github/workflows/deploy.yml`.

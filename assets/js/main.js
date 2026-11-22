@@ -266,7 +266,10 @@
       if (typeof value === "string") el.setAttribute("placeholder", value);
     });
     var toggle = document.querySelector(".lang-toggle");
-    if (toggle) toggle.textContent = lang === "en" ? "FR" : "EN";
+    if (toggle) {
+      toggle.textContent = lang === "en" ? "FR" : "EN";
+      toggle.setAttribute("aria-label", lang === "en" ? "FR — passer en français" : "EN — switch to English");
+    }
   }
   var langToggle = document.querySelector(".lang-toggle");
   var currentLang = getLang();

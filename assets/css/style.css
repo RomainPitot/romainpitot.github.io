@@ -293,7 +293,7 @@ button { font-family: inherit; cursor: pointer; }
 }
 
 .section-sub {
-  color: hsl(var(--foreground) / 0.4);
+  color: hsl(var(--muted-foreground));
   font-size: 0.95rem;
   margin-top: 6px;
 }
@@ -304,7 +304,7 @@ button { font-family: inherit; cursor: pointer; }
   gap: 6px;
   font-family: var(--font-mono);
   font-size: 0.85rem;
-  color: hsl(var(--foreground) / 0.4);
+  color: hsl(var(--muted-foreground));
   transition: color .2s ease;
 }
 
@@ -882,7 +882,7 @@ button { font-family: inherit; cursor: pointer; }
 @media (max-width: 860px) { .skills-grid { grid-template-columns: repeat(2, 1fr); } }
 @media (max-width: 560px) { .skills-grid { grid-template-columns: 1fr; } }
 
-.skill-col h4 {
+.skill-col h3 {
   font-family: var(--font-mono);
   font-size: 0.72rem;
   letter-spacing: 0.15em;
@@ -1026,7 +1026,7 @@ button { font-family: inherit; cursor: pointer; }
 
 .footer-brand .dot { color: hsl(var(--primary)); }
 
-.footer-col h4 {
+.footer-col h3 {
   font-family: var(--font-mono);
   font-size: 0.68rem;
   letter-spacing: 0.18em;
@@ -1062,7 +1062,7 @@ button { font-family: inherit; cursor: pointer; }
 .footer-copy {
   font-family: var(--font-mono);
   font-size: 0.76rem;
-  color: hsl(var(--muted-foreground) / 0.7);
+  color: hsl(var(--muted-foreground));
 }
 
 .footer-colophon {
@@ -1248,7 +1248,7 @@ button { font-family: inherit; cursor: pointer; }
   padding: 28px;
 }
 
-.form-card h3 {
+.form-card h2 {
   font-family: var(--font-mono);
   font-size: 0.75rem;
   letter-spacing: 0.15em;
@@ -1295,7 +1295,7 @@ button { font-family: inherit; cursor: pointer; }
   margin-bottom: 20px;
 }
 
-.connect-card h3 {
+.connect-card h2 {
   font-family: var(--font-mono);
   font-size: 0.75rem;
   letter-spacing: 0.15em;

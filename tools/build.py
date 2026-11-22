@@ -425,7 +425,7 @@ def header_html(active, depth):
       </a>
       <nav class="main-nav" id="main-nav"><span class="nav-indicator" aria-hidden="true"></span>%(links)s</nav>
       <div class="nav-right">
-        <button class="lang-toggle" type="button" aria-label="Switch language">FR</button>
+        <button class="lang-toggle" type="button" aria-label="FR — passer en français">FR</button>
         <button class="nav-toggle" type="button" aria-label="Toggle menu" aria-expanded="false" aria-controls="main-nav">
           <span class="icon-menu">%(menu_icon)s</span>
           <span class="icon-close" hidden>%(close_icon)s</span>
@@ -462,12 +462,12 @@ def footer_html(depth):
         </div>
 
         <div class="footer-col">
-          <h4>Site</h4>
+          <h3>Site</h3>
           <nav class="footer-nav">%(nav)s</nav>
         </div>
 
         <div class="footer-col">
-          <h4>Elsewhere</h4>
+          <h3>Elsewhere</h3>
           <nav class="footer-nav">
             <a href="%(github)s" target="_blank" rel="noopener noreferrer">%(github_icon)s GitHub</a>
             <a href="%(linkedin)s" target="_blank" rel="noopener noreferrer">%(linkedin_icon)s LinkedIn</a>
@@ -753,7 +753,7 @@ def build_home():
     }
 
     skills_cols = "".join(
-        '<div class="skill-col"><h4>%s</h4><p class="skill-sub">%s</p><ul>%s</ul></div>' % (
+        '<div class="skill-col"><h3>%s</h3><p class="skill-sub">%s</p><ul>%s</ul></div>' % (
             tier.upper(), sub, "".join("<li>%s</li>" % t for t in items)
         )
         for tier, sub, items in SKILL_TIERS
@@ -1063,7 +1063,7 @@ def build_about():
         for e in EDUCATION
     )
     tiers = "".join(
-        '<div class="skill-col"><h4>%s</h4><p class="skill-sub">%s</p><ul>%s</ul></div>' % (
+        '<div class="skill-col"><h3>%s</h3><p class="skill-sub">%s</p><ul>%s</ul></div>' % (
             t.upper(), sub, "".join("<li>%s</li>" % i for i in items))
         for t, sub, items in SKILL_TIERS
     )
@@ -1081,7 +1081,7 @@ def build_about():
         <p class="about-lead">I'm Romain. I write Unity and C#, and I like turning a game rule into code that can be tested.</p>
         <p>I spent two years in work-study at Masseka Games Studio in Toulouse, mostly on mobile games: migrating <em>Kissoro</em> from Unity 2018 to 2022, fixing bugs and making the UI adapt to different screens on <em>Vaudoo</em> (now at 1k+ downloads on Google Play), reviving an abandoned prototype on my own, and adapting a game to The Sandbox's constraints.</p>
         <p>Outside the studio I took part in five game jams, and I am building <em>Global Invasion</em> alone: a Steam co-op game with lobbies, Netcode for GameObjects and about eighty unit tests. I also made a React web app (CLIMB.EUW) and a Python Windows tool that work together, which is why I am open to any developer role and not only games.</p>
-        <h3 class="about-h">How I work</h3>
+        <h2 class="about-h">How I work</h2>
         <ul class="about-list">
           <li>Game rules in plain C# with time and randomness passed in, so they can be tested without launching the game. Network and engine classes stay thin.</li>
           <li>I use AI assistants (Claude Code) as a pair programmer. I decide the design, review what comes back and test it. Where a project relies on AI tools, as in On Air, its page says so.</li>
@@ -1089,7 +1089,7 @@ def build_about():
         </ul>
         <p class="font-mono about-based" data-i18n="about.based">Based in France &mdash; Open to remote &amp; relocation</p>
 
-        <h3 class="about-h" data-i18n="about.education_title">Education</h3>
+        <h2 class="about-h" data-i18n="about.education_title">Education</h2>
         %(edu)s
       </div>
 
@@ -1108,10 +1108,10 @@ def build_about():
   </section>
 
   <section class="section container" style="border-top:1px solid hsl(var(--border)/.5)">
-    <h3 class="about-h" data-i18n="about.skills_title">Skills, by how I use them</h3>
+    <h2 class="about-h" data-i18n="about.skills_title">Skills, by how I use them</h2>
     <div class="skills-grid skills-tiers" style="margin-bottom:40px">%(tiers)s</div>
 
-    <h3 class="about-h" data-i18n="about.languages_title">Languages</h3>
+    <h2 class="about-h" data-i18n="about.languages_title">Languages</h2>
     <div class="tag-row">
       <span class="tag">French &middot; Native</span>
       <span class="tag">English &middot; Professional</span>
@@ -1144,7 +1144,7 @@ def build_contact():
   <section class="section-tight container">
     <div class="contact-grid">
       <div class="form-card reveal">
-        <h3 data-i18n="contact.form_title">Send a message</h3>
+        <h2 data-i18n="contact.form_title">Send a message</h2>
         <form data-contact-form action="%(formspree)s" method="POST">
           <div class="form-row">
             <div class="field"><label for="f-name" data-i18n-skip>Name</label><input id="f-name" type="text" name="name" autocomplete="name" required></div>
@@ -1161,7 +1161,7 @@ def build_contact():
 
       <div class="reveal">
         <div class="connect-card">
-          <h3 data-i18n="contact.connect">Connect</h3>
+          <h2 data-i18n="contact.connect">Connect</h2>
           <div class="connect-item">
             <span class="connect-icon">%(mail_icon)s</span>
             <div><div class="connect-label">Email</div>%(email_link)s</div>
@@ -1177,7 +1177,7 @@ def build_contact():
         </div>
 
         <div class="connect-card">
-          <h3>Good to know</h3>
+          <h2>Good to know</h2>
           <ul class="know-list">
             <li><strong>Availability:</strong> immediately</li>
             <li><strong>Contract:</strong> full-time, fixed-term or freelance</li>
@@ -1188,7 +1188,7 @@ def build_contact():
         </div>
 
         <div class="connect-card">
-          <h3 data-i18n="contact.resume">Resume</h3>
+          <h2 data-i18n="contact.resume">Resume</h2>
           <p style="color:hsl(var(--muted-foreground));font-size:.85rem;margin-bottom:14px">PDF &mdash; Updated 2026</p>
           <a class="btn btn-primary btn-block" href="cv.pdf" download>%(dl_icon)s <span data-i18n="hero.cta_cv">Download CV</span></a>
         </div>
