@@ -10,6 +10,7 @@ Re-run this script after editing PROJECTS / SYSTEMS / SKILLS below, then commit
 the regenerated HTML.
 """
 import hashlib
+import json
 import os
 import re
 import sys
@@ -275,6 +276,27 @@ PROJECTS = [
 PROJECTS.extend(X.NEW_PROJECTS)
 for _p in PROJECTS:
     _p.update(X.ENRICH.get(_p["id"], {}))
+
+
+def _apply_overrides():
+    """Edits made with tools/editor.py live in content/overrides.json and win
+    over everything above (base data and content_extra)."""
+    path = os.path.join(ROOT, "content", "overrides.json")
+    if not os.path.exists(path):
+        return
+    with open(path, encoding="utf-8") as f:
+        data = json.load(f)
+    for p in PROJECTS:
+        ov = data.get("projects", {}).get(p["id"])
+        if not ov:
+            continue
+        for k, v in ov.items():
+            if k in ("challenges", "facts"):
+                v = [tuple(x) for x in v]
+            p[k] = v
+
+
+_apply_overrides()
 SKILL_TIERS = X.SKILL_TIERS
 MARQUEE_ITEMS = X.MARQUEE_ITEMS
 
