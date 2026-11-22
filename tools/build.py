@@ -12,6 +12,10 @@ the regenerated HTML.
 import hashlib
 import os
 import re
+import sys
+
+sys.path.insert(0, os.path.dirname(os.path.abspath(__file__)))
+import content_extra as X
 
 ROOT = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 
@@ -31,7 +35,7 @@ def _compute_asset_version():
 
 ASSET_VERSION = _compute_asset_version()
 
-SITE_NAME = "Pitot Engine"
+SITE_NAME = "romain.pitot"
 AUTHOR = "Romain Pitot"
 YEAR = "2026"
 
@@ -39,6 +43,15 @@ REAL_GITHUB = "https://github.com/romainpitot"
 REAL_LINKEDIN = "https://linkedin.com/in/romain-pitot"
 CONTACT_EMAIL = "romainpitot.dev@gmail.com"
 FORMSPREE_ENDPOINT = "https://formspree.io/f/mkjnwagj"
+
+
+def email_link(cls="", label_prefix=""):
+    """Address split in two data attributes and assembled by main.js, so it is
+    not sitting in the HTML for harvesting bots. Without JS the visitor sees
+    a readable 'user [at] host' and can still use the form."""
+    user, host = CONTACT_EMAIL.split("@")
+    return ('<a class="%s" href="contact.html" data-mail data-u="%s" data-h="%s">%s%s [at] %s</a>'
+            % (cls, user, host, label_prefix, user, host))
 
 # --------------------------------------------------------------------------
 # Icons (Feather Icons, MIT licensed — inline so the site has zero runtime
@@ -229,96 +242,41 @@ PROJECTS = [
     # --- Personal ---
     {
         "id": "global-invasion", "title": "Global Invasion",
-        "shortDesc": "Co-op FPS: a team of exterminators investigates infested houses by day and survives them by night.",
-        "description": "A cooperative FPS where you play a team of exterminators sent to infested houses. Investigate during daylight to identify pests and locate nests, then survive creature encounters at night through cooperation and improvisation. A solo personal project built from scratch in free time to explore multiplayer systems end to end.",
+        "shortDesc": "Steam co-op for 1-4 players: exterminators investigate infested houses by day and survive the swarm by night.",
+        "description": "A cooperative first-person game for one to four players, in the spirit of Phasmophobia and Lethal Company. A team of pest-control agents investigates an infested home by day, hunting clues to find the hidden nest, then prepares and survives the night while the nest breeds, before destroying it at dawn. Steam lobbies and invitations, team votes on contracts, a supply truck shop, tools in hand (broom, UV lamp, spray, sticky traps, radio) and a swarm simulated locally on each machine so hundreds of insects stay cheap over the network. A solo personal project built from scratch to explore multiplayer systems end to end.",
         "category": "Personal", "engine": "Unity", "platform": "PC", "role": "Solo Developer",
-        "status": "WIP", "year": 2025, "duration": "Ongoing", "teamSize": 1,
-        "technologies": ["C#", "Unity", "Multiplayer", "Netcode"],
+        "status": "WIP", "year": 2026, "duration": "Ongoing", "teamSize": 1,
+        "technologies": ["C#", "Unity 6", "Netcode for GameObjects", "Steamworks", "Multiplayer"],
         "tags": ["Personal", "Multiplayer"], "featured": False,
         "links": {},
-        "highlights": ["Day/night investigate-then-survive loop", "Co-op multiplayer built from scratch", "Solo end-to-end development"],
-        "keySystems": ["Day/Night Cycle", "Nest/Infestation Simulation", "Co-op Netcode"],
+        "highlights": ["Day/night investigate-then-survive loop", "Steam co-op lobby, voting and networked missions", "Locally simulated swarm: events over the wire, not insects"],
+        "keySystems": ["Mission Clock (day/night)", "Random Nest & Clue Draw", "Swarm Simulation", "Co-op Netcode"],
         "image": "global-invasion-1.jpg",
     },
-]
-
-SYSTEMS = [
     {
-        "id": "inventory-system", "title": "Modular Inventory System", "subtitle": "Data-driven item management framework",
-        "category": "Tools", "icon": "package",
-        "description": "A production-ready inventory system designed with clean architecture principles. Uses ScriptableObject-based item definitions, a grid-based slot manager, and a full serialization pipeline for save/load.",
-        "architecture": "The system follows a Model-View-Controller pattern. The ItemRegistry holds all item definitions as ScriptableObjects. The InventoryModel manages slot state and emits events. The InventoryView listens to events and updates the UI. A SerializationLayer converts the model to/from JSON for persistence.",
-        "technologies": ["C#", "Unity", "ScriptableObjects", "UGUI", "JSON", "Events"],
-        "challenges": ["Implementing grid-based drag-and-drop with precise collision detection", "Designing a generic item property system without per-type code", "Ensuring save/load integrity with item versioning"],
-        "solutions": ["Custom RectTransform overlap detection with slot snapping", "Property bags using ScriptableObject composition", "Schema versioning with migration callbacks"],
-        "stats": [("Lines", "~1,200"), ("Tests", "18 unit tests"), ("Reusability", "Drop-in package")],
-        "color": "accent", "caption": "MVC · ScriptableObjects",
-    },
-    {
-        "id": "procedural-dungeon", "title": "BSP Dungeon Generator", "subtitle": "Binary Space Partitioning dungeon layout algorithm",
-        "category": "Procedural", "icon": "map",
-        "description": "A runtime dungeon generation system using Binary Space Partitioning. Produces varied, traversable dungeons with configurable density, guaranteed connectivity, and room-type weighting for boss/treasure rooms.",
-        "architecture": "BSP tree recursively splits space into leaf nodes representing rooms. A corridor-carving pass connects sibling nodes. Room metadata is then assigned probabilistically based on tree depth. The generator outputs a TileMap-compatible grid that Unity's Tilemap API populates.",
-        "technologies": ["C#", "Unity", "Tilemap API", "Procedural Generation", "Graph Theory"],
-        "challenges": ["Guaranteeing all rooms are reachable without backtracking", "Balancing randomness vs. playable level design", "Integrating enemy spawning with room context"],
-        "solutions": ["Minimum spanning tree pass over room graph ensures connectivity", "Configurable depth and split-ratio constraints keep layouts playable", "Room type tagging drives spawn tables at level load time"],
-        "stats": [("Lines", "~800"), ("Performance", "<2ms per gen"), ("Maps", "∞ unique layouts")],
-        "color": "violet", "caption": "BSP · Graph traversal",
-    },
-    {
-        "id": "save-system", "title": "Universal Save System", "subtitle": "Flexible, type-safe game state serialization",
-        "category": "Tools", "icon": "save",
-        "description": "A flexible save system supporting multiple save slots, auto-save, and type-safe serialization. Components register themselves as saveable via an interface, decoupling persistence logic from gameplay code.",
-        "architecture": "SaveableObjects implement ISaveable and register with the SaveManager on Awake. On save, the manager collects JSON blobs from all registered objects and writes them to an encrypted file per slot. On load, each object receives its own data blob and deserializes independently.",
-        "technologies": ["C#", "Unity", "JSON.NET", "AES Encryption", "Interfaces"],
-        "challenges": ["Avoiding tight coupling between save logic and game objects", "Handling save data migration between game versions", "Performance on large scene counts"],
-        "solutions": ["ISaveable interface + SceneContext dependency injection", "Version field + migration strategy pattern", "Async write pipeline with background thread offload"],
-        "stats": [("Lines", "~600"), ("Slots", "Unlimited"), ("Overhead", "<0.5ms")],
-        "color": "indigo", "caption": "AES · JSON.NET",
-    },
-    {
-        "id": "enemy-ai", "title": "Hierarchical Enemy AI", "subtitle": "Layered behavior tree with utility scoring",
-        "category": "AI", "icon": "cpu",
-        "description": "A hierarchical AI system combining behavior trees for decision logic with utility scoring for target prioritization. Enemies exhibit patrol, detection, combat, flanking, and retreat behaviors that adapt based on health and squad context.",
-        "architecture": "A lightweight behavior tree evaluates each tick: Selector/Sequence/Leaf nodes compose complex behavior. A utility layer weights candidate actions (attack, flank, retreat, call-for-help) using normalized sensor inputs. A steering layer handles movement using Unity's NavMesh with obstacle avoidance layering.",
-        "technologies": ["C#", "Unity", "NavMesh", "Behavior Trees", "Utility AI"],
-        "challenges": ["Preventing repetitive predictable enemy patterns", "Coordinating group behavior without expensive global queries", "Tuning utility weights without hand-tweaking every enemy type"],
-        "solutions": ["Noise-injected utility scores add controlled unpredictability", "Squad blackboard shared via object reference, no global lookup", "Parameterized utility curves on ScriptableObject profiles"],
-        "stats": [("Lines", "~2,000"), ("Enemies", "50+ simultaneous"), ("Cost", "<0.8ms at 30 enemies")],
-        "color": "violet", "caption": "BT · NavMesh · Utility",
-    },
-    {
-        "id": "ability-system", "title": "Modular Ability System", "subtitle": "Runtime-composable gameplay ability framework",
-        "category": "Gameplay", "icon": "zap",
-        "description": "A data-driven ability system where abilities are composed from atomic Effect modules at runtime. Supports cooldowns, resource costs, targeting modes, visual feedback hooks, and runtime upgrades without code changes.",
-        "architecture": "AbilityDefinition ScriptableObjects hold arrays of AbilityEffect assets. At cast time, a composite executor chains effects in sequence/parallel. Targeting modes (projectile, AOE, raycast, melee) are swappable strategy objects. A visual feedback system subscribes to ability lifecycle events to drive VFX and audio.",
-        "technologies": ["C#", "Unity", "ScriptableObjects", "Composition Pattern", "VFX Graph"],
-        "challenges": ["Designing effects general enough to compose meaningfully", "Handling targeting across different camera perspectives", "Keeping ability logic testable without a running game"],
-        "solutions": ["Atomic effects: Damage, Move, Spawn, Apply Status, Trigger Event", "Camera-agnostic targeting resolvers injected at runtime", "Effect units are pure C# classes, tested independently from MonoBehaviour"],
-        "stats": [("Lines", "~1,500"), ("Abilities", "Infinite by composition"), ("Effects", "12 atomic types")],
-        "color": "primary", "caption": "Composition · ScriptableObj",
-    },
-    {
-        "id": "netcode-layer", "title": "Netcode Prediction Layer", "subtitle": "Client-side prediction with server reconciliation",
-        "category": "Multiplayer", "icon": "wifi",
-        "description": "A netcode abstraction layer implementing client-side prediction, authoritative server state, and rollback/reconciliation. Designed as a wrapper around Unity Netcode for GameObjects to simplify deterministic gameplay code.",
-        "architecture": "Each frame, the client records input into a circular buffer and simulates locally. The server processes inputs authoritatively and broadcasts state snapshots. The client compares its predicted state against server snapshots and rolls back + re-simulates if divergence exceeds a threshold.",
-        "technologies": ["C#", "Unity", "NGO", "Multiplayer", "Ring Buffer", "Rollback"],
-        "challenges": ["Achieving visual smoothness during reconciliation corrections", "Keeping the rollback buffer memory-bounded", "Handling physics interactions deterministically"],
-        "solutions": ["Visual interpolation layer decoupled from simulation layer", "Fixed-size ring buffer with configurable history depth", "Physics inputs serialized and replayed, not physics state"],
-        "stats": [("Lines", "~1,800"), ("Latency masked", "Up to 150ms"), ("Players tested", "2-8")],
-        "color": "green", "caption": "Prediction · Rollback · NGO",
+        "id": "on-air", "title": "On Air",
+        "shortDesc": "Live TV, 1978, seven-second delay: you direct the control room and cut everything before it airs. Epic AI MegaJam 2026 — \"Director's Cut.\"",
+        "description": "Unreal Engine 5 game made in five days for the Epic AI MegaJam 2026 (theme \"Director's Cut\"). You are the director of a tiny 1978 TV channel: everything the studio films shows on your PREVIEW monitor seven seconds before it goes on air. Bleep the swears on the tape, blur the rival brand, cut to another camera when a streaker runs in, and keep complaints down while ratings go up — except the audience secretly loves a scandal. Three live nights add one new tool or rule each, and the game ends on the Director's Cut: the version that never aired. Solo entry, with AI tools declared on the submission page.",
+        "category": "Game Jam", "engine": "Unreal", "platform": "PC", "role": "Solo Developer",
+        "status": "Released", "year": 2026, "duration": "5 days", "teamSize": 1,
+        "technologies": ["C++", "Unreal Engine 5", "UMG", "Game Jam"],
+        "tags": ["Game Jam", "Arcade"], "featured": False,
+        "links": {"itch": "https://romain-pitot.itch.io/on-air", "video": "https://youtu.be/pXM-Qu8bEsg"},
+        "highlights": ["Epic AI MegaJam 2026 — \"Director's Cut\"", "7-second broadcast delay as the core mechanic", "Rules that change each night, with decoys you must let air"],
+        "keySystems": ["Delayed Broadcast Tape", "Incident Scoring", "Nightly Rule Set"],
+        "image": "on-air-1.jpg",
+        "gallery": ["on-air-2.jpg", "on-air-3.jpg"],
     },
 ]
 
-SKILLS = [
-    ("Engine", ["Unity", "WebGL", "Unity DOTS (learning)", "Unreal Engine (secondary)"]),
-    ("Languages", ["C#", "HLSL / Shader Lab", "Python (tools)", "C++ (secondary)"]),
-    ("Systems", ["Gameplay Systems", "AI / Behavior Trees", "Procedural Generation"]),
-    ("Networking", ["Netcode for GameObjects", "Client Prediction", "State Sync"]),
-    ("Tools & Workflow", ["Git / GitHub", "ScriptableObjects", "Custom Editor Tools"]),
-    ("Patterns", ["MVC / MVVM", "Observer / Event Bus", "Strategy / Factory"]),
-]
+
+# Corrections, challenges, jam retrospectives and the non-game projects live in
+# content_extra.py; merge them into the base list here.
+PROJECTS.extend(X.NEW_PROJECTS)
+for _p in PROJECTS:
+    _p.update(X.ENRICH.get(_p["id"], {}))
+SKILL_TIERS = X.SKILL_TIERS
+MARQUEE_ITEMS = X.MARQUEE_ITEMS
 
 EDUCATION = [
     ("Master Video Game Developer & Rendering Systems", "Gaming Campus, Lyon — alternance at Masseka Games Studio, Toulouse", "Oct 2022 – Oct 2024"),
@@ -340,6 +298,8 @@ BADGE_COLOR = {
     "School": "badge-cat-released",
     "Personal": "badge-cat-jam",
     "WIP": "",
+    "Archived": "badge-cat-archived",
+    "App": "badge-cat-tool",
 }
 
 
@@ -374,6 +334,7 @@ def cover_class(category):
         "Work": "cover-tool",
         "School": "cover-released",
         "Personal": "cover-personal",
+        "App": "cover-tool",
     }.get(category, "cover-prototype")
 
 
@@ -386,13 +347,15 @@ def project_cover_src(p):
 def project_link_buttons(links, size_cls="btn-sm"):
     out = []
     if links.get("github"):
-        out.append('<a class="btn btn-outline %s" href="%s" target="_blank" rel="noreferrer">%s GitHub</a>' % (size_cls, links["github"], icon("github")))
+        out.append('<a class="btn btn-outline %s" href="%s" target="_blank" rel="noopener noreferrer">%s Source on GitHub</a>' % (size_cls, links["github"], icon("github")))
     if links.get("itch"):
-        out.append('<a class="btn btn-outline %s" href="%s" target="_blank" rel="noreferrer">%s Play on itch.io</a>' % (size_cls, links["itch"], icon("play")))
+        out.append('<a class="btn btn-outline %s" href="%s" target="_blank" rel="noopener noreferrer">%s Play on itch.io</a>' % (size_cls, links["itch"], icon("play")))
+    if links.get("video"):
+        out.append('<a class="btn btn-outline %s" href="%s" target="_blank" rel="noopener noreferrer">%s Watch the trailer</a>' % (size_cls, links["video"], icon("play")))
     if links.get("playstore"):
-        out.append('<a class="btn btn-outline %s" href="%s" target="_blank" rel="noreferrer">%s Get it on Google Play</a>' % (size_cls, links["playstore"], icon("external-link")))
+        out.append('<a class="btn btn-outline %s" href="%s" target="_blank" rel="noopener noreferrer">%s Get it on Google Play</a>' % (size_cls, links["playstore"], icon("external-link")))
     if links.get("demo"):
-        out.append('<a class="btn btn-outline %s" href="%s" target="_blank" rel="noreferrer">%s View Project</a>' % (size_cls, links["demo"], icon("external-link")))
+        out.append('<a class="btn btn-outline %s" href="%s" target="_blank" rel="noopener noreferrer">%s Open it</a>' % (size_cls, links["demo"], icon("external-link")))
     return "".join(out)
 
 
@@ -420,21 +383,23 @@ def html_head(title, description, depth, canonical_path=""):
   <meta name="theme-color" content="#13161f">
   <meta property="og:type" content="website">
   <meta property="og:site_name" content="romain.pitot">
+  <meta property="og:locale" content="en_GB">
   <meta property="og:title" content="%(title)s">
   <meta property="og:description" content="%(description)s">
   <meta property="og:url" content="%(canonical)s">
   <meta property="og:image" content="%(site)s/assets/img/og-cover.jpg">
   <meta property="og:image:width" content="1200">
   <meta property="og:image:height" content="630">
-  <meta property="og:image:alt" content="Romain Pitot — Gameplay Programmer, Unity / C#">
+  <meta property="og:image:alt" content="Romain Pitot — Unity / C# developer">
   <meta name="twitter:card" content="summary_large_image">
   <meta name="twitter:title" content="%(title)s">
   <meta name="twitter:description" content="%(description)s">
   <meta name="twitter:image" content="%(site)s/assets/img/og-cover.jpg">
   <link rel="icon" href="%(depth)sassets/img/favicon.svg" type="image/svg+xml">
-  <link rel="preconnect" href="https://fonts.googleapis.com">
-  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500;700&display=swap" rel="stylesheet">
+  <meta http-equiv="Content-Security-Policy" content="default-src 'self'; img-src 'self' data:; style-src 'self' 'unsafe-inline'; script-src 'self'; font-src 'self'; connect-src 'self' https://formspree.io; form-action https://formspree.io; base-uri 'self'; object-src 'none'">
+  <meta name="referrer" content="strict-origin-when-cross-origin">
+  <link rel="preload" href="%(depth)sassets/fonts/inter-latin.woff2" as="font" type="font/woff2" crossorigin>
+  <link rel="preload" href="%(depth)sassets/fonts/jetbrains-mono-latin.woff2" as="font" type="font/woff2" crossorigin>
   <link rel="stylesheet" href="%(depth)sassets/css/style.css?v=%(v)s">
 """ % {"title": title, "description": description, "depth": depth, "canonical": canonical,
        "v": ASSET_VERSION, "site": SITE_URL}
@@ -444,7 +409,7 @@ def header_html(active, depth):
     nav_items = [
         ("home", "nav.home", "Home", depth + "index.html"),
         ("projects", "nav.projects", "Projects", depth + "projects.html"),
-        ("systems", "nav.systems", "Systems", depth + "systems.html"),
+        ("code", "nav.code", "Code", depth + "code.html"),
         ("about", "nav.about", "About", depth + "about.html"),
         ("contact", "nav.contact", "Contact", depth + "contact.html"),
     ]
@@ -460,7 +425,7 @@ def header_html(active, depth):
       </a>
       <nav class="main-nav" id="main-nav"><span class="nav-indicator" aria-hidden="true"></span>%(links)s</nav>
       <div class="nav-right">
-        <button class="lang-toggle" type="button" aria-label="Switch language">FR</button>
+        <button class="lang-toggle" type="button" aria-label="FR — passer en français">FR</button>
         <button class="nav-toggle" type="button" aria-label="Toggle menu" aria-expanded="false" aria-controls="main-nav">
           <span class="icon-menu">%(menu_icon)s</span>
           <span class="icon-close" hidden>%(close_icon)s</span>
@@ -481,7 +446,7 @@ def footer_html(depth):
     nav = [
         ("Home", depth + "index.html"),
         ("Projects", depth + "projects.html"),
-        ("Systems", depth + "systems.html"),
+        ("Code", depth + "code.html"),
         ("About", depth + "about.html"),
         ("Contact", depth + "contact.html"),
     ]
@@ -492,21 +457,21 @@ def footer_html(depth):
       <div class="footer-grid">
         <div class="footer-col footer-about">
           <div class="footer-brand">%(code_icon)s romain<span class="dot">.</span>pitot</div>
-          <p>Gameplay programmer &mdash; Unity &amp; C#. Currently building a co-op FPS solo, and open to interesting systems work.</p>
+          <p>Unity &amp; C# developer. Open to work &mdash; available now, any offer.</p>
           <p class="footer-loc font-mono">Toulouse, France</p>
         </div>
 
         <div class="footer-col">
-          <h4>Site</h4>
+          <h3>Site</h3>
           <nav class="footer-nav">%(nav)s</nav>
         </div>
 
         <div class="footer-col">
-          <h4>Elsewhere</h4>
+          <h3>Elsewhere</h3>
           <nav class="footer-nav">
-            <a href="%(github)s" target="_blank" rel="noreferrer">%(github_icon)s GitHub</a>
-            <a href="%(linkedin)s" target="_blank" rel="noreferrer">%(linkedin_icon)s LinkedIn</a>
-            <a href="mailto:%(email)s">%(mail_icon)s Email</a>
+            <a href="%(github)s" target="_blank" rel="noopener noreferrer">%(github_icon)s GitHub</a>
+            <a href="%(linkedin)s" target="_blank" rel="noopener noreferrer">%(linkedin_icon)s LinkedIn</a>
+            %(email_link)s
             <a href="%(depth)scv.pdf" download>%(dl_icon)s Résumé (PDF)</a>
           </nav>
         </div>
@@ -514,7 +479,7 @@ def footer_html(depth):
 
       <div class="footer-bottom">
         <span class="footer-copy">&copy; %(year)s Romain Pitot</span>
-        <span class="footer-colophon font-mono">Hand-built &mdash; vanilla HTML/CSS/JS, no framework, deployed by GitHub Actions</span>
+        <span class="footer-colophon font-mono">Static site &mdash; HTML, CSS and JS, deployed with GitHub Actions</span>
         <a class="footer-top" href="#main">Back to top %(up_icon)s</a>
       </div>
     </div>
@@ -522,7 +487,7 @@ def footer_html(depth):
 """ % {
         "code_icon": icon("code"),
         "nav": nav_links,
-        "email": CONTACT_EMAIL,
+        "email_link": email_link("", icon("mail") + " "),
         "linkedin": REAL_LINKEDIN,
         "github": REAL_GITHUB,
         "mail_icon": icon("mail"),
@@ -541,10 +506,12 @@ def person_jsonld():
     "@context": "https://schema.org",
     "@type": "Person",
     "name": "%(author)s",
-    "jobTitle": "Gameplay Programmer",
+    "jobTitle": "Unity / C# Developer",
+    "address": {"@type": "PostalAddress", "addressLocality": "Toulouse", "addressCountry": "FR"},
+    "alumniOf": [{"@type": "EducationalOrganization", "name": "Gaming Campus"}, {"@type": "EducationalOrganization", "name": "E-Artsup"}],
     "url": "%(site)s/",
     "sameAs": ["%(github)s", "%(linkedin)s"],
-    "knowsAbout": ["Unity", "C#", "Gameplay Programming", "Procedural Generation", "Game AI", "Multiplayer Netcode"]
+    "knowsAbout": ["Unity", "C#", "Gameplay Programming", "Multiplayer Netcode", "Unreal Engine", "Python", "React"]
   }
   </script>
 """ % {"author": AUTHOR, "site": SITE_URL, "github": REAL_GITHUB, "linkedin": REAL_LINKEDIN}
@@ -591,50 +558,44 @@ def write(rel_path, content):
 # Mini visual widgets for each system card (pure CSS/HTML, no images)
 # --------------------------------------------------------------------------
 
-def system_visual(sid):
-    if sid == "inventory-system":
-        cells = [1, 1, 1, 0, 1, 0, 0, 0]
-        tones = ["hsl(var(--primary) / .5)", "hsl(var(--accent) / .6)", "hsl(var(--violet) / .5)", "hsl(var(--secondary))"]
-        slots = "".join(
-            '<div class="viz-slot" style="background:%s"></div>' % (tones[i % len(tones)] if c else "")
-            for i, c in enumerate(cells)
-        )
-        return '<div class="viz-grid">%s</div>' % slots
-    if sid == "procedural-dungeon":
-        heights = [34, 44, 26, 38]
-        rooms = "".join('<div class="viz-room" style="height:%dpx"></div>' % h for h in heights)
-        return '<div class="viz-bsp">%s</div>' % rooms
-    if sid == "save-system":
-        return ('<div style="display:flex;flex-direction:column;gap:6px;align-items:flex-start">'
-                '<span class="font-mono" style="font-size:.68rem;color:hsl(var(--green))">SLOT 1 &mdash; Active</span>'
-                '<span class="font-mono" style="font-size:.68rem;color:hsl(var(--muted-foreground))">SLOT 2 &mdash; Empty</span>'
-                '<span class="font-mono" style="font-size:.68rem;color:hsl(var(--muted-foreground))">SLOT 3 &mdash; Empty</span>'
-                '</div><div class="viz-json">{ "v": 2, "enc": true }</div>')
-    if sid == "enemy-ai":
-        return ('<div class="viz-bt">'
-                '<span class="viz-node viz-node-root">Selector</span>'
-                '<div class="viz-bt-row">'
-                '<span class="viz-node">Patrol</span><span class="viz-node">Combat</span>'
-                '<span class="viz-node">Retreat</span><span class="viz-node">Attack</span><span class="viz-node">Flank</span>'
-                '</div></div>')
-    if sid == "ability-system":
-        return ('<div class="viz-icons">'
-                '<span class="viz-icon-chip">%s</span>'
-                '<span class="viz-icon-chip">DMG</span><span class="viz-icon-chip">AOE</span>'
-                '<span class="viz-icon-chip">SFX</span><span class="viz-icon-chip">VFX</span><span class="viz-icon-chip">CD</span>'
-                '</div>') % icon("zap")
-    if sid == "netcode-layer":
-        return ('<div class="viz-net">'
-                '<div class="viz-net-box">CLIENT<br>Input[]</div>'
-                '<span class="viz-arrow">&#8644;</span>'
-                '<div class="viz-net-box">SERVER<br>State</div>'
-                '</div><span class="visual-caption">Ring Buffer &mdash; 16 frames</span>')
-    return ""
+def render_code_block(c):
+    return """<article class="code-sample reveal" id="%(id)s">
+    <header class="code-head">
+      <div class="code-meta"><span class="code-project">%(project)s</span><span class="font-mono code-path">%(file)s</span></div>
+      <h2>%(title)s</h2>
+      <p class="code-tagline">%(tagline)s</p>
+    </header>
+    <div class="code-window">
+      <div class="code-bar"><span class="font-mono">%(file)s</span><button class="code-copy" type="button" data-copy>Copy</button></div>
+      <pre tabindex="0"><code>%(code)s</code></pre>
+    </div>
+    <p class="code-why"><strong>Why it is written this way.</strong> %(why)s</p>
+    <div class="tag-row">%(tags)s</div>
+  </article>
+""" % {
+        "id": c["id"], "project": c["project"], "file": c["file"], "title": c["title"],
+        "tagline": c["tagline"], "why": c["why"], "code": X.highlight_cs(c["code"]),
+        "tags": all_tech_tags(c["tags"]),
+    }
 
 
-# --------------------------------------------------------------------------
-# Card renderers
-# --------------------------------------------------------------------------
+def render_code_card(c):
+    return """<a class="card system-card reveal" href="code.html#%(id)s">
+    <div class="system-head">
+      <span class="system-icon" style="background:hsl(var(--primary) / .15);color:hsl(var(--primary))">%(icon)s</span>
+      <div>
+        <div class="system-title-row"><h3>%(title)s</h3></div>
+        <p class="system-subtitle">%(project)s</p>
+      </div>
+    </div>
+    <p class="system-desc">%(tagline)s</p>
+    <div class="tag-row">%(tags)s</div>
+    <span class="card-link">Read the code %(arrow)s</span>
+  </a>
+""" % {"id": c["id"], "icon": icon("code"), "title": c["title"], "project": c["project"],
+       "tagline": c["tagline"], "tags": all_tech_tags(c["tags"]), "arrow": icon("arrow-right")}
+
+
 
 def render_project_card(p, depth, show_view_overlay=True):
     return """<a class="card project-card reveal" data-project-card data-title="%(title)s" data-year="%(year)s"
@@ -671,54 +632,6 @@ def render_project_card(p, depth, show_view_overlay=True):
     }
 
 
-def render_system_card(s):
-    stats_html = "".join('<span class="stat-chip">%s: %s</span>' % (k, v) for k, v in s["stats"])
-    return """<div class="card system-card reveal">
-    <div class="system-head">
-      <span class="system-icon" style="background:hsl(var(--%(color)s) / .15);color:hsl(var(--%(color)s))">%(icon)s</span>
-      <div>
-        <div class="system-title-row"><h3>%(title)s</h3>%(cat_badge)s</div>
-        <p class="system-subtitle">%(subtitle)s</p>
-      </div>
-    </div>
-    <div class="system-visual">%(visual)s<span class="visual-caption">%(caption)s</span></div>
-    <p class="system-desc">%(desc)s</p>
-    <div class="tag-row">%(tech)s</div>
-    <details class="system-detail">
-      <summary>%(arrow_icon)s <span data-i18n="systems.read_more">Architecture deep-dive</span></summary>
-      <div class="system-detail-body">
-        <div class="system-detail-block">
-          <h4 data-i18n="systems.architecture">Architecture</h4>
-          <p>%(architecture)s</p>
-        </div>
-        <div class="system-detail-block">
-          <h4 data-i18n="systems.challenges">Challenges</h4>
-          <ul>%(challenges)s</ul>
-        </div>
-        <div class="system-detail-block">
-          <h4 data-i18n="systems.solutions">Solutions Implemented</h4>
-          <ul>%(solutions)s</ul>
-        </div>
-        <div class="system-detail-block">
-          <h4 data-i18n="systems.stats">Stats</h4>
-          <div class="stat-chip-row">%(stats)s</div>
-        </div>
-      </div>
-    </details>
-  </div>
-""" % {
-        "color": s["color"], "icon": icon(s["icon"]), "title": s["title"],
-        "cat_badge": '<span class="tag">%s</span>' % s["category"],
-        "subtitle": s["subtitle"], "visual": system_visual(s["id"]), "caption": s["caption"],
-        "desc": s["description"], "tech": all_tech_tags(s["technologies"]),
-        "arrow_icon": icon("arrow-right"),
-        "architecture": s["architecture"],
-        "challenges": "".join("<li>%s</li>" % c for c in s["challenges"]),
-        "solutions": "".join("<li>%s</li>" % c for c in s["solutions"]),
-        "stats": stats_html,
-    }
-
-
 # --------------------------------------------------------------------------
 # Home page
 # --------------------------------------------------------------------------
@@ -742,17 +655,10 @@ def section_head(num, label, title_html, sub_html="", link_html=""):
     }
 
 
-MARQUEE_ITEMS = [
-    "Unity", "C#", "Netcode for GameObjects", "Behaviour Trees", "ScriptableObjects",
-    "Procedural Generation", "Shader Lab", "Unreal Engine", "C++", "Git",
-    "Agile / Scrum", "The Sandbox", "VFX Graph", "Mobile (Android / iOS)",
-]
-
-
 def build_home():
     # Objective selection (most recent first) rather than a subjective "featured"
     # pick, so no project is presented as more important than another.
-    featured = sorted(PROJECTS, key=lambda x: x["year"], reverse=True)[:3]
+    featured = [project_by_id(i) for i in X.HOME_FEATURED]
     depth = ""
 
     hero = """<section class="hero">
@@ -771,24 +677,26 @@ def build_home():
         <span class="pill pill-primary">Unity</span>
         <span class="pill pill-accent">C#</span>
         <span class="pill">Gameplay Systems</span>
-        <span class="pill">AI / Netcode</span>
+        <span class="pill">Multiplayer</span>
       </div>
-      <p class="hero-tagline" data-i18n="hero.tagline">I build the systems games run on &mdash; AI, netcode, procedural generation and the tools around them.</p>
+      <p class="hero-tagline" data-i18n="hero.tagline">Unity &amp; C# developer. I build gameplay systems, co-op multiplayer and the tools around them &mdash; two years in a game studio, a solo Steam co-op game in progress.</p>
+      <p class="hero-avail"><span class="availability"><span class="dot"></span> <span data-i18n="contact.availability">Open to work &mdash; available now, any offer</span></span></p>
       <div class="hero-ctas">
         <a class="btn btn-primary" href="projects.html"><span data-i18n="hero.cta_projects">View Projects</span> %(arrow)s</a>
         <a class="btn btn-outline" href="cv.pdf" download>%(dl)s <span data-i18n="hero.cta_cv">Download CV</span></a>
+        <a class="btn btn-outline" href="contact.html">%(mail)s <span data-i18n="hero.cta_contact">Contact me</span></a>
       </div>
-      <div class="hero-status font-mono" aria-hidden="true">Toulouse, FR &nbsp;&middot;&nbsp; 2 titles live on Google Play &nbsp;&middot;&nbsp; currently building a co-op FPS, solo</div>
+      <div class="hero-status font-mono">Toulouse, FR &nbsp;&middot;&nbsp; remote &amp; relocation OK &nbsp;&middot;&nbsp; building a co-op FPS, solo</div>
       <div class="scroll-hint" data-i18n="hero.scroll">Scroll to explore</div>
     </div>
   </section>
 
   <section class="stats-bar">
     <div class="container stats-grid">
-      <div class="stat"><div class="stat-num"><span data-count-to="12">0</span></div><div class="stat-label">Projects Shipped</div></div>
-      <div class="stat"><div class="stat-num"><span data-count-to="4">0</span></div><div class="stat-label">Game Jams</div></div>
-      <div class="stat"><div class="stat-num"><span data-count-to="7">0</span>+</div><div class="stat-label">Years On Unity</div></div>
-      <div class="stat"><div class="stat-num"><span data-count-to="2">0</span></div><div class="stat-label">Live On Google Play</div></div>
+      <div class="stat"><div class="stat-num"><span data-count-to="%(n)d">%(n)d</span></div><div class="stat-label">Projects built</div></div>
+      <div class="stat"><div class="stat-num"><span data-count-to="5">5</span></div><div class="stat-label">Game jams</div></div>
+      <div class="stat"><div class="stat-num"><span data-count-to="7">7</span>+</div><div class="stat-label">Years on Unity</div></div>
+      <div class="stat"><div class="stat-num"><span data-count-to="1">1</span>k+</div><div class="stat-label">Downloads on Google Play (Vaudoo)</div></div>
     </div>
   </section>
 
@@ -796,8 +704,10 @@ def build_home():
     <div class="marquee-track">%(marquee)s%(marquee)s</div>
   </div>
 """ % {
+        "n": len(PROJECTS),
         "arrow": icon("arrow-right"),
         "dl": icon("download"),
+        "mail": icon("mail"),
         "marquee": "".join(
             '<span class="marquee-item"><span class="dot-sep"></span>%s</span>' % m
             for m in MARQUEE_ITEMS
@@ -816,10 +726,10 @@ def build_home():
   </section>
 """ % {
         "head": section_head(
-            "01", "Recent work",
-            '<h2 class="section-title shiny" data-i18n="home.featured_title">Latest Projects</h2>',
-            '<p class="section-sub" data-i18n="home.featured_subtitle">The three most recent &mdash; all twelve are on the projects page</p>',
-            '<a class="section-link" href="projects.html"><span data-i18n="home.view_all">View all 12</span> %s</a>' % icon("arrow-right"),
+            "01", "Selected work",
+            '<h2 class="section-title shiny" data-i18n="home.featured_title">Selected Projects</h2>',
+            '<p class="section-sub" data-i18n="home.featured_subtitle">A game in progress, a jam in five days, a live web app &mdash; the full list is on the projects page</p>',
+            '<a class="section-link" href="projects.html"><span data-i18n="home.view_all">View all projects</span> %s</a>' % icon("arrow-right"),
         ),
         "cards": featured_cards,
     }
@@ -834,30 +744,31 @@ def build_home():
   </section>
 """ % {
         "head": section_head(
-            "02", "Engineering",
-            '<h2 class="section-title" data-i18n="home.systems_title">Technical Systems</h2>',
-            '<p class="section-sub" data-i18n="home.systems_subtitle">Architecture deep-dives &amp; production-ready frameworks</p>',
-            '<a class="section-link" href="systems.html"><span data-i18n="home.all_systems">All systems</span> %s</a>' % icon("arrow-right"),
+            "02", "Code",
+            '<h2 class="section-title" data-i18n="home.systems_title">Code you can read</h2>',
+            '<p class="section-sub" data-i18n="home.systems_subtitle">Real extracts from my current game, with the reasoning behind them</p>',
+            '<a class="section-link" href="code.html"><span data-i18n="home.all_systems">All samples</span> %s</a>' % icon("arrow-right"),
         ),
-        "cards": "".join(render_system_card(s) for s in SYSTEMS),
+        "cards": "".join(render_code_card(c) for c in X.CODE_SAMPLES[:3]),
     }
 
     skills_cols = "".join(
-        '<div class="skill-col"><h4>%s</h4><ul>%s</ul></div>' % (
-            cat.upper(), "".join("<li>%s</li>" % s for s in items)
+        '<div class="skill-col"><h3>%s</h3><p class="skill-sub">%s</p><ul>%s</ul></div>' % (
+            tier.upper(), sub, "".join("<li>%s</li>" % t for t in items)
         )
-        for cat, items in SKILLS
+        for tier, sub, items in SKILL_TIERS
     )
     skills_html = """<section class="section">
     <div class="container">
       %(head)s
-      <div class="skills-grid">%(cols)s</div>
+      <div class="skills-grid skills-tiers">%(cols)s</div>
     </div>
   </section>
 """ % {
         "head": section_head(
             "03", "Toolbox",
-            '<h2 class="section-title" data-i18n="home.skills_title">Core Skills</h2>',
+            '<h2 class="section-title" data-i18n="home.skills_title">Skills, by how I use them</h2>',
+            '<p class="section-sub">Listed by level of use, not as a wall of keywords</p>',
         ),
         "cols": skills_cols,
     }
@@ -865,13 +776,13 @@ def build_home():
     about_html = """<section class="section" style="background:hsl(var(--background-deep) / .4)">
     <div class="container">
       %(head)s
-      <p class="lead-in reveal-words" style="margin-bottom:36px">I'm a gameplay programmer out of Toulouse. Two years of work-study at Masseka Games Studio, a Master's in game development, four game jams &mdash; and a co-op FPS I'm currently building solo, from scratch.</p>
+      <p class="lead-in reveal-words" style="margin-bottom:36px">I'm Romain, a developer based in Toulouse. Two years of work-study at Masseka Games Studio on mobile games, a Master's in game development, five game jams &mdash; and a co-op Steam game I'm building solo, with lobbies, netcode and about eighty unit tests.</p>
       <div class="two-col">
         <div class="avatar-row reveal">
           <div class="avatar-box">%(user_icon)s</div>
           <div>
-            <p style="font-size:1.02rem;font-weight:600;margin-bottom:10px">Game jams are where I explore ideas fast; studio work is where I learned to ship them properly.</p>
-            <p style="color:hsl(var(--muted-foreground));font-size:.92rem">I specialise in Unity and C# &mdash; gameplay systems, AI, procedural generation and multiplayer networking &mdash; with some Unreal and C++ on the side.</p>
+            <p style="font-size:1.02rem;font-weight:600;margin-bottom:10px">Jams taught me to finish something in 48 hours; studio work taught me to maintain someone else's code.</p>
+            <p style="color:hsl(var(--muted-foreground));font-size:.92rem">Unity and C# are my daily tools. I have also shipped a React web app and a Python Windows tool, so I am open to any developer role, not only games.</p>
           </div>
         </div>
         <div class="cv-card reveal">
@@ -899,22 +810,21 @@ def build_home():
     cta_html = """<section class="section">
     <div class="container">
       <div class="cta-panel reveal">
-        <h2>Got a gameplay system<br>that needs <span class="accent">building?</span></h2>
-        <p>Systems work is where I'm at my best &mdash; AI, netcode, procedural generation, tools. Happy to talk about any of it.</p>
+        <h2>Hiring a developer<br>who <span class="accent">finishes things?</span></h2>
+        <p>Available now for any offer: full-time, fixed-term or freelance, in Toulouse, remote or relocating. I answer within two working days.</p>
         <div class="cta-buttons">
           <a class="btn btn-primary" href="contact.html">%(mail)s Get In Touch %(arrow)s</a>
           <a class="btn btn-outline" href="cv.pdf" download>%(dl)s Download CV</a>
         </div>
       </div>
-      <div class="signature-line" style="margin-top:56px">built from scratch &mdash; no page builder</div>
     </div>
   </section>
 """ % {"mail": icon("mail"), "arrow": icon("arrow-right"), "dl": icon("download")}
 
     body = hero + featured_html + systems_html + skills_html + about_html + cta_html
     write("index.html", page(
-        "%s — Gameplay Programmer" % AUTHOR,
-        "Romain Pitot, gameplay programmer in Toulouse. Unity & C# — gameplay systems, AI, procedural generation and multiplayer netcode. Two titles live on Google Play.",
+        "%s — Unity / C# Developer, Toulouse" % AUTHOR,
+        "Romain Pitot, Unity and C# developer in Toulouse. Gameplay systems, co-op multiplayer and tools. A game live on Google Play, a Steam co-op game in progress. Open to work.",
         "home", depth, body, "",
     ))
 
@@ -925,7 +835,7 @@ def build_home():
 
 def build_projects_listing():
     depth = ""
-    filters = ["All", "Work", "School", "Game Jam", "Personal"]
+    filters = ["All", "Work", "Personal", "App", "Game Jam", "School"]
     filter_btns = "".join(
         '<button class="filter-btn%(active)s" type="button" data-filter="%(f)s" data-i18n="%(i18n)s">%(f)s</button>' % {
             "active": " active" if f == "All" else "",
@@ -943,13 +853,14 @@ def build_projects_listing():
     <span class="eyebrow" data-i18n-skip>Portfolio</span>
     <h1 data-i18n="projects.title">Projects</h1>
     <p data-i18n="projects.subtitle">Everything I've shipped &mdash; studio work, school projects, jams and one long-running solo build.</p>
-    <div class="page-meta font-mono">12 projects &nbsp;&middot;&nbsp; 2020 &rarr; 2025 &nbsp;&middot;&nbsp; Unity &middot; C# &middot; The Sandbox</div>
+    <div class="page-meta font-mono">13 projects &nbsp;&middot;&nbsp; 2020 &rarr; 2026 &nbsp;&middot;&nbsp; Unity &middot; Unreal &middot; C# &middot; C++ &middot; The Sandbox</div>
   </section>
   <section class="section-tight container" data-filter-bar>
     <div class="filter-bar">
       <div class="filter-group">%(filters)s</div>
       <div class="filter-group"><span class="sort-label" data-i18n-skip>Sort:</span>%(sorts)s</div>
     </div>
+    <h2 class="sr-only">All projects</h2>
     <div class="grid grid-3" data-project-grid>%(cards)s</div>
   </section>
 """ % {"filters": filter_btns, "sorts": sort_btns, "cards": cards}
@@ -964,6 +875,35 @@ def build_projects_listing():
 # --------------------------------------------------------------------------
 # Project detail pages
 # --------------------------------------------------------------------------
+
+def render_facts(p):
+    if not p.get("facts"):
+        return ""
+    chips = "".join('<div class="fact"><span class="fact-label">%s</span><span class="fact-value">%s</span></div>' % f for f in p["facts"])
+    return '<div class="fact-row">%s</div>' % chips
+
+
+def render_challenges(p):
+    if not p.get("challenges"):
+        return ""
+    items = "".join(
+        '<div class="challenge"><h3>%s</h3><dl><dt>The problem</dt><dd>%s</dd><dt>What I did</dt><dd>%s</dd></dl></div>' % c
+        for c in p["challenges"]
+    )
+    return '<div class="detail-section"><h2 data-i18n-skip>Technical challenge</h2>%s</div>' % items
+
+
+def render_retro(p):
+    r = p.get("retro")
+    if not r:
+        return ""
+    return """<div class="detail-section"><h2 data-i18n-skip>Jam retrospective</h2>
+      <div class="retro-grid">
+        <div class="retro-card"><h3>The constraint</h3><p>%(constraint)s</p></div>
+        <div class="retro-card"><h3>What I built</h3><p>%(built)s</p></div>
+        <div class="retro-card"><h3>What I would redo</h3><p>%(redo)s</p></div>
+      </div></div>""" % r
+
 
 def build_project_detail(p):
     depth = "../"
@@ -1007,11 +947,16 @@ def build_project_detail(p):
 
     <div class="detail-meta-grid">%(meta)s</div>
 
+    %(facts)s
     <div class="detail-section">
       <h2 data-i18n-skip>Overview</h2>
       <p>%(description)s</p>
+      %(note)s
       %(gallery)s
     </div>
+
+    %(challenges)s
+    %(retro)s
 
     <div class="detail-section">
       <h2 data-i18n-skip>Highlights</h2>
@@ -1048,6 +993,10 @@ def build_project_detail(p):
             depth, project_cover_src(p), p["title"]),
         "meta": meta_html,
         "description": p["description"],
+        "facts": render_facts(p),
+        "note": ('<p class="detail-note">%s</p>' % p["note"]) if p.get("note") else "",
+        "challenges": render_challenges(p),
+        "retro": render_retro(p),
         "gallery": (
             '<div class="detail-gallery">%s</div>' % "".join(
                 '<img src="%sassets/img/projects/%s" alt="%s screenshot" loading="lazy">' % (depth, g, p["title"])
@@ -1058,7 +1007,7 @@ def build_project_detail(p):
         "highlights": "".join("<li>%s</li>" % h for h in p["highlights"]),
         "keysystems": "".join('<span class="tag">%s</span>' % k for k in p["keySystems"]),
         "tech": all_tech_tags(p["technologies"]),
-        "links": project_link_buttons(p["links"], "btn-sm") or '<span style="color:hsl(var(--muted-foreground));font-size:.85rem">No public links yet.</span>',
+        "links": project_link_buttons(p["links"], "btn-sm") or '<span style="color:hsl(var(--muted-foreground));font-size:.85rem">No public build or repository &mdash; this one is private or no longer online. I am happy to walk through it in an interview.</span>',
         "others": "".join(render_project_card(o, depth) for o in others),
         "pager": pager,
     }
@@ -1071,27 +1020,36 @@ def build_project_detail(p):
 
 
 # --------------------------------------------------------------------------
-# Systems page
+# Code page
 # --------------------------------------------------------------------------
 
-def build_systems():
+def build_code():
     depth = ""
     body = """<section class="page-hero container">
-    <span class="eyebrow" data-i18n-skip>Engineering</span>
-    <h1 data-i18n="systems.title">Systems</h1>
-    <p data-i18n="systems.subtitle">Technical deep-dives into gameplay engineering</p>
-    <div class="page-meta font-mono">architecture &middot; trade-offs &middot; what broke and how it got fixed</div>
+    <span class="eyebrow" data-i18n-skip>Code</span>
+    <h1 data-i18n="systems.title">Code you can read</h1>
+    <p data-i18n="systems.subtitle">Real extracts from my repositories, trimmed, with the reasoning behind them</p>
+    <div class="page-meta font-mono">most of my game repos are private &middot; the code below comes straight from them</div>
   </section>
-  <section class="section-tight container">
-    <div class="grid grid-3">%(cards)s</div>
-  </section>
-""" % {"cards": "".join(render_system_card(s) for s in SYSTEMS)}
+  <section class="section-tight container code-list">%(blocks)s</section>
+  <section class="container"><p class="code-foot">Public repositories: <a href="https://github.com/RomainPitot/lol-climb-tracker" target="_blank" rel="noopener noreferrer">lol-climb-tracker</a> (React) and <a href="https://github.com/RomainPitot/GameDetectorLol" target="_blank" rel="noopener noreferrer">GameDetectorLol</a> (Python). I can share access to the private ones during a hiring process.</p></section>
+""" % {"blocks": "".join(render_code_block(c) for c in X.CODE_SAMPLES)}
 
-    write("systems.html", page(
-        "Systems — %s" % AUTHOR,
-        "Architecture deep-dives into inventory, save systems, procedural generation, AI, abilities and netcode.",
-        "systems", depth, body, "systems.html",
+    write("code.html", page(
+        "Code samples — %s" % AUTHOR,
+        "Real C# extracts from Global Invasion, a Steam co-op game in Unity: a tested mission state machine, a seeded nest draw and a local swarm simulation.",
+        "code", depth, body, "code.html",
     ))
+
+    # Old URL: keep it alive with a redirect instead of a 404.
+    write("systems.html", """<!DOCTYPE html>
+<html lang="en"><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Moved — Romain Pitot</title>
+<link rel="canonical" href="%(site)s/code.html">
+<meta http-equiv="refresh" content="0; url=code.html">
+<meta name="robots" content="noindex">
+</head><body><p>This page moved to <a href="code.html">code.html</a>.</p></body></html>
+""" % {"site": SITE_URL})
 
 
 # --------------------------------------------------------------------------
@@ -1105,27 +1063,34 @@ def build_about():
         '<span style="color:hsl(var(--muted-foreground));font-size:.9rem">%s &middot; %s</span></div>' % e
         for e in EDUCATION
     )
-    tech_skill_tags = ["Unity", "C#", "Gameplay Systems", "AI / Behavior Trees", "Procedural Generation",
-                        "Netcode / Multiplayer", "ShaderLab / HLSL", "ScriptableObjects", "Design Patterns", "Git",
-                        "Unreal Engine", "C++"]
+    tiers = "".join(
+        '<div class="skill-col"><h3>%s</h3><p class="skill-sub">%s</p><ul>%s</ul></div>' % (
+            t.upper(), sub, "".join("<li>%s</li>" % i for i in items))
+        for t, sub, items in SKILL_TIERS
+    )
 
     body = """<section class="page-hero container">
     <span class="eyebrow" data-i18n-skip>About</span>
     <h1 data-i18n="about.title">About Me</h1>
-    <p data-i18n="about.subtitle">Gameplay Programmer &mdash; Unity / C#</p>
+    <p data-i18n="about.subtitle">Unity / C# developer</p>
     <div class="page-meta font-mono">Toulouse, FR &nbsp;&middot;&nbsp; MSc Game Development &nbsp;&middot;&nbsp; 2 years at Masseka Games Studio</div>
   </section>
 
   <section class="section-tight container">
     <div class="two-col">
-      <div class="reveal">
-        <p style="font-size:1.1rem;font-weight:600;margin-bottom:18px">I am a junior gameplay programmer passionate about building the systems that make games fun, responsive, and technically robust.</p>
-        <p style="color:hsl(var(--muted-foreground));margin-bottom:14px">I hold a Master's degree in Game Development and specialize in Unity and C# with a focus on gameplay systems, AI, procedural generation, and multiplayer networking.</p>
-        <p style="color:hsl(var(--muted-foreground));margin-bottom:14px">Game jams are the perfect opportunity for me to explore original and innovative ideas while honing my skills &mdash; I've shipped four of them since 2020, alongside work-study projects at Masseka Games Studio and a full Bachelor capstone game.</p>
-        <p style="color:hsl(var(--muted-foreground));margin-bottom:24px">I'm curious and challenge-driven, and my goal is to design engaging games and systems that leave a lasting impression on players.</p>
-        <p class="font-mono" style="font-size:.85rem;color:hsl(var(--accent))" data-i18n="about.based">Based in France &mdash; Open to remote &amp; relocation</p>
+      <div class="reveal about-text">
+        <p class="about-lead">I'm Romain. I write Unity and C#, and I like turning a game rule into code that can be tested.</p>
+        <p>I spent two years in work-study at Masseka Games Studio in Toulouse, mostly on mobile games: migrating <em>Kissoro</em> from Unity 2018 to 2022, fixing bugs and making the UI adapt to different screens on <em>Vaudoo</em> (now at 1k+ downloads on Google Play), reviving an abandoned prototype on my own, and adapting a game to The Sandbox's constraints.</p>
+        <p>Outside the studio I took part in five game jams, and I am building <em>Global Invasion</em> alone: a Steam co-op game with lobbies, Netcode for GameObjects and about eighty unit tests. I also made a React web app (CLIMB.EUW) and a Python Windows tool that work together, which is why I am open to any developer role and not only games.</p>
+        <h2 class="about-h">How I work</h2>
+        <ul class="about-list">
+          <li>Game rules in plain C# with time and randomness passed in, so they can be tested without launching the game. Network and engine classes stay thin.</li>
+          <li>I use AI assistants (Claude Code) as a pair programmer. I decide the design, review what comes back and test it. Where a project relies on AI tools, as in On Air, its page says so.</li>
+          <li>Small commits, one branch per feature, and a written plan before a change.</li>
+        </ul>
+        <p class="font-mono about-based" data-i18n="about.based">Based in France &mdash; Open to remote &amp; relocation</p>
 
-        <h3 style="font-family:var(--font-mono);font-size:.75rem;letter-spacing:.15em;text-transform:uppercase;color:hsl(var(--primary)/.8);margin:36px 0 16px" data-i18n="about.education_title">Education</h3>
+        <h2 class="about-h" data-i18n="about.education_title">Education</h2>
         %(edu)s
       </div>
 
@@ -1133,34 +1098,31 @@ def build_about():
         <div class="cv-icon">%(dl)s</div>
         <div>
           <strong>Curriculum Vit&aelig;</strong>
-          <p style="color:hsl(var(--muted-foreground));font-size:.85rem;margin-top:4px">Gameplay Programmer &mdash; Unity / C#<br>PDF &middot; Updated 2026</p>
+          <p style="color:hsl(var(--muted-foreground));font-size:.85rem;margin-top:4px">Unity / C# developer<br>PDF &middot; Updated 2026</p>
         </div>
         <a class="btn btn-primary btn-block" href="cv.pdf" download>%(dl)s <span data-i18n="hero.cta_cv">Download CV</span></a>
         <div style="border-top:1px solid hsl(var(--border));margin-top:6px;padding-top:16px">
-          <span class="availability"><span class="dot"></span> <span data-i18n="contact.availability">Open to new opportunities</span></span>
+          <span class="availability"><span class="dot"></span> <span data-i18n="contact.availability">Open to work &mdash; available now, any offer</span></span>
         </div>
       </div>
     </div>
   </section>
 
   <section class="section container" style="border-top:1px solid hsl(var(--border)/.5)">
-    <h3 style="font-family:var(--font-mono);font-size:.75rem;letter-spacing:.15em;text-transform:uppercase;color:hsl(var(--primary)/.8);margin-bottom:18px" data-i18n="about.skills_title">Technical Skills</h3>
-    <div class="tag-row" style="margin-bottom:40px">%(skilltags)s</div>
+    <h2 class="about-h" data-i18n="about.skills_title">Skills, by how I use them</h2>
+    <div class="skills-grid skills-tiers" style="margin-bottom:40px">%(tiers)s</div>
 
-    <h3 style="font-family:var(--font-mono);font-size:.75rem;letter-spacing:.15em;text-transform:uppercase;color:hsl(var(--primary)/.8);margin-bottom:18px" data-i18n="about.languages_title">Languages</h3>
+    <h2 class="about-h" data-i18n="about.languages_title">Languages</h2>
     <div class="tag-row">
       <span class="tag">French &middot; Native</span>
       <span class="tag">English &middot; Professional</span>
     </div>
   </section>
-""" % {
-        "edu": edu_html, "dl": icon("download"),
-        "skilltags": "".join('<span class="tag">%s</span>' % s for s in tech_skill_tags),
-    }
+""" % {"edu": edu_html, "dl": icon("download"), "tiers": tiers}
 
     write("about.html", page(
         "About — %s" % AUTHOR,
-        "About Romain Pitot: junior gameplay programmer, MSc Game Development, Unity/C# specialist.",
+        "About Romain Pitot: Unity and C# developer in Toulouse, MSc Game Development, two years in a game studio, open to any developer role.",
         "about", depth, body, "about.html",
     ))
 
@@ -1174,67 +1136,75 @@ def build_contact():
     body = """<section class="page-hero container">
     <span class="eyebrow" data-i18n-skip>Contact</span>
     <h1 data-i18n="contact.title">Get In Touch</h1>
-    <p data-i18n="contact.subtitle">Open to opportunities, collaborations, and interesting projects</p>
+    <p data-i18n="contact.subtitle">Hiring, freelance or just curious about a project &mdash; I reply within two working days</p>
     <div style="margin-top:18px">
-      <span class="availability"><span class="dot"></span> <span data-i18n="contact.availability">Open to new opportunities</span></span>
+      <span class="availability"><span class="dot"></span> <span data-i18n="contact.availability">Open to work &mdash; available now, any offer</span></span>
     </div>
   </section>
 
   <section class="section-tight container">
     <div class="contact-grid">
       <div class="form-card reveal">
-        <h3 data-i18n="contact.form_title">Send a message</h3>
+        <h2 data-i18n="contact.form_title">Send a message</h2>
         <form data-contact-form action="%(formspree)s" method="POST">
           <div class="form-row">
-            <div class="field"><label data-i18n-skip>Name</label><input type="text" name="name" required></div>
-            <div class="field"><label data-i18n-skip>Email</label><input type="email" name="email" required></div>
+            <div class="field"><label for="f-name" data-i18n-skip>Name</label><input id="f-name" type="text" name="name" autocomplete="name" required></div>
+            <div class="field"><label for="f-email" data-i18n-skip>Email</label><input id="f-email" type="email" name="email" autocomplete="email" required></div>
           </div>
-          <div class="field"><label data-i18n-skip>Subject</label><input type="text" name="subject"></div>
-          <div class="field"><label data-i18n-skip>Message</label><textarea name="message" required></textarea></div>
+          <div class="field"><label for="f-subject" data-i18n-skip>Subject (company, role&hellip;)</label><input id="f-subject" type="text" name="subject"></div>
+          <div class="field"><label for="f-message" data-i18n-skip>Message</label><textarea id="f-message" name="message" required minlength="10"></textarea></div>
           <input type="hidden" name="_subject" value="New message from romainpitot.github.io">
-          <input type="hidden" name="_cc" value="r.pitot@laposte.net">
-          <input type="text" name="_gotcha" style="display:none" tabindex="-1" autocomplete="off">
+          <div class="hp" aria-hidden="true"><label>Leave this empty<input type="text" name="_gotcha" tabindex="-1" autocomplete="off"></label></div>
           <button class="btn btn-primary" type="submit">%(send_icon)s <span data-i18n="contact.send">Send Message</span></button>
-          <p data-form-status class="font-mono" style="font-size:.82rem;margin-top:12px" hidden></p>
+          <p data-form-status class="font-mono" role="status" aria-live="polite" style="font-size:.82rem;margin-top:12px" hidden></p>
         </form>
       </div>
 
       <div class="reveal">
         <div class="connect-card">
-          <h3 data-i18n="contact.connect">Connect</h3>
+          <h2 data-i18n="contact.connect">Connect</h2>
           <div class="connect-item">
             <span class="connect-icon">%(mail_icon)s</span>
-            <div><div class="connect-label">Email</div><a class="connect-value" href="mailto:%(email)s">%(email)s</a></div>
+            <div><div class="connect-label">Email</div>%(email_link)s</div>
           </div>
           <div class="connect-item">
             <span class="connect-icon">%(li_icon)s</span>
-            <div><div class="connect-label">LinkedIn</div><a class="connect-value" href="%(linkedin)s" target="_blank" rel="noreferrer">linkedin.com/in/romain-pitot</a></div>
+            <div><div class="connect-label">LinkedIn</div><a class="connect-value" href="%(linkedin)s" target="_blank" rel="noopener noreferrer">linkedin.com/in/romain-pitot</a></div>
           </div>
           <div class="connect-item">
             <span class="connect-icon">%(gh_icon)s</span>
-            <div><div class="connect-label">GitHub</div><a class="connect-value" href="%(github)s" target="_blank" rel="noreferrer">github.com/romainpitot</a></div>
+            <div><div class="connect-label">GitHub</div><a class="connect-value" href="%(github)s" target="_blank" rel="noopener noreferrer">github.com/romainpitot</a></div>
           </div>
         </div>
 
         <div class="connect-card">
-          <h3 data-i18n="contact.resume">Resume</h3>
+          <h2>Good to know</h2>
+          <ul class="know-list">
+            <li><strong>Availability:</strong> immediately</li>
+            <li><strong>Contract:</strong> full-time, fixed-term or freelance</li>
+            <li><strong>Location:</strong> Toulouse, remote or relocation</li>
+            <li><strong>Languages:</strong> French (native), English (professional)</li>
+            <li><strong>Reply time:</strong> within two working days</li>
+          </ul>
+        </div>
+
+        <div class="connect-card">
+          <h2 data-i18n="contact.resume">Resume</h2>
           <p style="color:hsl(var(--muted-foreground));font-size:.85rem;margin-bottom:14px">PDF &mdash; Updated 2026</p>
           <a class="btn btn-primary btn-block" href="cv.pdf" download>%(dl_icon)s <span data-i18n="hero.cta_cv">Download CV</span></a>
         </div>
-
-        <p class="font-mono" style="font-size:.8rem;color:hsl(var(--muted-foreground))" data-i18n="about.based">Based in France &mdash; Open to remote &amp; relocation</p>
       </div>
     </div>
   </section>
 """ % {
         "send_icon": icon("send"), "mail_icon": icon("mail"), "li_icon": icon("linkedin"), "gh_icon": icon("github"),
-        "dl_icon": icon("download"), "email": CONTACT_EMAIL, "linkedin": REAL_LINKEDIN, "github": REAL_GITHUB,
-        "formspree": FORMSPREE_ENDPOINT,
+        "dl_icon": icon("download"), "email_link": email_link("connect-value"), "linkedin": REAL_LINKEDIN,
+        "github": REAL_GITHUB, "formspree": FORMSPREE_ENDPOINT,
     }
 
     write("contact.html", page(
         "Contact — %s" % AUTHOR,
-        "Get in touch with Romain Pitot for junior gameplay programming roles, freelance work, or collaborations.",
+        "Contact Romain Pitot, Unity and C# developer in Toulouse: available now for full-time, fixed-term or freelance work, in person, remote or relocating.",
         "contact", depth, body, "contact.html",
     ))
 
@@ -1246,7 +1216,7 @@ def build_contact():
 def build_robots_and_sitemap():
     write("robots.txt", "User-agent: *\nAllow: /\nSitemap: %s/sitemap.xml\n" % SITE_URL)
 
-    paths = ["", "projects.html", "systems.html", "about.html", "contact.html"]
+    paths = ["", "projects.html", "code.html", "about.html", "contact.html"]
     paths += ["projects/%s.html" % p["id"] for p in PROJECTS]
     urls = "".join(
         "  <url><loc>%s/%s</loc></url>\n" % (SITE_URL, p) for p in paths
@@ -1283,7 +1253,7 @@ def main():
     build_projects_listing()
     for p in PROJECTS:
         build_project_detail(p)
-    build_systems()
+    build_code()
     build_about()
     build_contact()
     build_404()

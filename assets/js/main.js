@@ -266,7 +266,10 @@
       if (typeof value === "string") el.setAttribute("placeholder", value);
     });
     var toggle = document.querySelector(".lang-toggle");
-    if (toggle) toggle.textContent = lang === "en" ? "FR" : "EN";
+    if (toggle) {
+      toggle.textContent = lang === "en" ? "FR" : "EN";
+      toggle.setAttribute("aria-label", lang === "en" ? "FR — passer en français" : "EN — switch to English");
+    }
   }
   var langToggle = document.querySelector(".lang-toggle");
   var currentLang = getLang();
@@ -380,4 +383,30 @@
         });
     });
   }
+})();
+
+// --- Email: assembled here so the address is not sitting in the HTML for harvesting bots.
+(function () {
+  document.querySelectorAll("a[data-mail]").forEach(function (a) {
+    var addr = a.getAttribute("data-u") + "@" + a.getAttribute("data-h");
+    a.setAttribute("href", "mailto:" + addr);
+    var icon = a.querySelector("svg");
+    a.textContent = addr;
+    if (icon) a.insertBefore(icon, a.firstChild);
+  });
+})();
+
+// --- Code sample copy buttons
+(function () {
+  document.querySelectorAll("[data-copy]").forEach(function (btn) {
+    btn.addEventListener("click", function () {
+      var code = btn.closest(".code-window").querySelector("code");
+      var done = function () { btn.textContent = "Copied"; setTimeout(function () { btn.textContent = "Copy"; }, 1600); };
+      if (navigator.clipboard) {
+        navigator.clipboard.writeText(code.innerText).then(done, function () { btn.textContent = "Select + Ctrl+C"; });
+      } else {
+        btn.textContent = "Select + Ctrl+C";
+      }
+    });
+  });
 })();
