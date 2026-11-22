@@ -259,3 +259,43 @@ def highlight_cs(code):
         else:
             out.append(html.escape(other))
     return "".join(out)
+
+
+# --------------------------------------------------------------------------
+# Per-project page themes (like an itch.io page, but pushed further).
+# mode: dark/light; bg/primary/accent: (hue, saturation %, lightness %);
+# font: serif | mono | condensed | rounded | sans; fx: optional CSS effect;
+# kicker: small line above the title (taken from the game's own theme or plot).
+# --------------------------------------------------------------------------
+THEMES = {
+    "on-air": {"mode": "dark", "bg": (18, 18, 7), "primary": (6, 82, 56), "accent": (48, 92, 62),
+               "font": "mono", "fx": "crt", "kicker": "ON AIR · 1978 · 7-second delay"},
+    "global-invasion": {"mode": "dark", "bg": (222, 30, 8), "primary": (38, 92, 60), "accent": (160, 60, 50),
+                        "font": "condensed", "fx": "vignette", "kicker": "Investigate by day. Survive the night."},
+    "kissoro": {"mode": "dark", "bg": (22, 38, 9), "primary": (32, 88, 56), "accent": (12, 70, 55),
+                "font": "serif", "fx": "grain", "kicker": "A board game that crossed centuries and continents"},
+    "legend-of-mulu": {"mode": "dark", "bg": (150, 32, 8), "primary": (44, 80, 58), "accent": (172, 55, 48),
+                       "font": "serif", "fx": "grain", "kicker": "An adventure on The Sandbox"},
+    "vaudoo": {"mode": "dark", "bg": (268, 30, 8), "primary": (96, 78, 52), "accent": (300, 60, 62),
+               "font": "condensed", "fx": "vignette", "kicker": "Make the dead vote"},
+    "little-cup": {"mode": "light", "bg": (110, 30, 93), "primary": (140, 60, 28), "accent": (28, 85, 42),
+                   "font": "rounded", "fx": "", "kicker": "Aim · power · technique"},
+    "medieval-skirmish": {"mode": "light", "bg": (40, 42, 88), "primary": (14, 70, 36), "accent": (210, 45, 32),
+                          "font": "serif", "fx": "grain", "kicker": "Hold the line"},
+    "shipwrecked-island": {"mode": "dark", "bg": (192, 40, 9), "primary": (40, 78, 62), "accent": (170, 65, 48),
+                           "font": "rounded", "fx": "vignette", "kicker": "Repair the ship before the saboteur wins"},
+    "just-dash": {"mode": "dark", "bg": (250, 40, 10), "primary": (172, 85, 52), "accent": (330, 80, 66),
+                  "font": "rounded", "fx": "", "kicker": "Climb. Dash. Don't fall."},
+    "keep-dancing-to-live": {"mode": "dark", "bg": (292, 45, 10), "primary": (320, 85, 64), "accent": (52, 95, 60),
+                             "font": "condensed", "fx": "", "kicker": "Make me laugh"},
+    "thermostat-8": {"mode": "dark", "bg": (205, 40, 9), "primary": (22, 90, 58), "accent": (195, 80, 62),
+                     "font": "mono", "fx": "snow", "kicker": "Elevate"},
+    "falling-bot": {"mode": "dark", "bg": (232, 40, 7), "primary": (186, 90, 55), "accent": (48, 95, 58),
+                    "font": "mono", "fx": "rain", "kicker": "Deeper and deeper"},
+    "trash-santa": {"mode": "dark", "bg": (350, 35, 9), "primary": (4, 78, 58), "accent": (140, 55, 50),
+                    "font": "rounded", "fx": "snow", "kicker": "Repair"},
+    "climb-euw": {"mode": "dark", "bg": (214, 45, 8), "primary": (44, 62, 58), "accent": (190, 80, 50),
+                  "font": "sans", "fx": "", "kicker": "SoloQ, game by game"},
+    "game-detector-lol": {"mode": "dark", "bg": (214, 45, 8), "primary": (188, 85, 52), "accent": (44, 62, 58),
+                          "font": "mono", "fx": "", "kicker": "Is the game live?"},
+}

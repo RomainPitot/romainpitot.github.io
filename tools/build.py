@@ -517,12 +517,12 @@ def person_jsonld():
 """ % {"author": AUTHOR, "site": SITE_URL, "github": REAL_GITHUB, "linkedin": REAL_LINKEDIN}
 
 
-def page(title, description, active, depth, body, canonical_path=""):
+def page(title, description, active, depth, body, canonical_path="", body_attrs=""):
     return """<!DOCTYPE html>
 <html lang="en">
 <head>
   %(head)s%(jsonld)s</head>
-<body>
+<body%(body_attrs)s>
   <div class="noise-overlay" aria-hidden="true"></div>
   <div class="scroll-progress" aria-hidden="true"></div>
   <a class="skip-link" href="#main">Skip to content</a>
@@ -543,6 +543,7 @@ def page(title, description, active, depth, body, canonical_path=""):
         "footer": footer_html(depth),
         "depth": depth,
         "v": ASSET_VERSION,
+        "body_attrs": body_attrs,
     }
 
 
@@ -907,6 +908,70 @@ def render_retro(p):
       </div></div>""" % r
 
 
+
+def _lum(h, s, l):
+    import colorsys
+    r, g, b = colorsys.hls_to_rgb(h / 360.0, l / 100.0, s / 100.0)
+    f = lambda c: c / 12.92 if c <= 0.03928 else ((c + 0.055) / 1.055) ** 2.4
+    return 0.2126 * f(r) + 0.7152 * f(g) + 0.0722 * f(b)
+
+
+def _contrast(c1, c2):
+    a, b = _lum(*c1), _lum(*c2)
+    hi, lo = max(a, b), min(a, b)
+    return (hi + 0.05) / (lo + 0.05)
+
+
+def _readable(c, bgs, dark, target=5.2):
+    target = target if dark else target + 2.3  # light pages: margin for the fade-in blend
+    """Move the lightness of c until it reads on every background in bgs."""
+    h, sat, l = c
+    step = 1 if dark else -1
+    while l < 98 and l > 2 and min(_contrast((h, sat, l), b) for b in bgs) < target:
+        l += step
+    return (h, sat, l)
+
+
+def theme_tokens(t):
+    """Turn a compact theme (bg/primary/accent + mode) into the full token set.
+    Foreground/background pairs are chosen so text stays above WCAG AA."""
+    h, sat, l = t["bg"]
+    dark = t["mode"] == "dark"
+
+    def hsl(x):
+        return "%d %d%% %d%%" % x
+
+    def on(c):
+        return hsl((c[0], 20, 8)) if c[2] >= 46 else hsl((c[0], 30, 96))
+
+    if dark:
+        fg, mfg = (h, 25, 95), (h, 18, 72)
+        card, sec, mut, bdr, deep = (h, sat, l + 4), (h, sat, l + 9), (h, sat, l + 7), (h, sat - 5, l + 14), (h, sat + 4, max(l - 4, 3))
+    else:
+        fg, mfg = (h, 30, 12), (h, 18, 28)
+        card, sec, mut, bdr, deep = (h, sat, l + 4), (h, sat - 4, l - 6), (h, sat - 4, l - 5), (h, sat - 6, l - 16), (h, sat, l - 5)
+    # primary/accent are used as text colour too: push them until they pass AA
+    # on the page, card and secondary backgrounds.
+    bgs = [t["bg"], card, sec, mut, deep]
+    p = _readable(t["primary"], bgs, dark)
+    a = _readable(t["accent"], bgs, dark)
+    mfg = _readable(mfg, bgs, dark, 5.5)
+    tokens = {
+        "background": hsl(t["bg"]), "background-deep": hsl(deep), "foreground": hsl(fg),
+        "card": hsl(card), "card-foreground": hsl(fg), "primary": hsl(p), "primary-foreground": on(p),
+        "secondary": hsl(sec), "secondary-foreground": hsl(mfg), "muted": hsl(mut), "muted-foreground": hsl(mfg),
+        "accent": hsl(a), "accent-foreground": on(a), "border": hsl(bdr),
+    }
+    return "".join("--%s:%s;" % kv for kv in tokens.items())
+
+
+def theme_body_attrs(p):
+    t = X.THEMES.get(p["id"])
+    if not t:
+        return ""
+    return ' class="themed %s font-%s fx-%s" style="%s"' % (t["mode"], t["font"], t["fx"] or "none", theme_tokens(t))
+
+
 def build_project_detail(p):
     depth = "../"
     others = [o for o in PROJECTS if o["id"] != p["id"]][:3]
@@ -943,6 +1008,7 @@ def build_project_detail(p):
     body = """<section class="container" style="padding-top:32px">
     <div class="breadcrumb"><a href="../projects.html">&larr; Projects</a> / %(title)s</div>
     <div class="cover-tags" style="position:static;margin-bottom:16px">%(badges)s</div>
+    %(kicker)s
     <h1 style="font-size:clamp(1.8rem,4vw,2.6rem);margin-bottom:28px">%(title)s</h1>
 
     <div class="detail-cover %(coverclass)s">%(cover_media)s</div>
@@ -989,6 +1055,7 @@ def build_project_detail(p):
   </section>
 """ % {
         "title": p["title"],
+        "kicker": ('<p class="theme-kicker font-mono">%s</p>' % X.THEMES[p["id"]]["kicker"]) if p["id"] in X.THEMES else "",
         "badges": corner_badges(p["status"], p["tags"]),
         "coverclass": cover_class(p["category"]),
         "cover_media": '<img class="cover-img" src="%sassets/img/projects/%s" alt="%s cover">' % (
@@ -1018,6 +1085,7 @@ def build_project_detail(p):
         "%s — %s" % (p["title"], AUTHOR),
         p["shortDesc"],
         "projects", depth, body, "projects/%s.html" % p["id"],
+        body_attrs=theme_body_attrs(p),
     ))
 
 

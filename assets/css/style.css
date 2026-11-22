@@ -1970,3 +1970,39 @@ textarea:focus-visible,
   background-image: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='160' height='160'><filter id='n'><feTurbulence type='fractalNoise' baseFrequency='.9' numOctaves='2' stitchTiles='stitch'/><feColorMatrix values='0 0 0 0 0  0 0 0 0 0  0 0 0 0 0  0 0 0 .5 0'/></filter><rect width='100%25' height='100%25' filter='url(%23n)'/></svg>");
   opacity: .5;
 }
+
+/* ==========================================================================
+   Themed project pages: each game page takes its own palette, type and a light
+   effect (tokens are set inline on <body>, see theme_tokens() in build.py).
+   ========================================================================== */
+.themed { background: hsl(var(--background)); }
+.themed.font-serif { --font-display: Georgia, 'Times New Roman', serif; }
+.themed.font-mono { --font-display: var(--font-mono); }
+.themed.font-condensed { --font-display: Impact, 'Arial Narrow Bold', 'Arial Narrow', sans-serif; }
+.themed.font-rounded { --font-display: 'Trebuchet MS', 'Segoe UI', sans-serif; }
+.themed.font-sans { --font-display: var(--font-inter); }
+.themed h1, .themed h2, .themed h3 { font-family: var(--font-display); }
+.themed.font-condensed h1, .themed.font-condensed h2 { letter-spacing: .02em; text-transform: uppercase; font-weight: 400; }
+.themed.font-mono h1, .themed.font-mono h2 { letter-spacing: .04em; text-transform: uppercase; }
+.themed h1 { color: hsl(var(--primary)); }
+.themed .detail-section h2 { border-left: 3px solid hsl(var(--primary)); padding-left: 12px; }
+.themed .detail-cover { border-color: hsl(var(--primary) / .5); box-shadow: 0 0 0 1px hsl(var(--primary) / .25), 0 24px 60px -24px hsl(var(--primary) / .45); }
+.theme-kicker { font-size: .8rem; letter-spacing: .14em; text-transform: uppercase; color: hsl(var(--accent)); margin: 0 0 8px; }
+.fx-crt .theme-kicker::before { content: ""; display: inline-block; width: 9px; height: 9px; border-radius: 50%; background: hsl(var(--primary)); margin-right: 10px; animation: rec-blink 1.4s steps(2, jump-none) infinite; }
+@keyframes rec-blink { 50% { opacity: .15; } }
+
+/* effects sit over the page and never take pointer events */
+.fx-crt::before, .fx-vignette::before, .fx-rain::before, .fx-snow::before, .fx-grain::before {
+  content: ""; position: fixed; inset: 0; pointer-events: none; z-index: 5;
+}
+.fx-crt::before { background: repeating-linear-gradient(to bottom, rgba(0,0,0,.28) 0 1px, transparent 1px 3px); opacity: .5; }
+.fx-crt .detail-cover { animation: crt-flicker 6s infinite; }
+@keyframes crt-flicker { 0%, 94%, 100% { filter: none; } 95% { filter: brightness(1.25) contrast(1.1); } 97% { filter: brightness(.9); } }
+.fx-vignette::before { background: radial-gradient(ellipse at 50% 35%, transparent 55%, hsl(var(--background-deep) / .7) 100%); }
+.fx-grain::before { background-image: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='160' height='160'><filter id='n'><feTurbulence type='fractalNoise' baseFrequency='.8' numOctaves='2' stitchTiles='stitch'/><feColorMatrix values='0 0 0 0 0  0 0 0 0 0  0 0 0 0 0  0 0 0 .55 0'/></filter><rect width='100%25' height='100%25' filter='url(%23n)'/></svg>"); opacity: .22; }
+.fx-rain::before { background-image: linear-gradient(to bottom, transparent, hsl(var(--primary) / .5)); background-size: 2px 90px; -webkit-mask-image: radial-gradient(circle at 50% 0, black, transparent 70%); mask-image: radial-gradient(circle at 50% 0, black, transparent 70%); opacity: .25; animation: fall 1.6s linear infinite; }
+.fx-snow::before { background-image: radial-gradient(circle, hsl(var(--foreground) / .8) 1.5px, transparent 2px), radial-gradient(circle, hsl(var(--foreground) / .5) 1px, transparent 1.5px); background-size: 140px 140px, 90px 90px; background-position: 0 0, 40px 60px; opacity: .35; animation: fall 14s linear infinite; }
+@keyframes fall { to { background-position-y: 140px, 150px; } }
+@media (prefers-reduced-motion: reduce) { .fx-crt .detail-cover, .fx-rain::before, .fx-snow::before, .fx-crt .theme-kicker::before { animation: none; } }
+
+.themed.light .badge { color: hsl(var(--foreground)); background: hsl(var(--secondary)); border-color: hsl(var(--border)); }
