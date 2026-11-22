@@ -25,7 +25,7 @@ def _compute_asset_version():
     so browsers pick up changes immediately instead of serving a stale
     cached copy after a redeploy."""
     h = hashlib.sha256()
-    for rel in ("assets/css/style.css", "assets/js/main.js", "assets/js/i18n.js"):
+    for rel in ("assets/css/style.css", "assets/js/main.js", "assets/js/i18n.js", "assets/js/field.js"):
         path = os.path.join(ROOT, rel)
         if os.path.exists(path):
             with open(path, "rb") as f:
@@ -523,7 +523,7 @@ def page(title, description, active, depth, body, canonical_path="", body_attrs=
 <head>
   %(head)s%(jsonld)s</head>
 <body%(body_attrs)s>
-  <div class="noise-overlay" aria-hidden="true"></div>
+  %(field)s<div class="noise-overlay" aria-hidden="true"></div>
   <div class="scroll-progress" aria-hidden="true"></div>
   <a class="skip-link" href="#main">Skip to content</a>
   %(header)s
@@ -533,7 +533,7 @@ def page(title, description, active, depth, body, canonical_path="", body_attrs=
   %(footer)s
   <script src="%(depth)sassets/js/i18n.js?v=%(v)s"></script>
   <script src="%(depth)sassets/js/main.js?v=%(v)s"></script>
-</body>
+  %(field_js)s</body>
 </html>
 """ % {
         "head": html_head(title, description, depth, canonical_path),
@@ -544,6 +544,8 @@ def page(title, description, active, depth, body, canonical_path="", body_attrs=
         "depth": depth,
         "v": ASSET_VERSION,
         "body_attrs": body_attrs,
+        "field": "" if body_attrs else '<canvas class="bg-field" aria-hidden="true"></canvas>' + chr(10) + "  ",
+        "field_js": "" if body_attrs else '<script src="%sassets/js/field.js?v=%s"></script>' % (depth, ASSET_VERSION) + chr(10),
     }
 
 

@@ -2006,3 +2006,13 @@ textarea:focus-visible,
 @media (prefers-reduced-motion: reduce) { .fx-crt .detail-cover, .fx-rain::before, .fx-snow::before, .fx-crt .theme-kicker::before { animation: none; } }
 
 .themed.light .badge { color: hsl(var(--foreground)); background: hsl(var(--secondary)); border-color: hsl(var(--border)); }
+
+/* Themed headings: no synthetic bold on display faces (it smears), real sizes */
+.themed h1, .themed h2, .themed h3 { text-shadow: none; -webkit-text-fill-color: currentColor; background: none; }
+.themed.font-condensed h3 { font-weight: 400; text-transform: none; letter-spacing: .01em; font-size: 1.3rem; }
+.themed.font-condensed .challenge h3, .themed.font-condensed .retro-card h3 { font-size: 1.3rem; }
+.themed.font-mono h3, .themed.font-serif h3, .themed.font-rounded h3 { font-weight: 600; }
+
+/* Interactive background (field.js): strokes that flow, swirl around the pointer, ripple on click */
+.bg-field { position: fixed; inset: 0; width: 100%; height: 100%; z-index: 0; pointer-events: none; }
+body:not(.themed) > header, body:not(.themed) > main, body:not(.themed) > footer { position: relative; z-index: 1; }
