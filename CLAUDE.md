@@ -15,3 +15,8 @@ GitHub Actions**.
 - Règle : aucun chiffre non vérifiable. Kissoro/Mulu = « Archived ». On Air mentionne l'usage d'IA (règle de la jam).
 - Email assemblé en JS (`data-mail`), honeypot `_gotcha`, CSP en `<meta>`, polices locales dans `assets/fonts/`.
 - Les « ce que je referais » des jams sont des brouillons à valider par Romain.
+
+## Hero « essaim » + cycle jour/nuit (2026-11-22)
+- `assets/js/swarm.js` : port canvas du SwarmSim de Global Invasion (tableaux typés, population seedée, fuient le curseur, évitent le nom/les textes, clic = coup de balai, repop par les bords). Reduced motion = une image fixe. Marqueurs : `data-swarm-hero`, `.h1-line`, `data-swarm-avoid`.
+- `assets/js/daynight.js` : palette jour par défaut (CSS `html[data-page="home"]`), fondu RGB vers nuit puis aube selon le scroll ; puce HUD « DAY/NIGHT/DAWN ». Seule la home est concernée (`page(..., home=True)`).
+- Police Anton (titre du hero) hébergée dans `assets/fonts/`.
