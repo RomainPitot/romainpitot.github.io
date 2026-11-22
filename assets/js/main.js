@@ -3,7 +3,7 @@
   "use strict";
 
   /* Hero: mouse-reactive glow + subtle parallax ---------------------------- */
-  var heroSection = document.querySelector(".hero:not([data-swarm-hero])");
+  var heroSection = document.querySelector(".hero");
   var prefersReducedMotion = window.matchMedia && window.matchMedia("(prefers-reduced-motion: reduce)").matches;
   if (heroSection && !prefersReducedMotion) {
     var heroBg = heroSection.querySelector(".hero-bg");
@@ -409,4 +409,21 @@
       }
     });
   });
+})();
+
+
+// Owner-only reminders (placeholders for content still to write). Open any page
+// once with ?owner=1 to turn them on in this browser, ?owner=0 to turn them off.
+(function () {
+  "use strict";
+  var on = false;
+  try {
+    var q = /[?&]owner=([01])/.exec(window.location.search);
+    if (q) {
+      if (q[1] === "1") localStorage.setItem("owner", "1"); else localStorage.removeItem("owner");
+    }
+    on = localStorage.getItem("owner") === "1";
+  } catch (e) { /* storage blocked: the reminders simply stay hidden */ }
+  if (!on) return;
+  document.querySelectorAll("[data-owner-only]").forEach(function (el) { el.hidden = false; });
 })();

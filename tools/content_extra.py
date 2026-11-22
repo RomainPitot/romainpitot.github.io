@@ -69,7 +69,7 @@ ENRICH = {
         "status": "Archived",
         "links": {},
         "description": "An African strategy board game — \"a game that has traveled through centuries and continents\" — on mobile with single- and multiplayer modes. The original game was created by Masseka years before I joined; I took over its post-production: migrated the project from Unity 2018 to Unity 2022, fixed the regressions that migration caused along with older bugs, and made the UI adapt to different devices.",
-        "note": "No longer available: the title was removed from the stores because it had not been updated in a long time (the studio says so on its own site).",
+        "note": "One of the two games I spent most of my work-study on. It is no longer listed on the stores (the studio removed it after a long time without updates), so there is no link; the work is described here.",
         "challenges": [
             ("A migration that fixes some bugs and creates others",
              "Moving a 2018 codebase to Unity 2022 changed APIs and behaviours. It cleared long-standing problems but introduced new ones, on top of a UI that had to hold up on very different screens.",
@@ -79,8 +79,8 @@ ENRICH = {
     "vaudoo": {
         "shortDesc": "Mobile zombie shooter on Google Play: a presidential candidate raises the dead to win an election, then fights the apocalypse.",
         "description": "A presidential candidate, desperate to win an election, turns to a mystic to make the dead vote — but the revived souls become flesh-hungry zombies, and he has to fight to save the country. A mobile shooter with several environments, upgrades and weapons. I joined for a short work-study stint, a few weeks while waiting for the next project, to fix bugs and make the UI adapt properly to different screen sizes.",
-        "facts": [("Google Play", "1k+ downloads"), ("Store rating", "3.0 ★ · 37 reviews")],
-        "note": "Store figures are the game's own public numbers (Google Play, November 2026), not a measure of my share of the work, which was a few weeks of maintenance.",
+        "facts": [("Google Play", "1k+ downloads")],
+        "note": "The download figure is the game's own public number (Google Play, November 2026), not a measure of my share of the work, which was a few weeks of maintenance.",
         "keySystems": ["Adaptive UI", "Bug-fixing pass"],
     },
     "little-cup": {
@@ -125,9 +125,9 @@ ENRICH = {
         "role": "Solo Developer (AI-assisted)",
         "note": "Made during the Epic AI MegaJam, where using AI tools is part of the brief and the process has to be documented. I designed the game and directed the build; Claude Code wrote much of the C++ under my review, and the dev log is public.",
         "retro": {
-            "constraint": "Five days, solo, with AI tools declared and a public dev log required, on the theme \"Director's Cut\".",
+            "constraint": "A jam window of several days, but I could only work about one day of it. Solo, with AI tools declared and a public dev log required, on the theme \"Director's Cut\".",
             "built": "The design (the 7-second delay as the core mechanic), the architecture, and the integration and playtesting of everything the AI generated.",
-            "redo": "I would start outside playtests a day earlier. The nightly rule changes are the part a new player has to learn, and I only saw how readable they were once the loop was complete.",
+            "redo": "With so little time I would have cut a night of content and used the hours for outside playtests. The nightly rule changes are the part a new player has to learn, and I only saw how readable they were once the loop was complete.",
         },
         "challenges": [
             ("A 7-second broadcast delay without a video buffer",
@@ -155,7 +155,7 @@ ENRICH = {
 }
 
 # Home page picks (explicit, mixes game and non-game work)
-HOME_FEATURED = ["global-invasion", "on-air", "climb-euw"]
+HOME_FEATURED = ["global-invasion", "kissoro", "legend-of-mulu", "on-air", "climb-euw", "vaudoo"]
 
 # Project order shown on the listing: current work first, then the rest.
 # (Pager follows PROJECTS order, which build.py keeps as written.)
@@ -259,3 +259,43 @@ def highlight_cs(code):
         else:
             out.append(html.escape(other))
     return "".join(out)
+
+
+# --------------------------------------------------------------------------
+# Per-project page themes (like an itch.io page, but pushed further).
+# mode: dark/light; bg/primary/accent: (hue, saturation %, lightness %);
+# font: serif | mono | condensed | rounded | sans; fx: optional CSS effect;
+# kicker: small line above the title (taken from the game's own theme or plot).
+# --------------------------------------------------------------------------
+THEMES = {
+    "on-air": {"mode": "dark", "bg": (18, 18, 7), "primary": (6, 82, 56), "accent": (48, 92, 62),
+               "font": "mono", "fx": "crt", "kicker": "ON AIR · 1978 · 7-second delay"},
+    "global-invasion": {"mode": "dark", "bg": (222, 30, 8), "primary": (38, 92, 60), "accent": (160, 60, 50),
+                        "font": "condensed", "fx": "vignette", "kicker": "Investigate by day. Survive the night."},
+    "kissoro": {"mode": "dark", "bg": (22, 38, 9), "primary": (32, 88, 56), "accent": (12, 70, 55),
+                "font": "serif", "fx": "grain", "kicker": "A board game that crossed centuries and continents"},
+    "legend-of-mulu": {"mode": "dark", "bg": (150, 32, 8), "primary": (44, 80, 58), "accent": (172, 55, 48),
+                       "font": "serif", "fx": "grain", "kicker": "An adventure on The Sandbox"},
+    "vaudoo": {"mode": "dark", "bg": (268, 30, 8), "primary": (96, 78, 52), "accent": (300, 60, 62),
+               "font": "condensed", "fx": "vignette", "kicker": "Make the dead vote"},
+    "little-cup": {"mode": "light", "bg": (110, 30, 93), "primary": (140, 60, 28), "accent": (28, 85, 42),
+                   "font": "rounded", "fx": "", "kicker": "Aim · power · technique"},
+    "medieval-skirmish": {"mode": "light", "bg": (40, 42, 88), "primary": (14, 70, 36), "accent": (210, 45, 32),
+                          "font": "serif", "fx": "grain", "kicker": "Hold the line"},
+    "shipwrecked-island": {"mode": "dark", "bg": (192, 40, 9), "primary": (40, 78, 62), "accent": (170, 65, 48),
+                           "font": "rounded", "fx": "vignette", "kicker": "Repair the ship before the saboteur wins"},
+    "just-dash": {"mode": "dark", "bg": (250, 40, 10), "primary": (172, 85, 52), "accent": (330, 80, 66),
+                  "font": "rounded", "fx": "", "kicker": "Climb. Dash. Don't fall."},
+    "keep-dancing-to-live": {"mode": "dark", "bg": (292, 45, 10), "primary": (320, 85, 64), "accent": (52, 95, 60),
+                             "font": "condensed", "fx": "", "kicker": "Make me laugh"},
+    "thermostat-8": {"mode": "dark", "bg": (205, 40, 9), "primary": (22, 90, 58), "accent": (195, 80, 62),
+                     "font": "mono", "fx": "snow", "kicker": "Elevate"},
+    "falling-bot": {"mode": "dark", "bg": (232, 40, 7), "primary": (186, 90, 55), "accent": (48, 95, 58),
+                    "font": "mono", "fx": "rain", "kicker": "Deeper and deeper"},
+    "trash-santa": {"mode": "dark", "bg": (350, 35, 9), "primary": (4, 78, 58), "accent": (140, 55, 50),
+                    "font": "rounded", "fx": "snow", "kicker": "Repair"},
+    "climb-euw": {"mode": "dark", "bg": (214, 45, 8), "primary": (44, 62, 58), "accent": (190, 80, 50),
+                  "font": "sans", "fx": "", "kicker": "SoloQ, game by game"},
+    "game-detector-lol": {"mode": "dark", "bg": (214, 45, 8), "primary": (188, 85, 52), "accent": (44, 62, 58),
+                          "font": "mono", "fx": "", "kicker": "Is the game live?"},
+}

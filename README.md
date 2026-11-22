@@ -67,3 +67,12 @@ Preview locally: `python -m http.server 8765` from the root.
 One-time setup on GitHub: **Settings → Pages → Build and deployment → Source
 → GitHub Actions**. After that every push to `main` runs
 `.github/workflows/deploy.yml`.
+
+## Themed project pages and owner reminders
+
+- Each project page takes its own palette, type and a light CSS effect
+  (`THEMES` in `tools/content_extra.py`, `theme_tokens()` in `tools/build.py`).
+  Colours are pushed automatically to pass WCAG AA.
+- Projects without a technical challenge (and jams without a retrospective) carry
+  a hidden TODO block. Open any page once with `?owner=1` to see them in your
+  browser (`?owner=0` to switch off). Visitors never see them.

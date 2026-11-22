@@ -25,8 +25,7 @@ def _compute_asset_version():
     so browsers pick up changes immediately instead of serving a stale
     cached copy after a redeploy."""
     h = hashlib.sha256()
-    for rel in ("assets/css/style.css", "assets/js/main.js", "assets/js/i18n.js",
-                "assets/js/swarm.js", "assets/js/daynight.js"):
+    for rel in ("assets/css/style.css", "assets/js/main.js", "assets/js/i18n.js"):
         path = os.path.join(ROOT, rel)
         if os.path.exists(path):
             with open(path, "rb") as f:
@@ -257,9 +256,9 @@ PROJECTS = [
     {
         "id": "on-air", "title": "On Air",
         "shortDesc": "Live TV, 1978, seven-second delay: you direct the control room and cut everything before it airs. Epic AI MegaJam 2026 — \"Director's Cut.\"",
-        "description": "Unreal Engine 5 game made in five days for the Epic AI MegaJam 2026 (theme \"Director's Cut\"). You are the director of a tiny 1978 TV channel: everything the studio films shows on your PREVIEW monitor seven seconds before it goes on air. Bleep the swears on the tape, blur the rival brand, cut to another camera when a streaker runs in, and keep complaints down while ratings go up — except the audience secretly loves a scandal. Three live nights add one new tool or rule each, and the game ends on the Director's Cut: the version that never aired. Solo entry, with AI tools declared on the submission page.",
+        "description": "Unreal Engine 5 game made for the Epic AI MegaJam 2026, in about one day of actual work inside the jam window (I was unavailable for much of it) (theme \"Director's Cut\"). You are the director of a tiny 1978 TV channel: everything the studio films shows on your PREVIEW monitor seven seconds before it goes on air. Bleep the swears on the tape, blur the rival brand, cut to another camera when a streaker runs in, and keep complaints down while ratings go up — except the audience secretly loves a scandal. Three live nights add one new tool or rule each, and the game ends on the Director's Cut: the version that never aired. Solo entry, with AI tools declared on the submission page.",
         "category": "Game Jam", "engine": "Unreal", "platform": "PC", "role": "Solo Developer",
-        "status": "Released", "year": 2026, "duration": "5 days", "teamSize": 1,
+        "status": "Released", "year": 2026, "duration": "~1 day of work", "teamSize": 1,
         "technologies": ["C++", "Unreal Engine 5", "UMG", "Game Jam"],
         "tags": ["Game Jam", "Arcade"], "featured": False,
         "links": {"itch": "https://romain-pitot.itch.io/on-air", "video": "https://youtu.be/pXM-Qu8bEsg"},
@@ -518,12 +517,12 @@ def person_jsonld():
 """ % {"author": AUTHOR, "site": SITE_URL, "github": REAL_GITHUB, "linkedin": REAL_LINKEDIN}
 
 
-def page(title, description, active, depth, body, canonical_path="", home=False):
+def page(title, description, active, depth, body, canonical_path="", body_attrs=""):
     return """<!DOCTYPE html>
-<html lang="en"%(html_attrs)s>
+<html lang="en">
 <head>
-  %(head)s%(extra_head)s%(jsonld)s</head>
-<body>
+  %(head)s%(jsonld)s</head>
+<body%(body_attrs)s>
   <div class="noise-overlay" aria-hidden="true"></div>
   <div class="scroll-progress" aria-hidden="true"></div>
   <a class="skip-link" href="#main">Skip to content</a>
@@ -533,20 +532,18 @@ def page(title, description, active, depth, body, canonical_path="", home=False)
   </main>
   %(footer)s
   <script src="%(depth)sassets/js/i18n.js?v=%(v)s"></script>
-  <script src="%(depth)sassets/js/main.js?v=%(v)s"></script>%(home_scripts)s
+  <script src="%(depth)sassets/js/main.js?v=%(v)s"></script>
 </body>
 </html>
 """ % {
         "head": html_head(title, description, depth, canonical_path),
-        "html_attrs": ' data-page="home"' if home else "",
-        "extra_head": ('  <link rel="preload" href="%sassets/fonts/anton-latin.woff2" as="font" type="font/woff2" crossorigin>\n' % depth) if home else "",
-        "home_scripts": ('\n  <script src="%(d)sassets/js/swarm.js?v=%(v)s"></script>\n  <script src="%(d)sassets/js/daynight.js?v=%(v)s"></script>' % {"d": depth, "v": ASSET_VERSION}) if home else "",
         "jsonld": person_jsonld(),
         "header": header_html(active, depth),
         "body": body,
         "footer": footer_html(depth),
         "depth": depth,
         "v": ASSET_VERSION,
+        "body_attrs": body_attrs,
     }
 
 
@@ -665,36 +662,35 @@ def build_home():
     featured = [project_by_id(i) for i in X.HOME_FEATURED]
     depth = ""
 
-    hero = """<section class="hero hero-swarm" data-swarm-hero>
-    <canvas class="swarm-canvas" aria-hidden="true"></canvas>
+    hero = """<section class="hero">
+    <div class="hero-bg" aria-hidden="true"></div>
     <div class="container">
-      <div class="hero-copy">
-        <span class="hero-role" data-swarm-avoid data-i18n="hero.title">Unity / C# Developer</span>
-        <h1 data-swarm-name aria-label="Romain Pitot"><span class="h1-line">Romain</span><span class="h1-line accent">Pitot</span></h1>
-        <p class="hero-tagline" data-swarm-avoid data-i18n="hero.tagline">Unity &amp; C# developer. I build gameplay systems, co-op multiplayer and the tools around them &mdash; two years in a game studio, a solo Steam co-op game in progress.</p>
-        <p class="hero-avail" data-swarm-avoid><span class="availability"><span class="dot"></span> <span data-i18n="contact.availability">Open to work &mdash; available now, any offer</span></span></p>
-        <div class="hero-ctas" data-swarm-avoid>
-          <a class="btn btn-primary" href="projects.html"><span data-i18n="hero.cta_projects">View Projects</span> %(arrow)s</a>
-          <a class="btn btn-outline" href="cv.pdf" download>%(dl)s <span data-i18n="hero.cta_cv">Download CV</span></a>
-          <a class="btn btn-outline" href="contact.html">%(mail)s <span data-i18n="hero.cta_contact">Contact me</span></a>
-        </div>
-        <div class="hero-status font-mono" data-swarm-avoid>Toulouse, FR &nbsp;&middot;&nbsp; remote &amp; relocation OK &nbsp;&middot;&nbsp; building a co-op FPS, solo</div>
+      <span class="hero-role" data-i18n="hero.title">Gameplay Programmer</span>
+      <h1 class="text-glow" data-decrypt><span class="decrypt-seg">Romain</span> <span class="accent decrypt-seg">Pitot</span></h1>
+      <div class="badge-row">
+        <span class="pill pill-primary">Unity</span>
+        <span class="pill pill-accent">C#</span>
+        <span class="pill">Gameplay Systems</span>
+        <span class="pill">Multiplayer</span>
       </div>
-    </div>
-    <div class="hero-hud font-mono" aria-hidden="true">
-      <span class="hero-hint">The swarm is the one from my game &mdash; move the cursor, click to squash</span>
-      <span class="hero-count">Exterminated: <b data-squash-count>0</b></span>
+      <p class="hero-tagline" data-i18n="hero.tagline">Unity &amp; C# developer. I build gameplay systems, co-op multiplayer and the tools around them &mdash; two years in a game studio, a solo Steam co-op game in progress.</p>
+      <p class="hero-avail"><span class="availability"><span class="dot"></span> <span data-i18n="contact.availability">Open to work &mdash; available now, any offer</span></span></p>
+      <div class="hero-ctas">
+        <a class="btn btn-primary" href="projects.html"><span data-i18n="hero.cta_projects">View Projects</span> %(arrow)s</a>
+        <a class="btn btn-outline" href="cv.pdf" download>%(dl)s <span data-i18n="hero.cta_cv">Download CV</span></a>
+        <a class="btn btn-outline" href="contact.html">%(mail)s <span data-i18n="hero.cta_contact">Contact me</span></a>
+      </div>
+      <div class="hero-status font-mono">Toulouse, FR &nbsp;&middot;&nbsp; remote &amp; relocation OK &nbsp;&middot;&nbsp; building a co-op FPS, solo</div>
+      <div class="scroll-hint" data-i18n="hero.scroll">Scroll to explore</div>
     </div>
   </section>
 
-  <div class="phase-hud font-mono" aria-hidden="true"><span class="phase-name">DAY</span><span class="phase-time">07:00</span></div>
-
-    <section class="stats-bar">
+  <section class="stats-bar">
     <div class="container stats-grid">
       <div class="stat"><div class="stat-num"><span data-count-to="%(n)d">%(n)d</span></div><div class="stat-label">Projects built</div></div>
       <div class="stat"><div class="stat-num"><span data-count-to="5">5</span></div><div class="stat-label">Game jams</div></div>
       <div class="stat"><div class="stat-num"><span data-count-to="7">7</span>+</div><div class="stat-label">Years on Unity</div></div>
-      <div class="stat"><div class="stat-num"><span data-count-to="1">1</span>k+</div><div class="stat-label">Downloads on Google Play (Vaudoo)</div></div>
+      <div class="stat"><div class="stat-num"><span data-count-to="1">1</span>k+</div><div class="stat-label">Downloads on Google Play (one title)</div></div>
     </div>
   </section>
 
@@ -726,7 +722,7 @@ def build_home():
         "head": section_head(
             "01", "Selected work",
             '<h2 class="section-title shiny" data-i18n="home.featured_title">Selected Projects</h2>',
-            '<p class="section-sub" data-i18n="home.featured_subtitle">A game in progress, a jam in five days, a live web app &mdash; the full list is on the projects page</p>',
+            '<p class="section-sub" data-i18n="home.featured_subtitle">A game in progress, a jam entry, a live web app &mdash; the full list is on the projects page</p>',
             '<a class="section-link" href="projects.html"><span data-i18n="home.view_all">View all projects</span> %s</a>' % icon("arrow-right"),
         ),
         "cards": featured_cards,
@@ -774,7 +770,7 @@ def build_home():
     about_html = """<section class="section" style="background:hsl(var(--background-deep) / .4)">
     <div class="container">
       %(head)s
-      <p class="lead-in reveal-words" style="margin-bottom:36px">I'm Romain, a developer based in Toulouse. Two years of work-study at Masseka Games Studio on mobile games, a Master's in game development, five game jams &mdash; and a co-op Steam game I'm building solo, with lobbies, netcode and about eighty unit tests.</p>
+      <p class="lead-in reveal-words" style="margin-bottom:36px">I'm Romain, a developer based in Toulouse. Two years of work-study at Masseka Games Studio on mobile games, a Master's in game development, five game jams &mdash; and a co-op Steam game I'm building solo, with lobbies, netcode and game rules covered by tests.</p>
       <div class="two-col">
         <div class="avatar-row reveal">
           <div class="avatar-box">%(user_icon)s</div>
@@ -805,7 +801,7 @@ def build_home():
         "dl": icon("download"),
     }
 
-    cta_html = """<section class="section" data-phase-dawn>
+    cta_html = """<section class="section">
     <div class="container">
       <div class="cta-panel reveal">
         <h2>Hiring a developer<br>who <span class="accent">finishes things?</span></h2>
@@ -822,8 +818,8 @@ def build_home():
     body = hero + featured_html + systems_html + skills_html + about_html + cta_html
     write("index.html", page(
         "%s — Unity / C# Developer, Toulouse" % AUTHOR,
-        "Romain Pitot, Unity and C# developer in Toulouse. Gameplay systems, co-op multiplayer and tools. A game live on Google Play, a Steam co-op game in progress. Open to work.",
-        "home", depth, body, "", home=True,
+        "Romain Pitot, Unity and C# developer in Toulouse. Gameplay systems, co-op multiplayer and tools. Two mobile games shipped on Google Play, a Steam co-op game in progress. Open to work.",
+        "home", depth, body, "",
     ))
 
 
@@ -883,7 +879,12 @@ def render_facts(p):
 
 def render_challenges(p):
     if not p.get("challenges"):
-        return ""
+        # Visible only to the owner (open any page once with ?owner=1): a reminder
+        # to fill in a real challenge. Nothing is shown to visitors.
+        return ('<div class="detail-section owner-todo" data-owner-only hidden><h2 data-i18n-skip>Technical challenge '
+                '<span class="owner-tag">TODO (visible only to you)</span></h2>'
+                '<div class="challenge"><dl><dt>The problem</dt><dd>What was hard here? One concrete obstacle.</dd>'
+                '<dt>What I did</dt><dd>How you solved it, in two sentences. Add it in tools/content_extra.py (ENRICH, "challenges").</dd></dl></div></div>')
     items = "".join(
         '<div class="challenge"><h3>%s</h3><dl><dt>The problem</dt><dd>%s</dd><dt>What I did</dt><dd>%s</dd></dl></div>' % c
         for c in p["challenges"]
@@ -894,13 +895,81 @@ def render_challenges(p):
 def render_retro(p):
     r = p.get("retro")
     if not r:
-        return ""
+        if p.get("category") != "Game Jam":
+            return ""
+        return ('<div class="detail-section owner-todo" data-owner-only hidden><h2 data-i18n-skip>Jam retrospective '
+                '<span class="owner-tag">TODO (visible only to you)</span></h2>'
+                '<p>Constraint, what you built, what you would redo. Add it in tools/content_extra.py (ENRICH, "retro").</p></div>')
     return """<div class="detail-section"><h2 data-i18n-skip>Jam retrospective</h2>
       <div class="retro-grid">
         <div class="retro-card"><h3>The constraint</h3><p>%(constraint)s</p></div>
         <div class="retro-card"><h3>What I built</h3><p>%(built)s</p></div>
         <div class="retro-card"><h3>What I would redo</h3><p>%(redo)s</p></div>
       </div></div>""" % r
+
+
+
+def _lum(h, s, l):
+    import colorsys
+    r, g, b = colorsys.hls_to_rgb(h / 360.0, l / 100.0, s / 100.0)
+    f = lambda c: c / 12.92 if c <= 0.03928 else ((c + 0.055) / 1.055) ** 2.4
+    return 0.2126 * f(r) + 0.7152 * f(g) + 0.0722 * f(b)
+
+
+def _contrast(c1, c2):
+    a, b = _lum(*c1), _lum(*c2)
+    hi, lo = max(a, b), min(a, b)
+    return (hi + 0.05) / (lo + 0.05)
+
+
+def _readable(c, bgs, dark, target=5.2):
+    target = target if dark else target + 2.3  # light pages: margin for the fade-in blend
+    """Move the lightness of c until it reads on every background in bgs."""
+    h, sat, l = c
+    step = 1 if dark else -1
+    while l < 98 and l > 2 and min(_contrast((h, sat, l), b) for b in bgs) < target:
+        l += step
+    return (h, sat, l)
+
+
+def theme_tokens(t):
+    """Turn a compact theme (bg/primary/accent + mode) into the full token set.
+    Foreground/background pairs are chosen so text stays above WCAG AA."""
+    h, sat, l = t["bg"]
+    dark = t["mode"] == "dark"
+
+    def hsl(x):
+        return "%d %d%% %d%%" % x
+
+    def on(c):
+        return hsl((c[0], 20, 8)) if c[2] >= 46 else hsl((c[0], 30, 96))
+
+    if dark:
+        fg, mfg = (h, 25, 95), (h, 18, 72)
+        card, sec, mut, bdr, deep = (h, sat, l + 4), (h, sat, l + 9), (h, sat, l + 7), (h, sat - 5, l + 14), (h, sat + 4, max(l - 4, 3))
+    else:
+        fg, mfg = (h, 30, 12), (h, 18, 28)
+        card, sec, mut, bdr, deep = (h, sat, l + 4), (h, sat - 4, l - 6), (h, sat - 4, l - 5), (h, sat - 6, l - 16), (h, sat, l - 5)
+    # primary/accent are used as text colour too: push them until they pass AA
+    # on the page, card and secondary backgrounds.
+    bgs = [t["bg"], card, sec, mut, deep]
+    p = _readable(t["primary"], bgs, dark)
+    a = _readable(t["accent"], bgs, dark)
+    mfg = _readable(mfg, bgs, dark, 5.5)
+    tokens = {
+        "background": hsl(t["bg"]), "background-deep": hsl(deep), "foreground": hsl(fg),
+        "card": hsl(card), "card-foreground": hsl(fg), "primary": hsl(p), "primary-foreground": on(p),
+        "secondary": hsl(sec), "secondary-foreground": hsl(mfg), "muted": hsl(mut), "muted-foreground": hsl(mfg),
+        "accent": hsl(a), "accent-foreground": on(a), "border": hsl(bdr),
+    }
+    return "".join("--%s:%s;" % kv for kv in tokens.items())
+
+
+def theme_body_attrs(p):
+    t = X.THEMES.get(p["id"])
+    if not t:
+        return ""
+    return ' class="themed %s font-%s fx-%s" style="%s"' % (t["mode"], t["font"], t["fx"] or "none", theme_tokens(t))
 
 
 def build_project_detail(p):
@@ -939,6 +1008,7 @@ def build_project_detail(p):
     body = """<section class="container" style="padding-top:32px">
     <div class="breadcrumb"><a href="../projects.html">&larr; Projects</a> / %(title)s</div>
     <div class="cover-tags" style="position:static;margin-bottom:16px">%(badges)s</div>
+    %(kicker)s
     <h1 style="font-size:clamp(1.8rem,4vw,2.6rem);margin-bottom:28px">%(title)s</h1>
 
     <div class="detail-cover %(coverclass)s">%(cover_media)s</div>
@@ -985,6 +1055,7 @@ def build_project_detail(p):
   </section>
 """ % {
         "title": p["title"],
+        "kicker": ('<p class="theme-kicker font-mono">%s</p>' % X.THEMES[p["id"]]["kicker"]) if p["id"] in X.THEMES else "",
         "badges": corner_badges(p["status"], p["tags"]),
         "coverclass": cover_class(p["category"]),
         "cover_media": '<img class="cover-img" src="%sassets/img/projects/%s" alt="%s cover">' % (
@@ -1014,6 +1085,7 @@ def build_project_detail(p):
         "%s — %s" % (p["title"], AUTHOR),
         p["shortDesc"],
         "projects", depth, body, "projects/%s.html" % p["id"],
+        body_attrs=theme_body_attrs(p),
     ))
 
 
@@ -1079,7 +1151,7 @@ def build_about():
       <div class="reveal about-text">
         <p class="about-lead">I'm Romain. I write Unity and C#, and I like turning a game rule into code that can be tested.</p>
         <p>I spent two years in work-study at Masseka Games Studio in Toulouse, mostly on mobile games: migrating <em>Kissoro</em> from Unity 2018 to 2022, fixing bugs and making the UI adapt to different screens on <em>Vaudoo</em> (now at 1k+ downloads on Google Play), reviving an abandoned prototype on my own, and adapting a game to The Sandbox's constraints.</p>
-        <p>Outside the studio I took part in five game jams, and I am building <em>Global Invasion</em> alone: a Steam co-op game with lobbies, Netcode for GameObjects and about eighty unit tests. I also made a React web app (CLIMB.EUW) and a Python Windows tool that work together, which is why I am open to any developer role and not only games.</p>
+        <p>Outside the studio I took part in five game jams, and I am building <em>Global Invasion</em> alone: a Steam co-op game with lobbies, Netcode for GameObjects and its rules covered by unit tests. I also made a React web app (CLIMB.EUW) and a Python Windows tool that work together, which is why I am open to any developer role and not only games.</p>
         <h2 class="about-h">How I work</h2>
         <ul class="about-list">
           <li>Game rules in plain C# with time and randomness passed in, so they can be tested without launching the game. Network and engine classes stay thin.</li>
